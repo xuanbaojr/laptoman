@@ -149,11 +149,6 @@ class Preprocesser:
             _inp = img_np_list[_i]
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
             _inp = _inp[cly:cry, clx:crx]
-#
-         #   red = [0,0,255]
-         #   _inp[10,5] = red
-
-
 
             if not still:
                 _inp = _inp[ly:ry, lx:rx]
