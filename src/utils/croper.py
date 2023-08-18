@@ -122,14 +122,14 @@ class Preprocesser:
 
         while 1:
             if (ry - ly) > 0.3*img.size[0] :
-                ry = ry + 1 
+                ry = ry + 100
                 print("bug r")
             else :
                 break
 
             if (rx - lx) > 0.3*img.size[1] :
-                rx = rx + 1
-                print("bug r")
+                rx = rx + 100
+                print("bug r haha")
             else :
                 break
 
