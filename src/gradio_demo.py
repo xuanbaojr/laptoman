@@ -44,7 +44,7 @@ class SadTalker():
         length_of_audio = 0, use_blink=True,
         result_dir='./results/'):
 
-        preprocess = 'full'
+       
         self.sadtalker_paths = init_path(self.checkpoint_path, self.config_path, size, False, preprocess)
         print(self.sadtalker_paths)
 
