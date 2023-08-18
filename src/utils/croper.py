@@ -123,7 +123,7 @@ class Preprocesser:
         while 1:
             if (ry - ly) > 0.3*img.size[0] :
                 ry = ry + 10000
-                print(ry, ly)
+                print(img.size[0])
             else :
                 break
 
