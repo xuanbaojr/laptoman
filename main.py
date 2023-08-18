@@ -1,6 +1,6 @@
 import os
 from src.gradio_demo import SadTalker
-
+from src.check_crop import CheckCrop
 # warpfn , lazy_load ?
 def sadtalker_demo(checkpoint_path='checkpoints', config_path='src/config', warpfn=None):
     sad_talker = SadTalker(checkpoint_path, config_path, lazy_load=True)
@@ -12,8 +12,12 @@ def sadtalker_demo(checkpoint_path='checkpoints', config_path='src/config', warp
         print("Đường dẫn source_image đúng!")
     else:
         print("Đường dẫn source_image không tồn tại!!!")
+
+    CheckCrop_ = CheckCrop()
+    preprocess = CheckCrop_.crop_or_not(source_image)
+    print(preprocess)
     
-    result = sad_talker.test(source_image, driven_audio, preprocess='full')
+    result = sad_talker.test(source_image, driven_audio, preprocess)
 
     return result
     
