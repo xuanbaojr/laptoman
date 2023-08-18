@@ -141,11 +141,10 @@ class Preprocesser:
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
             _inp = _inp[cly:cry, clx:crx]
 #
-            _inp_test = [cv2.cvtColor(_inp, cv2.COLOR_RGB2BGR) ] 
             red = [0,0,255]
-            _inp_test[10,5] = red
-
-            cv2.imwrite("result.png",_inp_test)
+         #   _inp[10,5] = red
+            cv2.line(_inp,(0,0),(150,150),(255,255,255),15)
+            cv2.imwrite("result.png",_inp)
 
 
             if not still:
