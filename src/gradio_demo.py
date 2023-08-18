@@ -34,7 +34,7 @@ class SadTalker():
         self.checkpoint_path = checkpoint_path
         self.config_path = config_path
       
-    def test(self, source_image, driven_audio, preprocess='', 
+    def test(self, source_image, driven_audio, 
         still_mode=False,  use_enhancer=False, batch_size=1, size=256, 
         pose_style = 0, exp_scale=1.0, 
         use_ref_video = False,
