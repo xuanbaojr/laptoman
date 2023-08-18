@@ -22,7 +22,7 @@ class CheckCrop():
         h,w,c = source_image.shape
         w_face = self.eye_to_eye(source_image)
         ratio = (w_face/w)
-        if ratio < 0.1:
+        if ratio < 1:
             crop_or_full = 'crop'
         else:
             crop_or_full = 'full'
