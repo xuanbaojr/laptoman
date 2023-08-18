@@ -19,7 +19,7 @@ class CheckCrop():
     def crop_or_not(self,input_path):
         input_path = 'test/art_0.png'
         source_image= cv2.imread(input_path)
-        h,w,c = source_image.shape
+        h,w,c = np.array(source_image).shape
         w_face = self.eye_to_eye(source_image)
         ratio = (w_face/w)
         if ratio < 0.3:
