@@ -136,6 +136,15 @@ class Preprocesser:
         clx, cly, crx, cry = crop
         lx, ly, rx, ry = quad
         lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
+
+
+        inp_crop = cv2.line(img_np,(clx,cly),(crx,cry),(255,255,255),15)
+        inp_quad = cv2.line(inp_crop, (lx,ly), (rx,ry), (0,0,0),15)
+        cv2.imwrite("result_crop.png", inp_crop)
+        cv2.imwrite("result_quad,png", inp_quad)
+    
+
+
         for _i in range(len(img_np_list)):
             _inp = img_np_list[_i]
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
@@ -143,10 +152,7 @@ class Preprocesser:
 #
          #   red = [0,0,255]
          #   _inp[10,5] = red
-            _inp_crop = cv2.line(_inp,(clx,cly),(crx,cry),(255,255,255),15)
-            _inp_quad = cv2.line(_inp_crop, (lx,ly), (rx,ry), (0,0,0),15)
-            cv2.imwrite("result_crop.png",_inp_crop)
-            cv2.imwrite("result_quad,png", _inp_quad)
+
 
 
             if not still:
