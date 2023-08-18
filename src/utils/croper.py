@@ -134,8 +134,7 @@ class Preprocesser:
         red = [0,0,255]
         img_np[crop[0],crop[1]] = red
 
-        cv2.imshow("result.png",img_np)
-        cv2.waitKey(0)
+        cv2.imwrite("result.png",img_np)
 
         clx, cly, crx, cry = crop
         lx, ly, rx, ry = quad
