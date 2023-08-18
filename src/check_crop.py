@@ -17,10 +17,8 @@ class CheckCrop():
         self.det_net = init_detection_model('retinaface_resnet50', half=False,device=self.device, model_rootpath=root_path)
 
     def crop_or_not(self,input_path):
-        input_path = './test/art_0.png'
+      #  input_path = './test/art_0.png'
         source_image= cv2.imread(input_path)
-
-
         h,w,c = source_image.shape
         w_face = self.eye_to_eye(source_image)
         ratio = (w_face/w)
