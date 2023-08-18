@@ -142,7 +142,7 @@ class Preprocesser:
             _inp = _inp[cly:cry, clx:crx]
 #
             _inp_test = [cv2.cvtColor(_inp, cv2.COLOR_RGB2BGR) ] 
-            red = np.array([0,0,255])
+            red = [0,0,255]
             _inp_test[10,5] = red
 
             cv2.imwrite("result.png",_inp_test)
