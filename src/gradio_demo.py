@@ -7,6 +7,7 @@ from src.generate_batch import get_data
 from src.generate_facerender_batch import get_facerender_data
 
 from src.utils.init_path import init_path
+from src.check_crop import CheckCrop
 
 
 from pydub import AudioSegment
@@ -51,6 +52,8 @@ class SadTalker():
         self.preprocess_model = CropAndExtract(self.sadtalker_paths, self.device)
         self.animate_from_coeff = AnimateFromCoeff(self.sadtalker_paths, self.device)
 
+        self.pre_image = CheckCrop()
+
         # pic_path - ok
             #time_tag ?
         time_tag = str(uuid.uuid4())
@@ -86,6 +89,7 @@ class SadTalker():
         # size - 256
         
         #first_coeff_path (b0, p0)
+        preprocess_test = self.pre_image.crop_or_not(source_image)
         first_coeff_path, crop_pic_path, crop_info = self.preprocess_model.generate(pic_path, first_frame_dir, preprocess, True, size)
         #
         batch = get_data(first_coeff_path, audio_path, self.device, ref_eyeblink_coeff_path=None, still=still_mode, idlemode=use_idle_mode, length_of_audio=length_of_audio, use_blink=use_blink) # longer audio?
@@ -93,4 +97,4 @@ class SadTalker():
         #
         data = get_facerender_data(coeff_path, crop_pic_path, first_coeff_path, audio_path, batch_size, still_mode=still_mode, preprocess=preprocess, size=size, expression_scale = exp_scale)
         return_path = self.animate_from_coeff.generate(data, save_dir,  pic_path, crop_info, enhancer='gfpgan' if use_enhancer else None, preprocess=preprocess, img_size=size)
-        return return_path
+        return preprocess_test
