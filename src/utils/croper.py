@@ -131,10 +131,7 @@ class Preprocesser:
             raise 'can not detect the landmark from source image'
         rsize, crop, quad = self.align_face(img=Image.fromarray(img_np), lm=lm, output_size=xsize)
 
-        red = [0,0,255]
-        img_np[10,5] = red
 
-        cv2.imwrite("result.png",img_np)
 
         clx, cly, crx, cry = crop
         lx, ly, rx, ry = quad
@@ -143,6 +140,10 @@ class Preprocesser:
             _inp = img_np_list[_i]
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
             _inp = _inp[cly:cry, clx:crx]
+            red = [0,0,255]
+            _inp[10,5] = red
+
+            cv2.imwrite("result.png",_inp)
             if not still:
                 _inp = _inp[ly:ry, lx:rx]
             img_np_list[_i] = _inp
