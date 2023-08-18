@@ -91,7 +91,7 @@ class SadTalker():
         #first_coeff_path (b0, p0)
         preprocess_ = self.pre_image.crop_or_not(pic_path)
         
-        first_coeff_path, crop_pic_path, crop_info = self.preprocess_model.generate(pic_path, first_frame_dir, 'full', True, size)
+        first_coeff_path, crop_pic_path, crop_info = self.preprocess_model.generate(pic_path, first_frame_dir, preprocess, True, size)
         #
         batch = get_data(first_coeff_path, audio_path, self.device, ref_eyeblink_coeff_path=None, still=still_mode, idlemode=use_idle_mode, length_of_audio=length_of_audio, use_blink=use_blink) # longer audio?
         coeff_path = self.audio_to_coeff.generate(batch, save_dir, pose_style, ref_pose_coeff_path=None)

@@ -13,7 +13,7 @@ def sadtalker_demo(checkpoint_path='checkpoints', config_path='src/config', warp
     else:
         print("Đường dẫn source_image không tồn tại!!!")
     
-    result = sad_talker.test(source_image, driven_audio)
+    result = sad_talker.test(source_image, driven_audio, preprocess='full')
 
     return result
     
