@@ -37,5 +37,5 @@ class CheckCrop():
     
 if __name__ == "__main__":
     demo = CheckCrop()
-    result = CheckCrop.crop_or_not()
+    result = CheckCrop.crop_or_not(1)
     print(result)
