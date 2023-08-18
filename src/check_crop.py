@@ -35,7 +35,3 @@ class CheckCrop():
             w_face = bboxes[0][2] - bboxes[0][0]
         return w_face
     
-if __name__ == "__main__":
-    demo = CheckCrop()
-    result = demo.crop_or_not(input_path='./test/art_0.png')
-    print(result)
