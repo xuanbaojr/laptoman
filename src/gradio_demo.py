@@ -34,7 +34,7 @@ class SadTalker():
         self.checkpoint_path = checkpoint_path
         self.config_path = config_path
       
-    def test(self, source_image, driven_audio, 
+    def test(self, source_image, driven_audio, preprocess,
         still_mode=False,  use_enhancer=False, batch_size=1, size=256, 
         pose_style = 0, exp_scale=1.0, 
         use_ref_video = False,
@@ -44,7 +44,7 @@ class SadTalker():
         length_of_audio = 0, use_blink=True,
         result_dir='./results/'):
 
-
+        preprocess = 'full'
         self.sadtalker_paths = init_path(self.checkpoint_path, self.config_path, size, False, preprocess)
         print(self.sadtalker_paths)
 
@@ -90,8 +90,8 @@ class SadTalker():
         
         #first_coeff_path (b0, p0)
         preprocess_ = self.pre_image.crop_or_not(pic_path)
-        preprocess = 'full'
-        first_coeff_path, crop_pic_path, crop_info = self.preprocess_model.generate(pic_path, first_frame_dir, preprocess, True, size)
+        
+        first_coeff_path, crop_pic_path, crop_info = self.preprocess_model.generate(pic_path, first_frame_dir, 'full', True, size)
         #
         batch = get_data(first_coeff_path, audio_path, self.device, ref_eyeblink_coeff_path=None, still=still_mode, idlemode=use_idle_mode, length_of_audio=length_of_audio, use_blink=use_blink) # longer audio?
         coeff_path = self.audio_to_coeff.generate(batch, save_dir, pose_style, ref_pose_coeff_path=None)
