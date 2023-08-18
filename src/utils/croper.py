@@ -122,13 +122,13 @@ class Preprocesser:
 
         while 1:
             if (ry - ly) > 0.3*img.size[0] :
-                ry = ry + 100
+                ry = ry + 10000
                 print(ry, ly)
             else :
                 break
 
             if (rx - lx) > 0.3*img.size[1] :
-                rx = rx + 100
+                rx = rx + 10000
                 print(rx,  lx)
             else :
                 break
@@ -137,6 +137,7 @@ class Preprocesser:
         return rsize, crop, [lx, ly, rx, ry]
     
     def crop(self, img_np_list, still=False, xsize=512):    # first frame for all video
+    
         img_np = img_np_list[0]
         lm = self.get_landmark(img_np)
 
