@@ -142,7 +142,7 @@ class Preprocesser:
             img_np_list[_i] = _inp
         return img_np_list, crop, quad
 
-    def crop(self, img_np_list, still=False, xsize=512):    # first frame for all video
+    def crop_(self, img_np_list, still=False, xsize=512):    # first frame for all video
         img_np = img_np_list[0]
         lm = self.get_landmark(img_np)
 
