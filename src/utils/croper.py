@@ -141,7 +141,7 @@ class Preprocesser:
         inp_crop = cv2.line(img_np,(clx,cly),(crx,cry),(255,255,255),15)
         inp_quad = cv2.line(inp_crop, (lx,ly), (rx,ry), (0,0,0),15)
         cv2.imwrite("result_crop.png", inp_crop)
-        cv2.imwrite("result_quad,png", inp_quad)
+        cv2.imwrite("result_quad.png", inp_quad)
     
 
 
