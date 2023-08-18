@@ -143,7 +143,7 @@ class Preprocesser:
 #
             red = [0,0,255]
          #   _inp[10,5] = red
-            cv2.line(_inp,(0,0),(150,150),(255,255,255),15)
+            cv2.line(_inp,(clx,cly),(crx,cry),(255,255,255),15)
             cv2.imwrite("result.png",_inp)
 
 
