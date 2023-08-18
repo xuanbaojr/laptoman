@@ -121,16 +121,16 @@ class Preprocesser:
         ry = min(max(quad[3], quad[5]), img.size[0])
 
         while 1:
-            if (ry - ly) < 0.3*img.size[0] :
+            if (ry - ly) > 0.3*img.size[0] :
                 ry = ry + 1 
             else :
                 break
 
-            if (rx - lx) < 0.3*img.size[1] :
+            if (rx - lx) > 0.3*img.size[1] :
                 rx = rx + 1
             else :
                 break
-            
+
         # Save aligned image.
         return rsize, crop, [lx, ly, rx, ry]
     
