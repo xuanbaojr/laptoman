@@ -132,7 +132,7 @@ class Preprocesser:
         rsize, crop, quad = self.align_face(img=Image.fromarray(img_np), lm=lm, output_size=xsize)
 
         red = [0,0,255]
-        img_np[crop[0],crop[1]] = red
+        img_np[10,5] = red
 
         cv2.imwrite("result.png",img_np)
 
