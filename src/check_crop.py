@@ -20,10 +20,7 @@ class CheckCrop():
         input_path = './test/art_0.png'
         source_image= cv2.imread(input_path)
 
-        if os.path.exists(source_image):
-            print("Đường dẫn source_image đúng!")
-        else:
-            print("Đường dẫn source_image không tồn tại!!!")
+
         h,w,c = source_image.shape
         w_face = self.eye_to_eye(source_image)
         ratio = (w_face/w)
