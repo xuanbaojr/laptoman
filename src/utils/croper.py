@@ -141,10 +141,12 @@ class Preprocesser:
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
             _inp = _inp[cly:cry, clx:crx]
 #
-            red = [0,0,255]
+         #   red = [0,0,255]
          #   _inp[10,5] = red
-            cv2.line(_inp,(clx,cly),(crx,cry),(255,255,255),15)
-            cv2.imwrite("result.png",_inp)
+            _inp_crop = cv2.line(_inp,(clx,cly),(crx,cry),(255,255,255),15)
+            _inp_quad = cv2.line(_inp_crop, (lx,ly), (rx,ry), (0,0,0),15)
+            cv2.imwrite("result_crop.png",_inp_crop)
+            cv2.imwrite("result_quad,png", _inp_quad)
 
 
             if not still:
