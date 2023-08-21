@@ -164,7 +164,7 @@ class Preprocesser:
                 if lx < 1 :
                     lx = lx + 1
                 if ly < 1 :
-                    ly = ly -1
+                    ly = ly + 1
                 print(rx, ry, lx, ly)
 
             if not still:
