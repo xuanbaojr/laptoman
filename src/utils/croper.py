@@ -154,7 +154,7 @@ class Preprocesser:
             crx = int(crx + min(clx,rsize[0]-crx)/rate)
             clx = int(clx - min(clx,rsize[0]-crx)/rate)
             cly = int(cly - min(cly,rsize[1]-cry)/rate)
-            cry = int(cry + min(cly,rsize[1]-cry)/rate)
+            cry = int(cry + (rsize[1]-cry)/rate)
                 
             _inp = _inp[cly:cry  , clx:crx]
 
