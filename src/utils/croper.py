@@ -151,10 +151,10 @@ class Preprocesser:
             _inp = img_np_list[_i]
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
             print(clx, cly, crx, cry)
-            crx = min((crx + (crx - clx)/2),rsize[0])
-            clx = max((clx - (crx - clx)/2),0)
-            cly = max((cly - (cry - cly)/2),0)
-            crx = max((cry + (cry - cly)/2),rsize[1])
+            crx = min(int((crx + (crx - clx)/2)),rsize[0])
+            clx = max(int((clx - (crx - clx)/2)),0)
+            cly = max(int((cly - (cry - cly)/2)),0)
+            crx = max(int((cry + (cry - cly)/2)),rsize[1])
                 
             _inp = _inp[cly:cry  , clx:crx]
 
