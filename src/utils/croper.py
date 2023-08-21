@@ -141,7 +141,8 @@ class Preprocesser:
         lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
 
 
-        
+        inp_crop = cv2.line(_inp,(clx,cly),(crx,cry),(255,255,255),15)
+        cv2.imwrite("result_crop.png", inp_crop)
         inp_quad = cv2.line(inp_crop, (lx,ly), (rx,ry), (0,0,0),15)
         cv2.imwrite("result_crop.png", inp_crop)
         cv2.imwrite("result_quad.png", inp_quad)
@@ -173,8 +174,7 @@ class Preprocesser:
             _inp = _inp[cly:cry  , clx:crx]
 
             print(clx, cly, crx, cry)
-            inp_crop = cv2.line(_inp,(clx,cly),(crx,cry),(255,255,255),15)
-            cv2.imwrite("result_crop.png", inp_crop)
+            
 
             img_np_list[_i] = _inp
 
