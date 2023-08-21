@@ -126,7 +126,7 @@ class Preprocesser:
     def crop(self, img_np_list, still=False, xsize=512):    # first frame for all video
 
         rate = 5
-        rate_ = 2
+        rate_ = 1.5
     
         img_np = img_np_list[0]
         lm = self.get_landmark(img_np)
