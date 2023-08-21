@@ -156,6 +156,8 @@ class Preprocesser:
                 ry = ry + 1
                 lx = lx - 1
                 ly = ly - 1
+                if rx > 512 or ry > 512 or lx < 0 or ly < 0:
+                    break
             if not still:
                 _inp = _inp[ly:ry, lx:rx]
             img_np_list[_i] = _inp
