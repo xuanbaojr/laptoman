@@ -172,4 +172,4 @@ class Preprocesser:
             if not still:
                 _inp = _inp[ly:ry, lx:rx]
             img_np_list[_i] = _inp
-        return img_np_list, crop, quad
+        return img_np_list[0], crop, quad
