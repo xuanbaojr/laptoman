@@ -139,7 +139,7 @@ class Preprocesser:
           #  cly = int(cly - min(cly,rsize[1]-cry)/rate_)
            #git  cry = int(cry + (rsize[1]-cry)/rate_)
                 
-            _inp = _inp[cly:cry  , clx:crx]
+            _inp = _inp[cly:cry , clx:crx]
 
             print(clx, cly, crx, cry)
             
