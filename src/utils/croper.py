@@ -151,23 +151,7 @@ class Preprocesser:
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
             _inp = _inp[cly:cry, clx:crx]
             print(clx, cly, crx, cry, rsize[0], rsize[1], lx, ly, rx, ry)
-            while 1 :
-                rx = rx + 1
-                ry = ry + 1
-                lx = lx - 1
-                ly = ly - 1
-                print(rx, ry, lx, ly)
-                if (rx - lx) * (ry - ly) >= rsize[0] * rsize[1] * rsize[0] * rate * rate :
-                    break
-                if rx > rsize[1] :
-                    rx = rx - 1
-                if ry > rsize[0] :
-                    ry = ry -1
-                if lx < 1 :
-                    lx = lx + 1
-                if ly < 1 :
-                    ly = ly + 1
-                print(rx, ry, lx, ly)
+
 
             if not still:
                 _inp = _inp[ly:ry, lx:rx]
