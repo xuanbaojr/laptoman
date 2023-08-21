@@ -161,7 +161,7 @@ class Preprocesser:
                     break
                 if rx > rsize[0] -1 :
                     rx = rx - 1
-                if ry > rsize[0] -1 :
+                if ry > rsize[1] -1 :
                     ry = ry -1
                 if lx < 1 :
                     lx = lx + 1
