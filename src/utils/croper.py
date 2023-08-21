@@ -157,8 +157,7 @@ class Preprocesser:
                 crx = crx + _x
                 cly = cly - _y
                 cry = cry + _y
-                if (crx - clx)*(cry - cly) >= rsize[0]*rsize[1]*rate*rate :
-                    break
+ 
                 if clx < 1 :
                     clx = clx + _x
                 if cly < 1 :
@@ -167,6 +166,9 @@ class Preprocesser:
                     crx = crx - _x
                 if cry > rsize[1] -1 :
                     cry = cry - _y
+
+                if (crx - clx)*(cry - cly) >= rsize[0]*rsize[1]*rate*rate :
+                    break
 
             _inp = _inp[cly:cry  , clx:crx]
 
