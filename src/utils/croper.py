@@ -159,9 +159,9 @@ class Preprocesser:
                 print(rx, ry, lx, ly)
                 if (rx - lx) * (ry - ly) >= rsize[0] * rsize[1] * rsize[0] * rate * rate :
                     break
-                if rx > 511 :
+                if rx > rsize[1] :
                     rx = rx - 1
-                if ry > 511 :
+                if ry > rsize[0] :
                     ry = ry -1
                 if lx < 1 :
                     lx = lx + 1
