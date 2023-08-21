@@ -146,7 +146,7 @@ class Preprocesser:
     
         _inp = img_np_list[0]
         _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
-        while (rx - lx) * (ry - ly) < img_np_list.size[1]*img_np_list.size[0]* 0.09:  #size[0] ?
+        while (rx - lx) * (ry - ly) < img_np_list[0].size[1]*img_np_list[0].size[0]* 0.09:  #size[0] ?
             rx = rx + 1
             lx = lx - 1
             ry = ry + 1
