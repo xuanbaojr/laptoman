@@ -153,4 +153,8 @@ class Preprocesser:
 
             _inp = _inp[cly:cry  , clx:crx]
 
+            print(clx, cly, crx, cry)
+
+            img_np_list[_i] = _inp
+
         return img_np_list, crop, quad
