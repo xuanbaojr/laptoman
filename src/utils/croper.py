@@ -157,8 +157,16 @@ class Preprocesser:
                 lx = lx - 1
                 ly = ly - 1
                 print(rx, ry, lx, ly)
-                if rx > 511 or ry > 511 or lx < 1 or ly < 1:
-                    break
+                if rx > 511 :
+                    rx = rx - 1
+                if ry > 511 :
+                    ry = ry -1
+                if lx < 1 :
+                    lx = lx + 1
+                if ly < 1 :
+                    ly = ly -1
+                print(rx, ry, lx, ly)
+
             if not still:
                 _inp = _inp[ly:ry, lx:rx]
             img_np_list[_i] = _inp
