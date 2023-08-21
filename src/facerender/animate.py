@@ -16,7 +16,7 @@ import torchvision
 
 from src.facerender.modules.keypoint_detector import HEEstimator, KPDetector
 from src.facerender.modules.mapping import MappingNet
-from src.facerender.modules.generator import OcclusionAwareGenerator, OcclusionAwareSPADEGenerator
+from src.facerender.modules.generator import OcclusionAwareSPADEGenerator
 from src.facerender.modules.make_animation import make_animation 
 
 from pydub import AudioSegment 
@@ -61,8 +61,7 @@ class AnimateFromCoeff():
         if sadtalker_path is not None:
             if 'checkpoint' in sadtalker_path: # use safe tensor
                 self.load_cpk_facevid2vid_safetensor(sadtalker_path['checkpoint'], kp_detector=kp_extractor, generator=generator, he_estimator=None)
-            else:
-                self.load_cpk_facevid2vid(sadtalker_path['free_view_checkpoint'], kp_detector=kp_extractor, generator=generator, he_estimator=he_estimator)
+            
         else:
             raise AttributeError("Checkpoint should be specified for video head pose estimator.")
 
@@ -110,35 +109,7 @@ class AnimateFromCoeff():
         
         return None
 
-    def load_cpk_facevid2vid(self, checkpoint_path, generator=None, discriminator=None, 
-                        kp_detector=None, he_estimator=None, optimizer_generator=None, 
-                        optimizer_discriminator=None, optimizer_kp_detector=None, 
-                        optimizer_he_estimator=None, device="cpu"):
-        checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
-        if generator is not None:
-            generator.load_state_dict(checkpoint['generator'])
-        if kp_detector is not None:
-            kp_detector.load_state_dict(checkpoint['kp_detector'])
-        if he_estimator is not None:
-            he_estimator.load_state_dict(checkpoint['he_estimator'])
-        if discriminator is not None:
-            try:
-               discriminator.load_state_dict(checkpoint['discriminator'])
-            except:
-               print ('No discriminator in the state-dict. Dicriminator will be randomly initialized')
-        if optimizer_generator is not None:
-            optimizer_generator.load_state_dict(checkpoint['optimizer_generator'])
-        if optimizer_discriminator is not None:
-            try:
-                optimizer_discriminator.load_state_dict(checkpoint['optimizer_discriminator'])
-            except RuntimeError as e:
-                print ('No discriminator optimizer in the state-dict. Optimizer will be not initialized')
-        if optimizer_kp_detector is not None:
-            optimizer_kp_detector.load_state_dict(checkpoint['optimizer_kp_detector'])
-        if optimizer_he_estimator is not None:
-            optimizer_he_estimator.load_state_dict(checkpoint['optimizer_he_estimator'])
-
-        return checkpoint['epoch']
+    
     
     def load_cpk_mapping(self, checkpoint_path, mapping=None, discriminator=None,
                  optimizer_mapping=None, optimizer_discriminator=None, device='cpu'):
@@ -216,24 +187,6 @@ class AnimateFromCoeff():
             print(f'The generated video is named {video_save_dir}/{video_name_full}') 
         else:
             full_video_path = av_path 
-
-        #### paste back then enhancers
-        if enhancer:  # enhancer = None
-            video_name_enhancer = x['video_name']  + '_enhanced.mp4'
-            enhanced_path = os.path.join(video_save_dir, 'temp_'+video_name_enhancer)
-            av_path_enhancer = os.path.join(video_save_dir, video_name_enhancer) 
-            return_path = av_path_enhancer
-
-            try:
-                enhanced_images_gen_with_len = enhancer_generator_with_len(full_video_path, method=enhancer, bg_upsampler=background_enhancer)
-                imageio.mimsave(enhanced_path, enhanced_images_gen_with_len, fps=float(25))
-            except:
-                enhanced_images_gen_with_len = enhancer_list(full_video_path, method=enhancer, bg_upsampler=background_enhancer)
-                imageio.mimsave(enhanced_path, enhanced_images_gen_with_len, fps=float(25))
-            
-            save_video_with_watermark(enhanced_path, new_audio_path, av_path_enhancer, watermark= False)
-            print(f'The generated video is named {video_save_dir}/{video_name_enhancer}')
-            os.remove(enhanced_path)
 
         os.remove(path)
         os.remove(new_audio_path)
