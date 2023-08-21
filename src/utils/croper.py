@@ -173,7 +173,8 @@ class Preprocesser:
             _inp = _inp[cly:cry  , clx:crx]
 
             print(clx, cly, crx, cry)
-            inp_crop = cv2.line(img_np,(clx,cly),(crx,cry),(255,255,255),15)
+            inp_crop = cv2.line(_inp,(clx,cly),(crx,cry),(255,255,255),15)
+            cv2.imwrite("result_crop.png", inp_crop)
 
             img_np_list[_i] = _inp
 
