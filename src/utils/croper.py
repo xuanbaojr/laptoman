@@ -144,17 +144,12 @@ class Preprocesser:
         cv2.imwrite("result_crop.png", inp_crop)
         cv2.imwrite("result_quad.png", inp_quad)
     
-        _inp = img_np_list[0]
-        _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
-        width, height = img_np_list[0].size
-
-        while (rx - lx) * (ry - ly) < width * height * 0.09:  #size[0] ?
-            rx = rx + 1
-            lx = lx - 1
-            ry = ry + 1
-            ly = ly - 1 
-        if not still :
-            _inp = _inp[ly:ry, lx:rx]
-            img_np_list[0] = _inp
-
-        return img_np_list[0], crop, quad
+        for _i in range(len(img_np_list)):
+            _inp = img_np_list[_i]
+            _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
+            _inp = _inp[cly:cry, clx:crx]
+            print(clx, cly, crx, cry, rsize[0], rsize[1], lx, ly, rx, ry)
+            if not still:
+                _inp = _inp[ly:ry, lx:rx]
+            img_np_list[_i] = _inp
+        return img_np_list, crop, quad
