@@ -152,28 +152,5 @@ class Preprocesser:
 
 
             _inp = _inp[cly:cry  , clx:crx]
-            print(clx, cly, crx, cry, rsize[0], rsize[1], lx, ly, rx, ry)
-            rsize0 = crx - clx
-            rsize1 = cry - cly
-            while 1 :
-                rx = rx + 1
-                ry = ry + 1
-                lx = lx - 1
-                ly = ly - 1
-                print(rx, ry, lx, ly)
-                if (rx - lx) * (ry - ly) == rsize1 * rsize0 * rate * rate or (rx - lx) * (ry - ly) > rsize1 * rsize0 * rate * rate :
-                    break
-                if rx > rsize0 -1 :
-                    rx = rx - 1
-                if ry > rsize1 -1 :
-                    ry = ry - 1
-                if lx < 1 :
-                    lx = lx + 1
-                if ly < 1 :
-                    ly = ly + 1
-                print(rx, ry, lx, ly)
-                
-            if not still:
-                _inp = _inp[ly:ry, lx:rx]
-            img_np_list[_i] = _inp
+
         return img_np_list, crop, quad
