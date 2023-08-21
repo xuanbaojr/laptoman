@@ -149,10 +149,11 @@ class Preprocesser:
         for _i in range(len(img_np_list)):
             _inp = img_np_list[_i]
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
-            _inp = _inp[cly:cry + 500  , clx:crx]
+            cry_ = cry + 100
+            _inp = _inp[cly:cry_  , clx:crx]
             print(clx, cly, crx, cry, rsize[0], rsize[1], lx, ly, rx, ry)
             rsize0 = crx - clx
-            rsize1 = cry + 500 - cly
+            rsize1 = cry_ - cly
             while 1 :
                 rx = rx + 1
                 ry = ry + 1
