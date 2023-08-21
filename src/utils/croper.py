@@ -156,6 +156,7 @@ class Preprocesser:
                 ry = ry + 1
                 lx = lx - 1
                 ly = ly - 1
+                print(rx, ry, lx, ly)
                 if rx > 512 or ry > 512 or lx < 0 or ly < 0:
                     break
             if not still:
