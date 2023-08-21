@@ -137,7 +137,7 @@ class Preprocesser:
         #    crx = int(crx + min(clx,rsize[0]-crx)/rate)
          #   clx = int(clx - min(clx,rsize[0]-crx)/rate)
           #  cly = int(cly - min(cly,rsize[1]-cry)/rate_)
-           # cry = int(cry + (rsize[1]-cry)/rate_)
+           #git  cry = int(cry + (rsize[1]-cry)/rate_)
                 
             _inp = _inp[cly:cry  , clx:crx]
 
