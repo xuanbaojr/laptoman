@@ -6,7 +6,7 @@ import torch
 import scipy.io as scio
 
 def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path, 
-                        batch_size, input_yaw_list=None, input_pitch_list=None, input_roll_list=None, 
+                        batch_size,
                         expression_scale=1.0, still_mode = False, preprocess='crop', size = 256):
 
     semantic_radius = 13
@@ -72,16 +72,6 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path,
     data['target_semantics_list'] = torch.FloatTensor(target_semantics_np)
     data['video_name'] = video_name
     data['audio_path'] = audio_path
-    
-    if input_yaw_list is not None:
-        yaw_c_seq = gen_camera_pose(input_yaw_list, frame_num, batch_size)
-        data['yaw_c_seq'] = torch.FloatTensor(yaw_c_seq)
-    if input_pitch_list is not None:
-        pitch_c_seq = gen_camera_pose(input_pitch_list, frame_num, batch_size)
-        data['pitch_c_seq'] = torch.FloatTensor(pitch_c_seq)
-    if input_roll_list is not None:
-        roll_c_seq = gen_camera_pose(input_roll_list, frame_num, batch_size) 
-        data['roll_c_seq'] = torch.FloatTensor(roll_c_seq)
  
     return data
 

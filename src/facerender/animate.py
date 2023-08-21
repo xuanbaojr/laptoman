@@ -162,27 +162,12 @@ class AnimateFromCoeff():
         source_image=source_image.to(self.device)
         source_semantics=source_semantics.to(self.device)
         target_semantics=target_semantics.to(self.device)
-        if 'yaw_c_seq' in x:
-            yaw_c_seq = x['yaw_c_seq'].type(torch.FloatTensor)
-            yaw_c_seq = x['yaw_c_seq'].to(self.device)
-        else:
-            yaw_c_seq = None
-        if 'pitch_c_seq' in x:
-            pitch_c_seq = x['pitch_c_seq'].type(torch.FloatTensor)
-            pitch_c_seq = x['pitch_c_seq'].to(self.device)
-        else:
-            pitch_c_seq = None
-        if 'roll_c_seq' in x:
-            roll_c_seq = x['roll_c_seq'].type(torch.FloatTensor) 
-            roll_c_seq = x['roll_c_seq'].to(self.device)
-        else:
-            roll_c_seq = None
 
         frame_num = x['frame_num']
 
         predictions_video = make_animation(source_image, source_semantics, target_semantics,
                                         self.generator, self.kp_extractor, self.he_estimator, self.mapping, 
-                                        yaw_c_seq, pitch_c_seq, roll_c_seq, use_exp = True)
+                                         use_exp = True)
 
         predictions_video = predictions_video.reshape((-1,)+predictions_video.shape[2:])
         predictions_video = predictions_video[:frame_num]

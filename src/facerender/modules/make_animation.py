@@ -101,7 +101,7 @@ def keypoint_transformation(kp_canonical, he, wo_exp=False):
 
 def make_animation(source_image, source_semantics, target_semantics,
                             generator, kp_detector, he_estimator, mapping, 
-                            yaw_c_seq=None, pitch_c_seq=None, roll_c_seq=None,
+                           
                             use_exp=True, use_half=False):
     with torch.no_grad():
         predictions = []
@@ -115,12 +115,7 @@ def make_animation(source_image, source_semantics, target_semantics,
             # print(target_semantics.shape, source_semantics.shape)
             target_semantics_frame = target_semantics[:, frame_idx]
             he_driving = mapping(target_semantics_frame)
-            if yaw_c_seq is not None:
-                he_driving['yaw_in'] = yaw_c_seq[:, frame_idx]
-            if pitch_c_seq is not None:
-                he_driving['pitch_in'] = pitch_c_seq[:, frame_idx] 
-            if roll_c_seq is not None:
-                he_driving['roll_in'] = roll_c_seq[:, frame_idx] 
+
             
             kp_driving = keypoint_transformation(kp_canonical, he_driving)
                 
@@ -158,13 +153,10 @@ class AnimateModel(torch.nn.Module):
         source_image = x['source_image']
         source_semantics = x['source_semantics']
         target_semantics = x['target_semantics']
-        yaw_c_seq = x['yaw_c_seq']
-        pitch_c_seq = x['pitch_c_seq']
-        roll_c_seq = x['roll_c_seq']
 
         predictions_video = make_animation(source_image, source_semantics, target_semantics,
                                         self.generator, self.kp_extractor,
-                                        self.mapping, use_exp = True,
-                                        yaw_c_seq=yaw_c_seq, pitch_c_seq=pitch_c_seq, roll_c_seq=roll_c_seq)
+                                        self.mapping, use_exp = True
+                                        )
         
         return predictions_video
