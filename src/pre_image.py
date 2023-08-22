@@ -53,4 +53,4 @@ class Image_Preprocess():
         new_source_image = os.path.join('results', pic_name + '.png')
         cv2.imwrite(new_source_image, cv2.cvtColor(np.array(img_np), cv2.COLOR_RGB2BGR))
         print("new", new_source_image)
-        return img_np
+        return new_source_image
