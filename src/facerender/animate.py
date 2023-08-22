@@ -110,7 +110,7 @@ class AnimateFromCoeff():
         
         return None
 
-    def load_cpk_facevid2vid(self, checkpoint_path, generator=None, discriminator=None, 
+    def load_cpk_facevid2vid(self, checkpoint_path, generator=Nokp_extractorne, discriminator=None, 
                         kp_detector=None, he_estimator=None, optimizer_generator=None, 
                         optimizer_discriminator=None, optimizer_kp_detector=None, 
                         optimizer_he_estimator=None, device="cpu"):
