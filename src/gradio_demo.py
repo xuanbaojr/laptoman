@@ -1,5 +1,5 @@
 import torch, uuid
-import os, sys, shutil
+import os, sys, shutil, cv2
 from src.utils.preprocess import CropAndExtract
 from src.test_audio2coeff import Audio2Coeff  
 from src.facerender.animate import AnimateFromCoeff
@@ -65,10 +65,11 @@ class SadTalker():
         os.makedirs(input_dir, exist_ok=True)
         print(source_image)
         source_image_temp = self.pre_image.img_pre(source_image)
+        source_image = source_image_temp
         print("day la" , source_image_temp)
             #chuyen anh folder goc qua result/timetag/input/source_image.png
-        pic_path = os.path.join(input_dir, os.path.basename(source_image_temp)) 
-        shutil.move(source_image_temp, input_dir)
+        pic_path = os.path.join(input_dir, os.path.basename(source_image))
+        shutil.move(source_image, input_dir)
 
          # audio_path
         if driven_audio is not None and os.path.isfile(driven_audio):
