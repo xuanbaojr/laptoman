@@ -65,7 +65,7 @@ class SadTalker():
         os.makedirs(input_dir, exist_ok=True)
         print(source_image)
         source_image_temp = self.pre_image.img_pre(source_image)
-        source_image = source_image_temp
+      #  source_image = source_image_temp
         print("day la" , source_image_temp)
             #chuyen anh folder goc qua result/timetag/input/source_image.png
         pic_path = os.path.join(input_dir, os.path.basename(source_image))
