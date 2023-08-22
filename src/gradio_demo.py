@@ -11,6 +11,8 @@ from src.utils.init_path import init_path
 
 from pydub import AudioSegment
 
+from src.pre_image import Image_Preprocess
+
 
 def mp3_to_wav(mp3_filename,wav_filename,frame_rate):
     mp3_file = AudioSegment.from_file(file=mp3_filename)
@@ -51,6 +53,8 @@ class SadTalker():
         self.preprocess_model = CropAndExtract(self.sadtalker_paths, self.device)
         self.animate_from_coeff = AnimateFromCoeff(self.sadtalker_paths, self.device)
 
+        self.pre_image = Image_Preprocess()
+
 
         # pic_path - ok
             #time_tag ?
@@ -60,6 +64,8 @@ class SadTalker():
         input_dir = os.path.join(save_dir, 'input')
         os.makedirs(input_dir, exist_ok=True)
         print(source_image)
+        source_image_temp = self.pre_image(source_image)
+        print("day la" , source_image_temp)
             #chuyen anh folder goc qua result/timetag/input/source_image.png
         pic_path = os.path.join(input_dir, os.path.basename(source_image)) 
         shutil.move(source_image, input_dir)
