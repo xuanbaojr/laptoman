@@ -112,6 +112,7 @@ class CropAndExtract():
         else: # resize mode
             oy1, oy2, ox1, ox2 = 0, x_full_frames[0].shape[0], 0, x_full_frames[0].shape[1] 
             crop_info = ((ox2 - ox1, oy2 - oy1), None, None)
+            print("day la resize")
 
         frames_pil = [Image.fromarray(cv2.resize(frame,(pic_size, pic_size))) for frame in x_full_frames]
         if len(frames_pil) == 0:
