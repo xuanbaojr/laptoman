@@ -14,7 +14,7 @@ class Image_Preprocess():
         rate = 5
         rate_ = 2
 
-        img_np = np.array(source_image)
+        img_np = source_image[0]
         lm = self.preprocess.get_landmark(img_np)
 
         rsize, crop, _ = self.preprocess.align_face(img = Image.fromarray(img_np), lm = lm, output_size=xsize)
