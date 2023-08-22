@@ -15,7 +15,6 @@ def sadtalker_demo(checkpoint_path='checkpoints', config_path='src/config', warp
 
     CheckCrop_ = CheckCrop()
     preprocess = CheckCrop_.crop_or_not(source_image)
-    preprocess = "haha"
     print(preprocess)
     
     result = sad_talker.test(source_image, driven_audio, preprocess)
