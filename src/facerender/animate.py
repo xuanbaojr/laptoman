@@ -110,7 +110,7 @@ class AnimateFromCoeff():
         
         return None
 
-    def load_cpk_facevid2vid(self, checkpoint_path, generator=Nokp_extractorne, discriminator=None, 
+    def load_cpk_facevid2vid(self, checkpoint_path, generator=None, discriminator=None, 
                         kp_detector=None, he_estimator=None, optimizer_generator=None, 
                         optimizer_discriminator=None, optimizer_kp_detector=None, 
                         optimizer_he_estimator=None, device="cpu"):
@@ -136,6 +136,7 @@ class AnimateFromCoeff():
         if optimizer_kp_detector is not None:
             optimizer_kp_detector.load_state_dict(checkpoint['optimizer_kp_detector'])
         if optimizer_he_estimator is not None:
+        
             optimizer_he_estimator.load_state_dict(checkpoint['optimizer_he_estimator'])
 
         return checkpoint['epoch']
