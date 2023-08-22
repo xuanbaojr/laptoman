@@ -136,16 +136,16 @@ class Preprocesser:
             _inp = img_np_list[_i]
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
             print(clx, cly, crx, cry)
-        #    crx = int(crx + min(clx,rsize[0]-crx)/rate)
-         #   clx = int(clx - min(clx,rsize[0]-crx)/rate)
-          #  cly = int(cly - min(cly,rsize[1]-cry)/rate_)
-           #git  cry = int(cry + (rsize[1]-cry)/rate_)
+            crx = int(crx + min(clx,rsize[0]-crx)/rate)
+            clx = int(clx - min(clx,rsize[0]-crx)/rate)
+            cly = int(cly - min(cly,rsize[1]-cry)/rate_)
+            cry = int(cry + (rsize[1]-cry)/rate_)
                 
             _inp = _inp[cly:cry , clx:crx]
 
             print(clx, cly, crx, cry)
             
-
+            crop = [clx, cly, crx, cry]
             img_np_list[_i] = _inp
 
         return img_np_list, crop, quad
