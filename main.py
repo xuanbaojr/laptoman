@@ -6,7 +6,7 @@ def sadtalker_demo(checkpoint_path='checkpoints', config_path='src/config', warp
     sad_talker = SadTalker(checkpoint_path, config_path, lazy_load=True)
     # source image :
     source_image = 'test/art_0.png'
-    driven_audio = 'test/japanese.wav'
+    driven_audio = 'test/test_vi.wav'
 
     if os.path.exists(source_image):
         print("Đường dẫn source_image đúng!")
