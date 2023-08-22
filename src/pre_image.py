@@ -14,6 +14,9 @@ class Image_Preprocess():
         rate = 5
         rate_ = 2
 
+        pic_name = os.path.splitext(os.path.split(input_path)[-1])[0]
+
+
         if not os.path.isfile(input_path):
             raise ValueError('input_path must be a valid path to video/image file')
         elif input_path.split('.')[-1] in ['jpg', 'png', 'jpeg']:
@@ -48,4 +51,5 @@ class Image_Preprocess():
 
         img_np = img_np[cly:cry, clx:crx]
 
+        cv2.imwrite("haha.png", img_np)
         return img_np
