@@ -127,10 +127,10 @@ class Preprocesser:
         lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
 
 
-    #    inp_crop = cv2.line(img_np,(clx,cly),(crx,cry),(255,255,255),15)
-     #   cv2.imwrite("result_crop.png", inp_crop)
-      #  inp_quad = cv2.line(inp_crop,(lx,ly), (rx,ry), (0,0,0), 12)
-       # cv2.imwrite("inp_quad.png", inp_quad)
+        inp_crop = cv2.line(img_np,(clx,cly),(crx,cry),(255,255,255),15)
+        cv2.imwrite("result_crop.png", inp_crop)
+        inp_quad = cv2.line(inp_crop,(lx,ly), (rx,ry), (0,0,0), 12)
+        cv2.imwrite("inp_quad.png", inp_quad)
 
         for _i in range(len(img_np_list)):
             _inp = img_np_list[_i]
@@ -143,6 +143,8 @@ class Preprocesser:
                 
             _inp = _inp[cly:cry , clx:crx]
 
+            _inp = cv2.line(_inp, (clx, cly),(crx, cry), (255,255,255),15)
+            _inp = cv2.line(_inp, (lx, ly), (rx, ry), (0,0,0),15)
             print(clx, cly, crx, cry)
             print(lx,rx,ly,ry)
             
@@ -165,6 +167,8 @@ class Preprocesser:
             _inp = img_np_list[_i]
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
             _inp = _inp[cly:cry, clx:crx]
+            _inp = cv2.line(_inp, (clx, cly),(crx, cry), (255,255,255),15)
+            _inp = cv2.line(_inp, (lx, ly), (rx, ry), (0,0,0),15)
             if not still:
                 _inp = _inp[ly:ry, lx:rx]
             img_np_list[_i] = _inp
