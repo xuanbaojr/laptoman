@@ -62,7 +62,7 @@ class Preprocesser:
         eye_avg = (eye_left + eye_right) * 0.5
         eye_to_eye = eye_right - eye_left
         mouth_left = lm_mouth_outer[0]
-        mouth_right = lm_mouth_outer[6]
+        mouth_right = lm_mouth_outer[6] 
         mouth_avg = (mouth_left + mouth_right) * 0.5
         eye_to_mouth = mouth_avg - eye_avg
 
@@ -129,6 +129,8 @@ class Preprocesser:
 
         inp_crop = cv2.line(img_np,(clx,cly),(crx,cry),(255,255,255),15)
         cv2.imwrite("result_crop.png", inp_crop)
+        inp_quad = cv2.line(inp_crop,(lx,ly), (rx,ry), (0,0,0), 12)
+        cv2.imwrite("inp_quad", inp_quad)
 
         for _i in range(len(img_np_list)):
             _inp = img_np_list[_i]
@@ -147,3 +149,4 @@ class Preprocesser:
             img_np_list[_i] = _inp
 
         return img_np_list, crop, quad
+    
