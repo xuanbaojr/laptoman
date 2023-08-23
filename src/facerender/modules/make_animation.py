@@ -114,7 +114,13 @@ def make_animation(source_image, source_semantics, target_semantics,
             kp_canonical = torch.load('checkpoints/kp_canonical.pth')
 
         print("kp_canonical_make_animation.py" , kp_canonical)   
-        he_source = mapping(source_semantics)
+
+        if not os.path.isfile('checkpoints/source_sematics'):
+            he_source = mapping(source_semantics)
+            torch.save(he_source, 'checkpoints/he_source.pth')
+        else:
+            he_source = torch.load('checkpoints/he_source.pth')
+            
         kp_source = keypoint_transformation(kp_canonical, he_source)
     
         for frame_idx in tqdm(range(target_semantics.shape[1]), 'Face Renderer:'):
