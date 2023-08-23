@@ -166,11 +166,11 @@ class Preprocesser:
         for _i in range(len(img_np_list)):
             _inp = img_np_list[_i]
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
-            _inp = cv2.line(_inp, (clx, cly),(crx +200, cry +200), (255,255,255),15)
-            _inp = cv2.line(_inp, (lx, ly), (rx+200, ry+200), (0,0,0),15)
-            _inp = _inp[cly:cry+200, clx:crx+200]
+            _inp = cv2.line(_inp, (clx, cly),(crx +100, cry +100), (255,255,255),15)
+            _inp = cv2.line(_inp, (lx, ly), (rx+100, ry+100), (0,0,0),15)
+            _inp = _inp[cly:cry+100, clx:crx+100]
 
             if not still:
-                _inp = _inp[ly:ry+200, lx:rx+200]
+                _inp = _inp[ly:ry+100, lx:rx+100]
             img_np_list[_i] = _inp
         return img_np_list, crop, quad
