@@ -108,8 +108,8 @@ def make_animation(source_image, source_semantics, target_semantics,
         # hinh nhu day moi la keypoint, vi source image theo no dang le chi co dau -> thu test source_image = source_image (face)
         kp_canonical = kp_detector(source_image)
         for key in kp_canonical:
-            kp_canonical[key][:,0] = kp_canonical[key][0]*384/394
-            kp_canonical[key][:,1] = kp_canonical[key][1]*374/384
+            kp_canonical[key][:,0] *=384/394
+            kp_canonical[key][:,1] *=374/384
 
         print("kp_canonical_make_animation.py" , kp_canonical)   
         he_source = mapping(source_semantics)
