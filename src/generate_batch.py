@@ -84,6 +84,7 @@ def get_data(first_coeff_path, audio_path, device, ref_eyeblink_coeff_path, stil
     ref_coeff = source_semantics_dict['coeff_3dmm'][:1,:70]         #1 70
     ref_coeff = np.repeat(ref_coeff, num_frames, axis=0)
 
+#--------------------------------------------
     if ref_eyeblink_coeff_path is not None:
         ratio[:num_frames] = 0
         refeyeblink_coeff_dict = scio.loadmat(ref_eyeblink_coeff_path)
@@ -98,7 +99,8 @@ def get_data(first_coeff_path, audio_path, device, ref_eyeblink_coeff_path, stil
             print(refeyeblink_coeff.shape[0])
 
         ref_coeff[:, :64] = refeyeblink_coeff[:num_frames, :64] 
-    
+#-----------------------------------------------
+
     indiv_mels = torch.FloatTensor(indiv_mels).unsqueeze(1).unsqueeze(0) # bs T 1 80 16
 
     if use_blink:

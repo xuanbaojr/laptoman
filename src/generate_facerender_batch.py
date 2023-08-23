@@ -82,6 +82,8 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path,
     if input_roll_list is not None:
         roll_c_seq = gen_camera_pose(input_roll_list, frame_num, batch_size) 
         data['roll_c_seq'] = torch.FloatTensor(roll_c_seq)
+
+    print("preprocess :", preprocess)
  
     return data
 
