@@ -106,7 +106,10 @@ def make_animation(source_image, source_semantics, target_semantics,
     with torch.no_grad():
         predictions = []
         # hinh nhu day moi la keypoint, vi source image theo no dang le chi co dau -> thu test source_image = source_image (face)
-        kp_canonical = kp_detector(source_image) * 2
+        kp_canonical = kp_detector(source_image)
+        for key in kp_canonical:
+            kp_canonical[key] = kp_canonical[key]*1.2
+            
         print("kp_canonical_make_animation.py" , kp_canonical)   
         he_source = mapping(source_semantics)
         kp_source = keypoint_transformation(kp_canonical, he_source)
