@@ -89,7 +89,6 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path,
 
 def transform_semantic_1(semantic, semantic_radius):
     semantic_list =  [semantic for i in range(0, semantic_radius*2+1)]
-    print("semantic_list:", semantic_list.shape )
     coeff_3dmm = np.concatenate(semantic_list, 0)
     return coeff_3dmm.transpose(1,0)
 
