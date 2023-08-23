@@ -169,9 +169,10 @@ class Preprocesser:
             _inp = cv2.line(_inp, (clx, cly),(crx , cry ), (255,255,255),15)
            # _inp = cv2.line(_inp, (lx, ly), (rx, ry), (0,0,0),15)
             _inp = _inp[cly:cry, clx:crx]
+            print(clx,cly,crx,cry)
 
-            if not still:
-                _inp = _inp[ly:ry, lx:rx]
-                print(lx,ly,rx,ry)
+        #    if not still:
+        #        _inp = _inp[ly:ry, lx:rx]
+        #        print(lx,ly,rx,ry)
             img_np_list[_i] = _inp
         return img_np_list, crop, quad
