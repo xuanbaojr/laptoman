@@ -1,5 +1,5 @@
 from scipy.spatial import ConvexHull
-import torch
+import torch, os
 import torch.nn.functional as F
 import numpy as np
 from tqdm import tqdm 
@@ -106,10 +106,12 @@ def make_animation(source_image, source_semantics, target_semantics,
     with torch.no_grad():
         predictions = []
         # hinh nhu day moi la keypoint, vi source image theo no dang le chi co dau -> thu test source_image = source_image (face)
-        kp_canonical = kp_detector(source_image)
-        for key in kp_canonical:
-            kp_canonical[key][:,0] *=384/394
-            kp_canonical[key][:,1] *=374/384
+        if os.path.isfile('checkpoints/kp_canonical.pth'):
+
+            kp_canonical = kp_detector(source_image)
+            torch.save(kp_canonical, 'checkpoints/kp_canonical.pth')
+        else:
+            kp_canonical = torch.load('checkpoints/kp_canonical.pth')
 
         print("kp_canonical_make_animation.py" , kp_canonical)   
         he_source = mapping(source_semantics)
