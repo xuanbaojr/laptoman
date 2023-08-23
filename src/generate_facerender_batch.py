@@ -46,8 +46,8 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path,
     if 'full' in preprocess.lower():
         generated_3dmm = np.concatenate([generated_3dmm, np.repeat(source_semantics[:,70:], generated_3dmm.shape[0], axis=0)], axis=1)
 
-    if still_mode:
-        generated_3dmm[:, 64:] = np.repeat(source_semantics[:, 64:], generated_3dmm.shape[0], axis=0)
+   # if still_mode:
+   #     generated_3dmm[:, 64:] = np.repeat(source_semantics[:, 64:], generated_3dmm.shape[0], axis=0)
 
     with open(txt_path+'.txt', 'w') as f:
         for coeff in generated_3dmm:
