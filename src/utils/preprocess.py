@@ -164,6 +164,8 @@ class CropAndExtract():
                     pred_coeff['trans'],
                     trans_params[2:][None],
                     ], 1)
+                
+                print("pred_coeff", pred_coeff.shape)
                 video_coeffs.append(pred_coeff)
                 full_coeffs.append(full_coeff.cpu().numpy())
 
