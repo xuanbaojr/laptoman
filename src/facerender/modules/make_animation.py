@@ -106,7 +106,7 @@ def make_animation(source_image, source_semantics, target_semantics,
     with torch.no_grad():
         predictions = []
         # hinh nhu day moi la keypoint, vi source image theo no dang le chi co dau -> thu test source_image = source_image (face)
-        if os.path.isfile('checkpoints/kp_canonical.pth'):
+        if not os.path.isfile('checkpoints/kp_canonical.pth'):
 
             kp_canonical = kp_detector(source_image)
             torch.save(kp_canonical, 'checkpoints/kp_canonical.pth')
