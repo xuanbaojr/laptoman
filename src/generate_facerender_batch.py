@@ -28,7 +28,7 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path,
     generated_dict = scio.loadmat(coeff_path)
 
     if 'full' not in preprocess.lower():
-        source_semantics = source_semantics_dict['coeff_3dmm'][:1,:70]         #1 70
+        source_semantics = source_semantics_dict['coeff_3dmm'][:1,:70]         #1 70 # crop thi khong dung trans_param ?
         generated_3dmm = generated_dict['coeff_3dmm'][:,:70]
 
     else:
@@ -89,6 +89,7 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path,
 
 def transform_semantic_1(semantic, semantic_radius):
     semantic_list =  [semantic for i in range(0, semantic_radius*2+1)]
+    print("semantic_list:", semantic_list.shape )
     coeff_3dmm = np.concatenate(semantic_list, 0)
     return coeff_3dmm.transpose(1,0)
 
