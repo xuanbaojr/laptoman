@@ -126,7 +126,7 @@ def make_animation(source_image, source_semantics, target_semantics,
         print("kp_source", kp_source)
 
     
-        for frame_idx in tqdm(range(target_semantics.shape[1])-5, 'Face Renderer:'):
+        for frame_idx in tqdm(range(target_semantics.shape[1]-5), 'Face Renderer:'):
             # still check the dimension
             # print(target_semantics.shape, source_semantics.shape)
             target_semantics_frame = target_semantics[:, frame_idx+5]
