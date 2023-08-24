@@ -113,9 +113,10 @@ def make_animation(source_image, source_semantics, target_semantics,
         else:
             kp_canonical = torch.load('checkpoints/kp_canonical.pth')
             for key in kp_canonical:
-                kp_canonical[key][:,0] *= 382/482
-                kp_canonical[key][:,1] *= 374/774
-                kp_canonical[key][:,2] *= 0.5
+                kp_canonical[key][:,0] *= 0
+                kp_canonical[key][:,1] *= 1
+                kp_canonical[key][:,2] *= 2
+ 
         print("kp_canonical_make_animation.py" , kp_canonical)   
 
         if not os.path.isfile('checkpoints/source_sematics'):
