@@ -23,8 +23,8 @@ def paste_video(video_path_01, video_path_02):
     frame_w = 256
     frame_h = 256
 
-    face_h = int(160*1.2)
-    face_w = int(105*1.2)
+    face_h = int(160*1.3)
+    face_w = int(105*1.3)
 
     tmp_path = 'test/test.mp4'
     out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'MP4V'), fps, (frame_w, frame_h))
@@ -33,7 +33,7 @@ def paste_video(video_path_01, video_path_02):
         frames_02[key] = frames_02[key].astype(np.uint8)
 
         mask = 255*np.ones(frames_01[key].shape, dtype=np.uint8)
-        location = (150,100)
+        location = (130,100)
         gen_video = cv2.seamlessClone(frames_01[key], frames_02[key], mask,
                                       location, cv2.NORMAL_CLONE)
         out_tmp.write(gen_video)
