@@ -23,7 +23,7 @@ def paste_video(video_path_01, video_path_02):
     frame_w = 256
     frame_h = 256
 
-    face_h = int(160*1.4)
+    face_h = int(158*1.4)
     face_w = int(114*1.4)
 
     tmp_path = 'test/test.mp4'
