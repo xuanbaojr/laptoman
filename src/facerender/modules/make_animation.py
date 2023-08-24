@@ -129,7 +129,7 @@ def make_animation(source_image, source_semantics, target_semantics,
         for frame_idx in tqdm(range(target_semantics.shape[1]), 'Face Renderer:'):
             # still check the dimension
             # print(target_semantics.shape, source_semantics.shape)
-            target_semantics_frame = target_semantics[:, frame_idx]
+            target_semantics_frame = target_semantics[:, frame_idx+5]
             he_driving = mapping(target_semantics_frame)
             if yaw_c_seq is not None:
                 he_driving['yaw_in'] = yaw_c_seq[:, frame_idx]
@@ -146,7 +146,7 @@ def make_animation(source_image, source_semantics, target_semantics,
            #     kp_driving[key][:,2] *= 2
                 
             kp_norm = kp_driving
-            out = generator(source_image, kp_source=kp_source, kp_driving=kp_driving)
+            out = generator(source_image, kp_source=kp_driving, kp_driving=kp_driving)
             print("out" , out)
             '''
             source_image_new = out['prediction'].squeeze(1)
