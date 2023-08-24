@@ -146,15 +146,7 @@ def make_animation(source_image, source_semantics, target_semantics,
            #     kp_driving[key][:,2] *= 2
                 
             kp_norm = kp_driving
-            for key in kp_driving:
-                kp_driving[key][:,0] =0
-                kp_driving[key][:,1] =0
-                kp_driving[key][:,2] =0
-                kp_driving[key][:,3] =0
-                kp_driving[key][:,4] =0
-                kp_driving[key][:,5] =0
-                kp_driving[key][:,6] =0
-                kp_driving[key][:,7] =0
+
 
             out = generator(source_image, kp_source=kp_source, kp_driving=kp_driving)
             print("kp_driving" , kp_driving)
