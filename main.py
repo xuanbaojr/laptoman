@@ -5,7 +5,7 @@ from src.check_crop import CheckCrop
 def sadtalker_demo(checkpoint_path='checkpoints', config_path='src/config', warpfn=None):
     sad_talker = SadTalker(checkpoint_path, config_path, lazy_load=True)
     # source image :
-    source_image = 'test/test.jpg'
+    source_image = 'test/test.jpeg'
     driven_audio = 'test/test_vi.wav'
 
     if os.path.exists(source_image):
