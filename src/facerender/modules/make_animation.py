@@ -76,14 +76,14 @@ def keypoint_transformation(kp_canonical, he, wo_exp=False):
     if 'roll_in' in he:
         roll = he['roll_in']
 
-    rot_mat = get_rotation_matrix(yaw, pitch, roll)    # (bs, 3, 3)
+    rot_mat = get_rotation_matrix(yaw, pitch, roll)    # (bs, 3, 3)  #Rs
 
     t, exp = he['t'], he['exp']
     if wo_exp:
         exp =  exp*0  
     
     # keypoint rotation
-    kp_rotated = torch.einsum('bmp,bkp->bkm', rot_mat, kp)
+    kp_rotated = torch.einsum('bmp,bkp->bkm', rot_mat, kp)    #xs,k = T(kp, Rs, ts, exp ) = Rs.kp + ts + exp
 
     # keypoint translation
     t[:, 0] = t[:, 0]*0
@@ -145,7 +145,7 @@ def make_animation(source_image, source_semantics, target_semantics,
            #     kp_driving[key][:,2] *= 2
                 
             kp_norm = kp_driving
-            out = generator(source_image, kp_source=kp_source, kp_driving=kp_norm)
+            out = generator(source_image, kp_source=kp_source, kp_driving=kp_source)
             '''
             source_image_new = out['prediction'].squeeze(1)
             kp_canonical_new =  kp_detector(source_image_new)
