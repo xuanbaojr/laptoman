@@ -26,7 +26,7 @@ def paste_video(video_path_01, video_path_02):
     tmp_path = 'test/test.mp4'
     out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'MP4V'), fps, (frame_w, frame_h))
     for key in range(len(frames_01)):
-        frames_01[key] = cv2.resize(frames_01[key].astype(np.uint8), (160,160))
+        frames_01[key] = cv2.resize(frames_01[key].astype(np.uint8), (160,130))
         frames_02[key] = frames_02[key].astype(np.uint8)
 
         mask = 255*np.ones(frames_01[key].shape, dtype=np.uint8)
