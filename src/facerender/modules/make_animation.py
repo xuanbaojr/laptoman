@@ -138,10 +138,7 @@ def make_animation(source_image, source_semantics, target_semantics,
 
             temp = kp_source
             kp_norm = kp_driving
-            for key in kp_driving:
 
-                kp_driving[key][:,3] *= 0.5
-                temp[key][:,3] *= 0.5
 
 
 
