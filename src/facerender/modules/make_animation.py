@@ -113,7 +113,7 @@ def make_animation(source_image, source_semantics, target_semantics,
         else:
             kp_canonical = torch.load('checkpoints/kp_canonical.pth')
             for key in kp_canonical:
-                kp_canonical[key][:,0] *= 0
+                kp_canonical[key][0,:] *= 0
                 kp_canonical[key][:,1] *= 1
                 kp_canonical[key][:,2] *= 2
  
