@@ -168,7 +168,7 @@ class Preprocesser:
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
             _inp = cv2.line(_inp, (clx, cly),(crx , cry ), (255,255,255),15)
            # _inp = cv2.line(_inp, (lx, ly), (rx, ry), (0,0,0),15)
-            _inp = _inp[cly:cry+400, clx:crx+100]
+            _inp = _inp[cly:cry+600, clx:crx+100]
             print(clx,cly,crx,cry)
 
         #    if not still:
