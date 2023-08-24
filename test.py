@@ -33,7 +33,7 @@ def paste_video(video_path_01, video_path_02):
         frames_02[key] = frames_02[key].astype(np.uint8)
 
         mask = 255*np.ones(frames_01[key].shape, dtype=np.uint8)
-        location = (132,72)
+        location = (120,72)
         gen_video = cv2.seamlessClone(frames_01[key], frames_02[key], mask,
                                       location, cv2.NORMAL_CLONE)
         out_tmp.write(gen_video)
