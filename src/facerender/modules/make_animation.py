@@ -115,12 +115,7 @@ def make_animation(source_image, source_semantics, target_semantics,
 
         kp_canonical = kp_detector(source_image)
         print("kp_canonical_make_animation.py" , kp_canonical)   
-
-        if not os.path.isfile('checkpoints/source_sematics'):
-            he_source = mapping(source_semantics)
-            torch.save(he_source, 'checkpoints/he_source.pth')
-        else:
-            he_source = torch.load('checkpoints/he_source.pth')
+        he_source = mapping(source_semantics)       
             
         kp_source = keypoint_transformation(kp_canonical, he_source)
         print("kp_source", kp_source)
@@ -145,7 +140,7 @@ def make_animation(source_image, source_semantics, target_semantics,
             kp_norm = kp_driving
             for key in kp_driving:
 
-                kp_driving[key][:,1] = 0.5
+                kp_driving[key][:,0] = 0.5
 
 
 
