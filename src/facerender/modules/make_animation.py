@@ -126,6 +126,7 @@ def make_animation(source_image, source_semantics, target_semantics,
             he_source = torch.load('checkpoints/he_source.pth')
             
         kp_source = keypoint_transformation(kp_canonical, he_source)
+        print("kp_source", kp_source)
     
         for frame_idx in tqdm(range(target_semantics.shape[1]), 'Face Renderer:'):
             # still check the dimension
@@ -141,6 +142,7 @@ def make_animation(source_image, source_semantics, target_semantics,
                 he_driving['roll_in'] = roll_c_seq[:, frame_idx] 
             
             kp_driving = keypoint_transformation(kp_canonical, he_driving)
+            print("kp_driving", kp_driving)
                 
             kp_norm = kp_driving
             out = generator(source_image, kp_source=kp_source, kp_driving=kp_norm)
