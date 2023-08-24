@@ -148,7 +148,7 @@ def make_animation(source_image, source_semantics, target_semantics,
             kp_norm = kp_driving
             kp_driving["value"][:,0] = 1
             out = generator(source_image, kp_source=kp_source, kp_driving=kp_driving)
-            print("out" , out)
+            print("kp_driving" , kp_driving)
             '''
             source_image_new = out['prediction'].squeeze(1)
             kp_canonical_new =  kp_detector(source_image_new)
