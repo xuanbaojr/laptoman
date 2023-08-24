@@ -106,13 +106,14 @@ def make_animation(source_image, source_semantics, target_semantics,
     with torch.no_grad():
         predictions = []
         # hinh nhu day moi la keypoint, vi source image theo no dang le chi co dau -> thu test source_image = source_image (face)
-        if not os.path.isfile('checkpoints/kp_canonical.pth'):
+     #   if not os.path.isfile('checkpoints/kp_canonical.pth'):
 
-            kp_canonical = kp_detector(source_image)
-            torch.save(kp_canonical, 'checkpoints/kp_canonical.pth')
-        else:
-            kp_canonical = torch.load('checkpoints/kp_canonical.pth')
- 
+#            kp_canonical = kp_detector(source_image)
+ #           torch.save(kp_canonical, 'checkpoints/kp_canonical.pth')
+  #      else:
+   #         kp_canonical = torch.load('checkpoints/kp_canonical.pth')
+
+        kp_canonical = kp_detector(source_image)
         print("kp_canonical_make_animation.py" , kp_canonical)   
 
         if not os.path.isfile('checkpoints/source_sematics'):
@@ -145,7 +146,7 @@ def make_animation(source_image, source_semantics, target_semantics,
            #     kp_driving[key][:,2] *= 2
                 
             kp_norm = kp_driving
-            out = generator(source_image, kp_source=kp_source, kp_driving=kp_source)
+            out = generator(source_image, kp_source=kp_driving, kp_driving=kp_driving)
             '''
             source_image_new = out['prediction'].squeeze(1)
             kp_canonical_new =  kp_detector(source_image_new)
