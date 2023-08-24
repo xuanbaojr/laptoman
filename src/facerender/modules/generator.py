@@ -233,6 +233,7 @@ class OcclusionAwareSPADEGenerator(nn.Module):
         #        output_dict['occlusion_map'] = occlusion_map
          #   else:
           #      occlusion_map = None
+            occlusion_map = None
             deformation = dense_motion['deformation']
             out = self.deform_input(feature_3d, deformation)
 
