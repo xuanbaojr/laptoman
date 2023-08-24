@@ -143,7 +143,7 @@ def make_animation(source_image, source_semantics, target_semantics,
 
                 
             kp_norm = kp_driving
-            for key in kp_driving:
+           # for key in kp_driving:
 
            #     kp_driving[key][:,0] *= 0.75
 
