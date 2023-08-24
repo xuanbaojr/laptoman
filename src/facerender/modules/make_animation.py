@@ -115,7 +115,7 @@ def make_animation(source_image, source_semantics, target_semantics,
             for key in kp_canonical:
                 kp_canonical[key][:,0] *= 382/482
                 kp_canonical[key][:,1] *= 374/774
-
+                kp_canonical[key][:,2] *= 0.5
         print("kp_canonical_make_animation.py" , kp_canonical)   
 
         if not os.path.isfile('checkpoints/source_sematics'):
