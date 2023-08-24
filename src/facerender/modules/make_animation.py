@@ -124,9 +124,10 @@ def make_animation(source_image, source_semantics, target_semantics,
         kp_source = keypoint_transformation(kp_canonical, he_source)
         print("kp_source", kp_source)
         for key in kp_source:
-            kp_source[key][0,:] = 0
-            kp_source[key][:,1] = 1
-            kp_source[key][:,2] = 2
+            kp_source[key][:,0] *= 0  # Multiplying the first column by 0 will result in 0
+            kp_source[key][:,1] *= 1  # Multiplying by 1 will keep the values unchanged
+            kp_source[key][:,2] *= 2  # Multiplying the third column by 2
+            print("k",key)
             print(kp_source)
     
         for frame_idx in tqdm(range(target_semantics.shape[1]), 'Face Renderer:'):
