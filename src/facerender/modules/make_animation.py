@@ -136,15 +136,16 @@ def make_animation(source_image, source_semantics, target_semantics,
             
             kp_driving = keypoint_transformation(kp_canonical, he_driving)
 
-                
+            temp = kp_source
             kp_norm = kp_driving
-         #   for key in kp_driving:
+            for key in kp_driving:
 
-         #       kp_driving[key][:,3] = 0.5
+                kp_driving[key][:,3] *= 0.5
+                temp[key][:,3] *= 0.5
 
 
 
-            out = generator(source_image, kp_source=kp_source, kp_driving=kp_driving)
+            out = generator(source_image, kp_source=temp, kp_driving=kp_driving)
             print("kp_driving" , kp_driving)
             '''
             source_image_new = out['prediction'].squeeze(1)
