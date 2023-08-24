@@ -23,8 +23,8 @@ def paste_video(video_path_01, video_path_02):
     frame_w = 256
     frame_h = 256
 
-    face_h = int(156*1.105)
-    face_w = int(114*1.105)
+    face_h = int(156*1.1.07)
+    face_w = int(114*1.107)
 
     tmp_path = 'test/test.mp4'
     out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'MP4V'), fps, (frame_w, frame_h))
