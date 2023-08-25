@@ -31,7 +31,7 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path,
     source_image_full = source_image_full.transpose((2, 0, 1))
     source_image_ts_full = torch.FloatTensor(source_image_full).unsqueeze(0)
     source_image_ts_full = source_image_ts_full.repeat(batch_size, 1, 1, 1)
-    data['source_image'] = source_image_ts_full
+    data['source_image_full'] = source_image_ts_full
  
     source_semantics_dict = scio.loadmat(first_coeff_path)
     generated_dict = scio.loadmat(coeff_path)
