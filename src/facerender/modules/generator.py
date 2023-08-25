@@ -215,7 +215,6 @@ class OcclusionAwareSPADEGenerator(nn.Module):
             out = self.down_blocks[i](out)
         out = self.second(out)
         bs, c, h, w = out.shape
-        # print(out.shape)
         feature_3d = out.view(bs, self.reshape_channel, self.reshape_depth, h ,w) 
         feature_3d = self.resblocks_3d(feature_3d)
 
@@ -228,11 +227,11 @@ class OcclusionAwareSPADEGenerator(nn.Module):
 
             # import pdb; pdb.set_trace()
 
-      #      if 'occlusion_map' in dense_motion:
-       #         occlusion_map = dense_motion['occlusion_map']
-        #        output_dict['occlusion_map'] = occlusion_map
-         #   else:
-          #      occlusion_map = None
+            if 'occlusion_map' in dense_motion:
+                occlusion_map = dense_motion['occlusion_map']
+                output_dict['occlusion_map'] = occlusion_map
+            else:
+                occlusion_map = None
             occlusion_map = None
             deformation = dense_motion['deformation']
             out = self.deform_input(feature_3d, deformation)
