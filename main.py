@@ -1,6 +1,5 @@
 import os
 from src.gradio_demo import SadTalker
-from src.check_crop import CheckCrop
 # warpfn , lazy_load ?
 def sadtalker_demo(source_image, driven_audio, checkpoint_path='checkpoints', config_path='src/config', warpfn=None):
     sad_talker = SadTalker(checkpoint_path, config_path, lazy_load=True)
