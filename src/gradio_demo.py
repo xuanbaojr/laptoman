@@ -5,7 +5,7 @@ from src.test_audio2coeff import Audio2Coeff
 from src.facerender.animate import AnimateFromCoeff
 from src.generate_batch import get_data
 from src.generate_facerender_batch import get_facerender_data
-
+from src.check_crop import Image_Preprocess
 from src.utils.init_path import init_path
 
 
@@ -51,7 +51,7 @@ class SadTalker():
         self.preprocess_model = CropAndExtract(self.sadtalker_paths, self.device)
         self.animate_from_coeff = AnimateFromCoeff(self.sadtalker_paths, self.device)
 
-
+        self.img_pre = Image_Preprocess()
         # pic_path - ok
             #time_tag ?
         time_tag = str(uuid.uuid4())
@@ -61,6 +61,7 @@ class SadTalker():
         os.makedirs(input_dir, exist_ok=True)
         print(source_image)
             # result/timetag/input/source_image.png
+        source_image = self.img_pre.img_pre(source_image)
         pic_path = os.path.join(input_dir, os.path.basename(source_image)) 
         shutil.copy(source_image, input_dir)
 
