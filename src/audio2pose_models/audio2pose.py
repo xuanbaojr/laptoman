@@ -50,6 +50,9 @@ class Audio2Pose(nn.Module):
         batch = {}
         ref = x['ref']                            #bs 1 70
         batch['ref'] = x['ref'][:,0,-6:]  
+
+        ref_full = x['ref_full']
+        batch['ref_full'] = x['ref_full'][:,0,-6:]
         batch['class'] = x['class']  
         bs = ref.shape[0]
         
@@ -65,6 +68,8 @@ class Audio2Pose(nn.Module):
         pose_motion_pred_list = [torch.zeros(batch['ref'].unsqueeze(1).shape, dtype=batch['ref'].dtype, 
                                                 device=batch['ref'].device)]
 
+        pose_motion_pred_list_full = [torch.zeros(batch['ref_full'].unsqueeze(1).shape, dtype=batch['ref_full'].dtype, 
+                                                device=batch['ref_full'].device)]
         for i in range(div):
             z = torch.randn(bs, self.latent_dim).to(ref.device)
             batch['z'] = z
@@ -72,6 +77,7 @@ class Audio2Pose(nn.Module):
             batch['audio_emb'] = audio_emb
             batch = self.netG.test(batch)
             pose_motion_pred_list.append(batch['pose_motion_pred'])  #list of bs seq_len 6
+            pose_motion_pred_list_full.append(batch['pose_motion_pred_full']) 
         
         if re != 0:
             z = torch.randn(bs, self.latent_dim).to(ref.device)
@@ -83,12 +89,19 @@ class Audio2Pose(nn.Module):
                 audio_emb = torch.cat([pad_audio_emb, audio_emb], 1) 
             batch['audio_emb'] = audio_emb
             batch = self.netG.test(batch)
-            pose_motion_pred_list.append(batch['pose_motion_pred'][:,-1*re:,:])   
+            pose_motion_pred_list.append(batch['pose_motion_pred'][:,-1*re:,:]) 
+            pose_motion_pred_list_full.append(batch['pose_motion_pred_full'][:,-1*re:,:])  
         
         pose_motion_pred = torch.cat(pose_motion_pred_list, dim = 1)
+        pose_motion_pred_full = torch.cat(pose_motion_pred_list_full, dim = 1)
         batch['pose_motion_pred'] = pose_motion_pred
+        batch['pose_motion_pred_full'] = pose_motion_pred_full
+
 
         pose_pred = ref[:, :1, -6:] + pose_motion_pred  # bs T 6
+        pose_pred_full = ref_full[:, :1, -6] + pose_motion_pred_full
 
         batch['pose_pred'] = pose_pred
+        batch['pose_pred_full'] = pose_pred_full
+        
         return batch
