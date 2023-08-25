@@ -41,6 +41,7 @@ def POS(xp, x):
 # resize and crop images for face reconstruction
 def resize_n_crop_img(img, lm, t, s, target_size=224., mask=None):
     w0, h0 = img.size
+    print("old_img", img.size)
     w = (w0*s).astype(np.int32)
     h = (h0*s).astype(np.int32)
     left = (w/2 - target_size/2 + float((t[0] - w0/2)*s)).astype(np.int32)
@@ -59,6 +60,8 @@ def resize_n_crop_img(img, lm, t, s, target_size=224., mask=None):
                   t[1] + h0/2], axis=1)*s
     lm = lm - np.reshape(
             np.array([(w/2 - target_size/2), (h/2-target_size/2)]), [1, 2])
+    
+    print("new_img", img.size)
 
     return img, lm, mask
 
@@ -94,7 +97,6 @@ def align_img(img, lm, lm3D, mask=None, target_size=224., rescale_factor=102.):
         lm5p = lm
     
     
-
     # calculate translation and scale factors using 5 facial landmarks and standard landmarks of a 3D face
     t, s = POS(lm5p.transpose(), lm3D.transpose())
     s = rescale_factor/s
