@@ -112,10 +112,12 @@ def get_data(first_coeff_path, audio_path, device, ref_eyeblink_coeff_path, stil
         ratio = torch.FloatTensor(ratio).unsqueeze(0).fill_(0.) 
                                # bs T
     ref_coeff = torch.FloatTensor(ref_coeff).unsqueeze(0)                # bs 1 70
+    ref_coeff_full = torch.FloatTensor(ref_coeff_full).unsqueeze(0) 
 
     indiv_mels = indiv_mels.to(device)
     ratio = ratio.to(device)
     ref_coeff = ref_coeff.to(device)
+    ref_coeff_full = ref_coeff_full.to(device)
 
     return {'indiv_mels': indiv_mels,  
             'ref': ref_coeff, 
