@@ -219,4 +219,4 @@ class CropAndExtract():
 
 
 
-        return coeff_path, png_path, crop_info
+        return coeff_path, png_path, crop_info, png_path_full
