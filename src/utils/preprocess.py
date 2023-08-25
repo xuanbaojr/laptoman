@@ -156,6 +156,7 @@ class CropAndExtract():
                 im_t = torch.tensor(np.array(im1)/255., dtype=torch.float32).permute(2, 0, 1).to(self.device).unsqueeze(0)
                 
                 with torch.no_grad():
+                    print("img.preprocess", im1.size)
                     full_coeff = self.net_recon(im_t)
                     coeffs = split_coeff(full_coeff)
 
