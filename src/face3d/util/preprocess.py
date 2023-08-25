@@ -89,8 +89,11 @@ def align_img(img, lm, lm3D, mask=None, target_size=224., rescale_factor=102.):
     w0, h0 = img.size
     if lm.shape[0] != 5:
         lm5p = extract_5p(lm)
+        print("lm_new", lm5p)
     else:
         lm5p = lm
+    
+    
 
     # calculate translation and scale factors using 5 facial landmarks and standard landmarks of a 3D face
     t, s = POS(lm5p.transpose(), lm3D.transpose())
