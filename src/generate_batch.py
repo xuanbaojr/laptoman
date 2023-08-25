@@ -81,8 +81,11 @@ def get_data(first_coeff_path, audio_path, device, ref_eyeblink_coeff_path, stil
     ratio = generate_blink_seq_randomly(num_frames)      # T
     source_semantics_path = first_coeff_path
     source_semantics_dict = scio.loadmat(source_semantics_path)
-    ref_coeff = source_semantics_dict['coeff_3dmm'][:1,:70]         #1 70
+    ref_coeff = source_semantics_dict['coeff_3dmm'][:1,:70]
+    ref_coeff_full = source_semantics_dict['coeff_3dmm_full'][:1,:70]  
+            #1 70
     ref_coeff = np.repeat(ref_coeff, num_frames, axis=0)
+    ref_coeff_full = np.repeat(ref_coeff_full, num_frames, axis=0)
 
 #--------------------------------------------
     if ref_eyeblink_coeff_path is not None:
@@ -116,6 +119,7 @@ def get_data(first_coeff_path, audio_path, device, ref_eyeblink_coeff_path, stil
 
     return {'indiv_mels': indiv_mels,  
             'ref': ref_coeff, 
+            'ref_full' : ref_coeff_full,
             'num_frames': num_frames, 
             'ratio_gt': ratio,
             'audio_name': audio_name, 'pic_name': pic_name}
