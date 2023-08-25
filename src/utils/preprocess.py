@@ -145,8 +145,10 @@ class CropAndExtract():
                     lm1 = np.concatenate(
                         [lm1[:, :1]*W, lm1[:, 1:2]*H], 1
                     )
+                    print("ok")
                 else:
                     lm1[:, -1] = H - 1 - lm1[:, -1]
+                    print("ko")
 
                 trans_params, im1, lm1, _ = align_img(frame, lm1, self.lm3d_std)
  
