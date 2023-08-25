@@ -138,7 +138,8 @@ class CropAndExtract():
                 frame = frames_pil[idx]
                 W,H = frame.size
                 lm1 = lm[idx].reshape([-1, 2])
-            
+
+                print("lm", lm)
                 if np.mean(lm1) == -1:
                     lm1 = (self.lm3d_std[:, :2]+1)/2.
                     lm1 = np.concatenate(
