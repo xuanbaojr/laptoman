@@ -81,13 +81,9 @@ def get_data(first_coeff_path, audio_path, device, ref_eyeblink_coeff_path, stil
     ratio = generate_blink_seq_randomly(num_frames)      # T
     source_semantics_path = first_coeff_path
     source_semantics_dict = scio.loadmat(source_semantics_path)
-    ref_coeff = source_semantics_dict['coeff_3dmm'][:1,:70]
-    ref_coeff_full = source_semantics_dict['coeff_3dmm_full'][:1,:70]  
-            #1 70
+    ref_coeff = source_semantics_dict['coeff_3dmm'][:1,:70]         #1 70
     ref_coeff = np.repeat(ref_coeff, num_frames, axis=0)
-    ref_coeff_full = np.repeat(ref_coeff_full, num_frames, axis=0)
 
-#--------------------------------------------
     if ref_eyeblink_coeff_path is not None:
         ratio[:num_frames] = 0
         refeyeblink_coeff_dict = scio.loadmat(ref_eyeblink_coeff_path)
@@ -102,8 +98,7 @@ def get_data(first_coeff_path, audio_path, device, ref_eyeblink_coeff_path, stil
             print(refeyeblink_coeff.shape[0])
 
         ref_coeff[:, :64] = refeyeblink_coeff[:num_frames, :64] 
-#-----------------------------------------------
-
+    
     indiv_mels = torch.FloatTensor(indiv_mels).unsqueeze(1).unsqueeze(0) # bs T 1 80 16
 
     if use_blink:
@@ -112,16 +107,13 @@ def get_data(first_coeff_path, audio_path, device, ref_eyeblink_coeff_path, stil
         ratio = torch.FloatTensor(ratio).unsqueeze(0).fill_(0.) 
                                # bs T
     ref_coeff = torch.FloatTensor(ref_coeff).unsqueeze(0)                # bs 1 70
-    ref_coeff_full = torch.FloatTensor(ref_coeff_full).unsqueeze(0) 
 
     indiv_mels = indiv_mels.to(device)
     ratio = ratio.to(device)
     ref_coeff = ref_coeff.to(device)
-    ref_coeff_full = ref_coeff_full.to(device)
 
     return {'indiv_mels': indiv_mels,  
             'ref': ref_coeff, 
-            'ref_full' : ref_coeff_full,
             'num_frames': num_frames, 
             'ratio_gt': ratio,
             'audio_name': audio_name, 'pic_name': pic_name}

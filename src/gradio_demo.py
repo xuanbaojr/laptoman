@@ -1,5 +1,5 @@
 import torch, uuid
-import os, sys, shutil, cv2
+import os, sys, shutil
 from src.utils.preprocess import CropAndExtract
 from src.test_audio2coeff import Audio2Coeff  
 from src.facerender.animate import AnimateFromCoeff
@@ -10,8 +10,6 @@ from src.utils.init_path import init_path
 
 
 from pydub import AudioSegment
-
-from src.pre_image import Image_Preprocess
 
 
 def mp3_to_wav(mp3_filename,wav_filename,frame_rate):
@@ -53,8 +51,6 @@ class SadTalker():
         self.preprocess_model = CropAndExtract(self.sadtalker_paths, self.device)
         self.animate_from_coeff = AnimateFromCoeff(self.sadtalker_paths, self.device)
 
-        self.pre_image = Image_Preprocess()
-
 
         # pic_path - ok
             #time_tag ?
@@ -64,11 +60,8 @@ class SadTalker():
         input_dir = os.path.join(save_dir, 'input')
         os.makedirs(input_dir, exist_ok=True)
         print(source_image)
-        source_image_temp = self.pre_image.img_pre(source_image)
-        source_image = source_image_temp
-        print("day la" , source_image_temp)
-            #chuyen anh folder goc qua result/timetag/input/source_image.png
-        pic_path = os.path.join(input_dir, os.path.basename(source_image))
+            # result/timetag/input/source_image.png
+        pic_path = os.path.join(input_dir, os.path.basename(source_image)) 
         shutil.copy(source_image, input_dir)
 
          # audio_path
@@ -80,7 +73,6 @@ class SadTalker():
                 mp3_to_wav(driven_audio, audio_path.replace('.mp3', '.wav'), 16000)
                 audio_path = audio_path.replace('.mp3', '.wav')
             else:
-             #   shutil.move(driven_audio, input_dir)
                 shutil.copy(driven_audio, input_dir)
 
         # first_frame_dir - ok
@@ -88,19 +80,13 @@ class SadTalker():
         os.makedirs(first_frame_dir, exist_ok=True)
             #results/time_tag/first_frame_dir ( art_0.mat, art_0.png, art_0_landmarks.txt )
 
-        # preprocess - tim hieu ve crop
-            # crop - cat anh ?
-            # preprocess = 'crop' - khong co cung duoc ?
 
-        # size - 256
         
-        #first_coeff_path (b0, p0)
-        
-        first_coeff_path, crop_pic_path, crop_info, crop_pic_path_full = self.preprocess_model.generate(pic_path, first_frame_dir, preprocess, True, size)
+        first_coeff_path, crop_pic_path, crop_info = self.preprocess_model.generate(pic_path, first_frame_dir, preprocess, True, size)
         #
         batch = get_data(first_coeff_path, audio_path, self.device, ref_eyeblink_coeff_path=None, still=still_mode, idlemode=use_idle_mode, length_of_audio=length_of_audio, use_blink=use_blink) # longer audio?
         coeff_path = self.audio_to_coeff.generate(batch, save_dir, pose_style, ref_pose_coeff_path=None)
         #
-        data = get_facerender_data(coeff_path, crop_pic_path, first_coeff_path, audio_path, batch_size, still_mode=still_mode, preprocess=preprocess, size=size, expression_scale = exp_scale ,pic_full =  crop_pic_path_full)
+        data = get_facerender_data(coeff_path, crop_pic_path, first_coeff_path, audio_path, batch_size, still_mode=still_mode, preprocess=preprocess, size=size, expression_scale = exp_scale)
         return_path = self.animate_from_coeff.generate(data, save_dir,  pic_path, crop_info, enhancer='gfpgan' if use_enhancer else None, preprocess=preprocess, img_size=size)
         return preprocess, return_path

@@ -17,7 +17,6 @@ class Audio2Exp(nn.Module):
         T = mel_input.shape[1]
 
         exp_coeff_pred = []
-        exp_coeff_pred_full = []
 
         for i in tqdm(range(0, T, 10),'audio2exp:'): # every 10 frames
             
@@ -25,22 +24,17 @@ class Audio2Exp(nn.Module):
 
             #ref = batch['ref'][:, :, :64].repeat((1,current_mel_input.shape[1],1))           #bs T 64
             ref = batch['ref'][:, :, :64][:, i:i+10]
-            ref_full = batch['ref_full'][:, :, :64][:, i:i+10]
             ratio = batch['ratio_gt'][:, i:i+10]                               #bs T
 
             audiox = current_mel_input.view(-1, 1, 80, 16)                  # bs*T 1 80 16
 
             curr_exp_coeff_pred  = self.netG(audiox, ref, ratio)         # bs T 64 
+
             exp_coeff_pred += [curr_exp_coeff_pred]
-
-            curr_exp_coeff_pred_full  = self.netG(audiox, ref_full, ratio)         # bs T 64 
-            exp_coeff_pred_full += [curr_exp_coeff_pred_full]
-
 
         # BS x T x 64
         results_dict = {
-            'exp_coeff_pred': torch.cat(exp_coeff_pred, axis=1),
-            'exp_coeff_pred_full': torch.cat(exp_coeff_pred_full, axis = 1)
+            'exp_coeff_pred': torch.cat(exp_coeff_pred, axis=1)
             }
         return results_dict
 

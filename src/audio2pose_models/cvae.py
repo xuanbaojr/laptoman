@@ -125,8 +125,7 @@ class DECODER(nn.Module):
         z = batch['z']                                          #bs latent_size
         bs = z.shape[0]
         class_id = batch['class']
-        ref = batch['ref'] 
-        ref_full = batch['ref']                            #bs 6
+        ref = batch['ref']                             #bs 6
         audio_in = batch['audio_emb']                           # bs seq_len audio_emb_in_size
         #print('audio_in: ', audio_in[:, :, :10])
 
@@ -137,21 +136,14 @@ class DECODER(nn.Module):
 
         z = z + class_bias
         x_in = torch.cat([ref, z, audio_out], dim=-1)
-        x_in_full = torch.cat([ref_full, z, audio_out], dim=-1)
-        x_out = self.MLP(x_in) 
-        x_out_full = self.MLP(x_in_full)                                 # bs layer_sizes[-1]
+        x_out = self.MLP(x_in)                                  # bs layer_sizes[-1]
         x_out = x_out.reshape((bs, self.seq_len, -1))
-        x_out_full = x_out.reshape((bs, self.seq_len, -1))
-
 
         #print('x_out: ', x_out)
 
-        pose_emb = self.resunet(x_out.unsqueeze(1))   
-        pose_emb_full = self.resunet(x_out_full.unsqueeze(1))          #bs 1 seq_len 6
+        pose_emb = self.resunet(x_out.unsqueeze(1))             #bs 1 seq_len 6
 
         pose_motion_pred = self.pose_linear(pose_emb.squeeze(1))       #bs seq_len 6
-        pose_motion_pred_full = self.pose_linear(pose_emb_full.squeeze(1)) 
 
-        batch.update({'pose_motion_pred':pose_motion_pred,
-                      'pose_motion_pred_full': pose_motion_pred_full})
+        batch.update({'pose_motion_pred':pose_motion_pred})
         return batch

@@ -1,5 +1,5 @@
 from scipy.spatial import ConvexHull
-import torch, os
+import torch
 import torch.nn.functional as F
 import numpy as np
 from tqdm import tqdm 
@@ -76,14 +76,14 @@ def keypoint_transformation(kp_canonical, he, wo_exp=False):
     if 'roll_in' in he:
         roll = he['roll_in']
 
-    rot_mat = get_rotation_matrix(yaw, pitch, roll)    # (bs, 3, 3)  #Rs
+    rot_mat = get_rotation_matrix(yaw, pitch, roll)    # (bs, 3, 3)
 
     t, exp = he['t'], he['exp']
     if wo_exp:
         exp =  exp*0  
     
     # keypoint rotation
-    kp_rotated = torch.einsum('bmp,bkp->bkm', rot_mat, kp)    #xs,k = T(kp, Rs, ts, exp ) = Rs.kp + ts + exp
+    kp_rotated = torch.einsum('bmp,bkp->bkm', rot_mat, kp)
 
     # keypoint translation
     t[:, 0] = t[:, 0]*0
@@ -105,23 +105,10 @@ def make_animation(source_image, source_semantics, target_semantics,
                             use_exp=True, use_half=False):
     with torch.no_grad():
         predictions = []
-        # hinh nhu day moi la keypoint, vi source image theo no dang le chi co dau -> thu test source_image = source_image (face)
-     #   if not os.path.isfile('checkpoints/kp_canonical.pth'):
-
-#            kp_canonical = kp_detector(source_image)
- #           torch.save(kp_canonical, 'checkpoints/kp_canonical.pth')
-  #      else:
-   #         kp_canonical = torch.load('checkpoints/kp_canonical.pth')
 
         kp_canonical = kp_detector(source_image)
-        print("kp_canonical_make_animation.py" , kp_canonical)   
-        he_source = mapping(source_semantics)  
-     #   print("source_semantic", source_semantics)
-        print("he_source", he_source)     
-            
+        he_source = mapping(source_semantics)
         kp_source = keypoint_transformation(kp_canonical, he_source)
-        print("kp_source", kp_source)
-
     
         for frame_idx in tqdm(range(target_semantics.shape[1]), 'Face Renderer:'):
             # still check the dimension
@@ -130,22 +117,15 @@ def make_animation(source_image, source_semantics, target_semantics,
             he_driving = mapping(target_semantics_frame)
             if yaw_c_seq is not None:
                 he_driving['yaw_in'] = yaw_c_seq[:, frame_idx]
-
             if pitch_c_seq is not None:
                 he_driving['pitch_in'] = pitch_c_seq[:, frame_idx] 
             if roll_c_seq is not None:
                 he_driving['roll_in'] = roll_c_seq[:, frame_idx] 
             
             kp_driving = keypoint_transformation(kp_canonical, he_driving)
-
-            temp = kp_source
+                
             kp_norm = kp_driving
-
-
-
-
-            out = generator(source_image, kp_source=temp, kp_driving=kp_driving)
-           # print("kp_driving" , kp_driving)
+            out = generator(source_image, kp_source=kp_source, kp_driving=kp_norm)
             '''
             source_image_new = out['prediction'].squeeze(1)
             kp_canonical_new =  kp_detector(source_image_new)

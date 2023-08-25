@@ -136,7 +136,6 @@ class AnimateFromCoeff():
         if optimizer_kp_detector is not None:
             optimizer_kp_detector.load_state_dict(checkpoint['optimizer_kp_detector'])
         if optimizer_he_estimator is not None:
-        
             optimizer_he_estimator.load_state_dict(checkpoint['optimizer_he_estimator'])
 
         return checkpoint['epoch']
@@ -163,13 +162,6 @@ class AnimateFromCoeff():
         source_image=source_image.to(self.device)
         source_semantics=source_semantics.to(self.device)
         target_semantics=target_semantics.to(self.device)
-
-        source_image_full=x['source_image_full'].type(torch.FloatTensor)
-        source_semantics_full=x['source_semantics_full'].type(torch.FloatTensor)
-        target_semantics_full=x['target_semantics_list_full'].type(torch.FloatTensor) 
-        source_image_full=source_image_full.to(self.device)
-        source_semantics_full=source_semantics_full.to(self.device)
-        target_semantics_full=target_semantics_full.to(self.device)
         if 'yaw_c_seq' in x:
             yaw_c_seq = x['yaw_c_seq'].type(torch.FloatTensor)
             yaw_c_seq = x['yaw_c_seq'].to(self.device)
@@ -206,42 +198,11 @@ class AnimateFromCoeff():
         original_size = crop_info[0]
         if original_size:
             result = [ cv2.resize(result_i,(img_size, int(img_size * original_size[1]/original_size[0]) )) for result_i in result ]
-            print("result_i", result[0].shape)
-            print("original_size", original_size[0], original_size[1])
         
         video_name = x['video_name']  + '.mp4'
         path = os.path.join(video_save_dir, 'temp_'+video_name)
         
         imageio.mimsave(path, result,  fps=float(25))
-
-        av_path = os.path.join(video_save_dir, video_name)
-        return_path = av_path 
-
-        predictions_video_full = make_animation(source_image_full, source_semantics_full, target_semantics_full,
-                                        self.generator, self.kp_extractor, self.he_estimator, self.mapping, 
-                                        yaw_c_seq, pitch_c_seq, roll_c_seq, use_exp = True)
-
-        predictions_video_full = predictions_video_full.reshape((-1,)+predictions_video_full.shape[2:])
-        predictions_video_full = predictions_video_full[:frame_num]
-
-        video_full = []
-        for idx in range(predictions_video_full.shape[0]):
-            image = predictions_video_full[idx]
-            image = np.transpose(image.data.cpu().numpy(), [1, 2, 0]).astype(np.float32)
-            video_full.append(image)
-        result_full = img_as_ubyte(video_full)
-
-        ### the generated video is 256x256, so we keep the aspect ratio, 
-        original_size = crop_info[0]
-        if original_size:
-            result = [ cv2.resize(result_i,(img_size, int(img_size * original_size[1]/original_size[0]) )) for result_i in result ]
-            print("result_i", result[0].shape)
-            print("original_size", original_size[0], original_size[1])
-
-        video_name_full = x['video_name']  + '_full01.mp4'
-        path = os.path.join(video_save_dir, 'temp_'+video_name)
-        
-        imageio.mimsave(path, result_full,  fps=float(25))
 
         av_path = os.path.join(video_save_dir, video_name)
         return_path = av_path 
@@ -261,35 +222,35 @@ class AnimateFromCoeff():
         save_video_with_watermark(path, new_audio_path, av_path, watermark= False)
         print(f'The generated video is named {video_save_dir}/{video_name}') 
 
-        # if 'full' in preprocess.lower():
-        #     # only add watermark to the full image.
-        #     video_name_full = x['video_name']  + '_full.mp4'
-        #     full_video_path = os.path.join(video_save_dir, video_name_full)
-        #     return_path = full_video_path
-        #     paste_pic(path, pic_path, crop_info, new_audio_path, full_video_path, extended_crop= True if 'ext' in preprocess.lower() else False)
-        #     print(f'The generated video is named {video_save_dir}/{video_name_full}') 
-        # else:
-        #     full_video_path = av_path 
+        if 'full' in preprocess.lower():
+            # only add watermark to the full image.
+            video_name_full = x['video_name']  + '_full.mp4'
+            full_video_path = os.path.join(video_save_dir, video_name_full)
+            return_path = full_video_path
+            paste_pic(path, pic_path, crop_info, new_audio_path, full_video_path, extended_crop= True if 'ext' in preprocess.lower() else False)
+            print(f'The generated video is named {video_save_dir}/{video_name_full}') 
+        else:
+            full_video_path = av_path 
 
-        # #### paste back then enhancers
-        # if enhancer:  # enhancer = None
-        #     video_name_enhancer = x['video_name']  + '_enhanced.mp4'
-        #     enhanced_path = os.path.join(video_save_dir, 'temp_'+video_name_enhancer)
-        #     av_path_enhancer = os.path.join(video_save_dir, video_name_enhancer) 
-        #     return_path = av_path_enhancer
+        #### paste back then enhancers
+        if enhancer:  # enhancer = None
+            video_name_enhancer = x['video_name']  + '_enhanced.mp4'
+            enhanced_path = os.path.join(video_save_dir, 'temp_'+video_name_enhancer)
+            av_path_enhancer = os.path.join(video_save_dir, video_name_enhancer) 
+            return_path = av_path_enhancer
 
-        #     try:
-        #         enhanced_images_gen_with_len = enhancer_generator_with_len(full_video_path, method=enhancer, bg_upsampler=background_enhancer)
-        #         imageio.mimsave(enhanced_path, enhanced_images_gen_with_len, fps=float(25))
-        #     except:
-        #         enhanced_images_gen_with_len = enhancer_list(full_video_path, method=enhancer, bg_upsampler=background_enhancer)
-        #         imageio.mimsave(enhanced_path, enhanced_images_gen_with_len, fps=float(25))
+            try:
+                enhanced_images_gen_with_len = enhancer_generator_with_len(full_video_path, method=enhancer, bg_upsampler=background_enhancer)
+                imageio.mimsave(enhanced_path, enhanced_images_gen_with_len, fps=float(25))
+            except:
+                enhanced_images_gen_with_len = enhancer_list(full_video_path, method=enhancer, bg_upsampler=background_enhancer)
+                imageio.mimsave(enhanced_path, enhanced_images_gen_with_len, fps=float(25))
             
-        #     save_video_with_watermark(enhanced_path, new_audio_path, av_path_enhancer, watermark= False)
-        #     print(f'The generated video is named {video_save_dir}/{video_name_enhancer}')
-        #     os.remove(enhanced_path)
+            save_video_with_watermark(enhanced_path, new_audio_path, av_path_enhancer, watermark= False)
+            print(f'The generated video is named {video_save_dir}/{video_name_enhancer}')
+            os.remove(enhanced_path)
 
-      #  os.remove(path)
+        os.remove(path)
         os.remove(new_audio_path)
 
         return return_path

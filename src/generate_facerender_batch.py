@@ -7,7 +7,7 @@ import scipy.io as scio
 
 def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path, 
                         batch_size, input_yaw_list=None, input_pitch_list=None, input_roll_list=None, 
-                        expression_scale=1.0, still_mode = False, preprocess='crop', size = 256, pic_full = ''):
+                        expression_scale=1.0, still_mode = False, preprocess='crop', size = 256):
 
     semantic_radius = 13
     video_name = os.path.splitext(os.path.split(coeff_path)[-1])[0]
@@ -23,58 +23,31 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path,
     source_image_ts = torch.FloatTensor(source_image).unsqueeze(0)
     source_image_ts = source_image_ts.repeat(batch_size, 1, 1, 1)
     data['source_image'] = source_image_ts
-
-    img1_full = Image.open(pic_full)
-    source_image_full = np.array(img1_full)
-    source_image_full = img_as_float32(source_image_full)
-    source_image_full = transform.resize(source_image_full, (size, size, 3))
-    source_image_full = source_image_full.transpose((2, 0, 1))
-    source_image_ts_full = torch.FloatTensor(source_image_full).unsqueeze(0)
-    source_image_ts_full = source_image_ts_full.repeat(batch_size, 1, 1, 1)
-    data['source_image_full'] = source_image_ts_full
  
     source_semantics_dict = scio.loadmat(first_coeff_path)
     generated_dict = scio.loadmat(coeff_path)
 
     if 'full' not in preprocess.lower():
-        source_semantics = source_semantics_dict['coeff_3dmm'][:1,:70]         #1 70 # crop thi khong dung trans_param ?
+        source_semantics = source_semantics_dict['coeff_3dmm'][:1,:70]         #1 70
         generated_3dmm = generated_dict['coeff_3dmm'][:,:70]
-
-        source_semantics_full = source_semantics_dict['coeff_3dmm_full'][:1,:70]         #1 70 # crop thi khong dung trans_param ?
-        generated_3dmm_full = generated_dict['coeff_3dmm_full'][:,:70]
 
     else:
         source_semantics = source_semantics_dict['coeff_3dmm'][:1,:73]         #1 70
         generated_3dmm = generated_dict['coeff_3dmm'][:,:70]
-
-        source_semantics_full = source_semantics_dict['coeff_3dmm_full'][:1,:73]         #1 70
-        generated_3dmm_full = generated_dict['coeff_3dmm_full'][:,:70]
 
     source_semantics_new = transform_semantic_1(source_semantics, semantic_radius)
     source_semantics_ts = torch.FloatTensor(source_semantics_new).unsqueeze(0)
     source_semantics_ts = source_semantics_ts.repeat(batch_size, 1, 1)
     data['source_semantics'] = source_semantics_ts
 
-    source_semantics_new_full = transform_semantic_1(source_semantics_full, semantic_radius)
-    source_semantics_ts_full = torch.FloatTensor(source_semantics_new_full).unsqueeze(0)
-    source_semantics_ts_full = source_semantics_ts_full.repeat(batch_size, 1, 1)
-    data['source_semantics_full'] = source_semantics_ts_full
-
     # target 
     generated_3dmm[:, :64] = generated_3dmm[:, :64] * expression_scale
-    generated_3dmm_full[:, :64] = generated_3dmm_full[:, :64] * expression_scale
-
 
     if 'full' in preprocess.lower():
         generated_3dmm = np.concatenate([generated_3dmm, np.repeat(source_semantics[:,70:], generated_3dmm.shape[0], axis=0)], axis=1)
-      #  generated_3dmm[:, 64:] = np.repeat(source_semantics[:, 64:], generated_3dmm.shape[0], axis=0)
-
-        print("gene_facetender_batch_48", generated_3dmm)
 
     if still_mode:
         generated_3dmm[:, 64:] = np.repeat(source_semantics[:, 64:], generated_3dmm.shape[0], axis=0)
-        print("52", generated_3dmm)
-
 
     with open(txt_path+'.txt', 'w') as f:
         for coeff in generated_3dmm:
@@ -82,48 +55,21 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path,
                 f.write(str(i)[:7]   + '  '+'\t')
             f.write('\n')
 
-    if 'full' in preprocess.lower():
-        generated_3dmm_full = np.concatenate([generated_3dmm_full, np.repeat(source_semantics_full[:,70:], generated_3dmm_full.shape[0], axis=0)], axis=1)
-      #  generated_3dmm[:, 64:] = np.repeat(source_semantics[:, 64:], generated_3dmm.shape[0], axis=0)
-
-        print("gene_facetender_batch_48", generated_3dmm)
-
-    if still_mode:
-        generated_3dmm_full[:, 64:] = np.repeat(source_semantics_full[:, 64:], generated_3dmm.shape[0], axis=0)
-        print("52", generated_3dmm)
-
-
-    with open(txt_path+'.txt', 'w') as f:
-        for coeff in generated_3dmm_full:
-            for i in coeff:
-                f.write(str(i)[:7]   + '  '+'\t')
-            f.write('\n')
-
     target_semantics_list = [] 
-    target_semantics_list_full = []
     frame_num = generated_3dmm.shape[0]
     data['frame_num'] = frame_num
     for frame_idx in range(frame_num):
         target_semantics = transform_semantic_target(generated_3dmm, frame_idx, semantic_radius)
         target_semantics_list.append(target_semantics)
 
-        target_semantics_full = transform_semantic_target(generated_3dmm_full, frame_idx, semantic_radius)
-        target_semantics_list_full.append(target_semantics_full)
-
     remainder = frame_num%batch_size
     if remainder!=0:
         for _ in range(batch_size-remainder):
             target_semantics_list.append(target_semantics)
-            target_semantics_list_full.append(target_semantics_full)
 
     target_semantics_np = np.array(target_semantics_list)             #frame_num 70 semantic_radius*2+1
     target_semantics_np = target_semantics_np.reshape(batch_size, -1, target_semantics_np.shape[-2], target_semantics_np.shape[-1])
     data['target_semantics_list'] = torch.FloatTensor(target_semantics_np)
-
-    target_semantics_np_full = np.array(target_semantics_list_full)             #frame_num 70 semantic_radius*2+1
-    target_semantics_np_full = target_semantics_np_full.reshape(batch_size, -1, target_semantics_np_full.shape[-2], target_semantics_np_full.shape[-1])
-    data['target_semantics_list_full'] = torch.FloatTensor(target_semantics_np_full)
-
     data['video_name'] = video_name
     data['audio_path'] = audio_path
     
@@ -136,8 +82,6 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path,
     if input_roll_list is not None:
         roll_c_seq = gen_camera_pose(input_roll_list, frame_num, batch_size) 
         data['roll_c_seq'] = torch.FloatTensor(roll_c_seq)
-
-    print("preprocess :", preprocess)
  
     return data
 

@@ -80,7 +80,6 @@ class OcclusionAwareGenerator(nn.Module):
 
         # Transforming feature representation according to deformation and occlusion
         output_dict = {}
-        print("self.dense_motion_network", self.dense_motion_network)
         if self.dense_motion_network is not None:
             dense_motion = self.dense_motion_network(feature=feature_3d, kp_driving=kp_driving,
                                                      kp_source=kp_source)
@@ -215,6 +214,7 @@ class OcclusionAwareSPADEGenerator(nn.Module):
             out = self.down_blocks[i](out)
         out = self.second(out)
         bs, c, h, w = out.shape
+        # print(out.shape)
         feature_3d = out.view(bs, self.reshape_channel, self.reshape_depth, h ,w) 
         feature_3d = self.resblocks_3d(feature_3d)
 
@@ -232,7 +232,6 @@ class OcclusionAwareSPADEGenerator(nn.Module):
                 output_dict['occlusion_map'] = occlusion_map
             else:
                 occlusion_map = None
-            occlusion_map = None
             deformation = dense_motion['deformation']
             out = self.deform_input(feature_3d, deformation)
 

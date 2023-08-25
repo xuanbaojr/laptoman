@@ -34,7 +34,6 @@ class Preprocesser:
         img = img_np[int(det[1]):int(det[3]), int(det[0]):int(det[2]), :]
         lm = landmark_98_to_68(self.predictor.detector.get_landmarks(img)) # [0]
 
-
         #### keypoints to the original location
         lm[:,0] += int(det[0])
         lm[:,1] += int(det[1])
@@ -62,21 +61,21 @@ class Preprocesser:
         eye_avg = (eye_left + eye_right) * 0.5
         eye_to_eye = eye_right - eye_left
         mouth_left = lm_mouth_outer[0]
-        mouth_right = lm_mouth_outer[6] 
+        mouth_right = lm_mouth_outer[6]
         mouth_avg = (mouth_left + mouth_right) * 0.5
         eye_to_mouth = mouth_avg - eye_avg
 
         # Choose oriented crop rectangle.
         x = eye_to_eye - np.flipud(eye_to_mouth) * [-1, 1]  # Addition of binocular difference and double mouth difference
-        x /= np.hypot(*x)   # hypot Hàm tính độ dài cạnh huyền của một tam giác vuông và sử dụng độ dài của cạnh huyền để chuẩn hóa hai cạnh góc vuông của tam giác
-        x *= max(np.hypot(*eye_to_eye) * 2.0, np.hypot(*eye_to_mouth) * 1.8)    # Đối với sự khác biệt của ống nhòm và sự khác biệt của mắt-miệng, hãy chọn cái lớn hơn làm thang đo tham chiếu
+        x /= np.hypot(*x)   # 
+        x *= max(np.hypot(*eye_to_eye) * 2.0, np.hypot(*eye_to_mouth) * 1.8)    # 
         y = np.flipud(x) * [-1, 1]
         c = eye_avg + eye_to_mouth * 0.1
-        quad = np.stack([c - x - y, c - x + y, c + x + y, c + x - y])   # Xác định một tứ giác và sử dụng vị trí tham chiếu khuôn mặt làm tâm để dịch lên, xuống, trái và phải để có bốn đỉnh
-        qsize = np.hypot(*x) * 2    # Xác định kích thước (độ dài cạnh) của tứ giác gấp đôi đáy
+        quad = np.stack([c - x - y, c - x + y, c + x + y, c + x - y])   # 
+        qsize = np.hypot(*x) * 2    # 
 
         # Shrink.
-        # 如果计算出的四边形太大了，就按比例缩小它
+        # 
         shrink = int(np.floor(qsize / output_size * 0.5))
         if shrink > 1:
             rsize = (int(np.rint(float(img.size[0]) / shrink)), int(np.rint(float(img.size[1]) / shrink)))
@@ -97,6 +96,22 @@ class Preprocesser:
             quad -= crop[0:2]
 
         # Pad.
+        pad = (int(np.floor(min(quad[:, 0]))), int(np.floor(min(quad[:, 1]))), int(np.ceil(max(quad[:, 0]))),
+               int(np.ceil(max(quad[:, 1]))))
+        pad = (max(-pad[0] + border, 0), max(-pad[1] + border, 0), max(pad[2] - img.size[0] + border, 0),
+               max(pad[3] - img.size[1] + border, 0))
+        # if enable_padding and max(pad) > border - 4:
+        #     pad = np.maximum(pad, int(np.rint(qsize * 0.3)))
+        #     img = np.pad(np.float32(img), ((pad[1], pad[3]), (pad[0], pad[2]), (0, 0)), 'reflect')
+        #     h, w, _ = img.shape
+        #     y, x, _ = np.ogrid[:h, :w, :1]
+        #     mask = np.maximum(1.0 - np.minimum(np.float32(x) / pad[0], np.float32(w - 1 - x) / pad[2]),
+        #                       1.0 - np.minimum(np.float32(y) / pad[1], np.float32(h - 1 - y) / pad[3]))
+        #     blur = qsize * 0.02
+        #     img += (scipy.ndimage.gaussian_filter(img, [blur, blur, 0]) - img) * np.clip(mask * 3.0 + 1.0, 0.0, 1.0)
+        #     img += (np.median(img, axis=(0, 1)) - img) * np.clip(mask, 0.0, 1.0)
+        #     img = Image.fromarray(np.uint8(np.clip(np.rint(img), 0, 255)), 'RGB')
+        #     quad += pad[:2]
 
         # Transform.
         quad = (quad + 0.5).flatten()
@@ -109,51 +124,6 @@ class Preprocesser:
         return rsize, crop, [lx, ly, rx, ry]
     
     def crop(self, img_np_list, still=False, xsize=512):    # first frame for all video
-
-        rate = 5
-        rate_ = 2
-    
-        img_np = img_np_list[0]
-        lm = self.get_landmark(img_np)
-
-        if lm is None:
-            raise 'can not detect the landmark from source image'
-        rsize, crop, quad = self.align_face(img=Image.fromarray(img_np), lm=lm, output_size=xsize)
-
-
-
-        clx, cly, crx, cry = crop
-        lx, ly, rx, ry = quad
-        lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
-
-
-        inp_crop = cv2.line(img_np,(clx,cly),(crx,cry),(255,255,255),15)
-        cv2.imwrite("result_crop.png", inp_crop)
-        inp_quad = cv2.line(inp_crop,(lx,ly), (rx,ry), (0,0,0), 12)
-        cv2.imwrite("inp_quad.png", inp_quad)
-
-        for _i in range(len(img_np_list)):
-            _inp = img_np_list[_i]
-            _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
-            print(clx, cly, crx, cry)
-    #        crx = int(crx + min(clx,rsize[0]-crx)/rate)
-    #        clx = int(clx - min(clx,rsize[0]-crx)/rate)
-     # ;      cly = int(cly - min(cly,rsize[1]-cry)/rate_)
-      #      cry = int(cry + (rsize[1]-cry)/rate_)
-                
-            _inp = _inp[cly:cry , clx:crx]
-
-            _inp = cv2.line(_inp, (clx, cly),(crx, cry), (255,255,255),15)
-            _inp = cv2.line(_inp, (lx, ly), (rx, ry), (0,0,0),15)
-            print(clx, cly, crx, cry)
-            print(lx,rx,ly,ry)
-            
-            crop = [clx, cly, crx, cry]
-            img_np_list[_i] = _inp
-
-        return img_np_list, crop, quad
-    
-    def crop_(self, img_np_list, still=False, xsize=512):    # first frame for all video
         img_np = img_np_list[0]
         lm = self.get_landmark(img_np)
 
@@ -166,13 +136,11 @@ class Preprocesser:
         for _i in range(len(img_np_list)):
             _inp = img_np_list[_i]
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
-            _inp = cv2.line(_inp, (clx, cly),(crx , cry ), (255,255,255),15)
-           # _inp = cv2.line(_inp, (lx, ly), (rx, ry), (0,0,0),15)
             _inp = _inp[cly:cry, clx:crx]
-            print(clx,cly,crx,cry)
+            _inp = cv2.line(_inp,(clx,cly),(crx,cry),(255,255,255),15)
 
-        #    if not still:
-         #      _inp = _inp[ly:ry, lx:rx]
-        #        print(lx,ly,rx,ry)
+            if not still:
+                _inp = _inp[ly:ry, lx:rx]
+                _inp = cv2.line(_inp, (lx,ly),(rx,ry),(0,0,0),15)
             img_np_list[_i] = _inp
         return img_np_list, crop, quad
