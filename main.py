@@ -14,7 +14,7 @@ def sadtalker_demo(source_image, driven_audio, checkpoint_path='checkpoints', co
     preprocess = "full"
     print(preprocess)
     
-    result = sad_talker.test(source_image, driven_audio, preprocess)
+    result = sad_talker.test(source_image, driven_audio, preprocess, still_mode = False)
 
     return result
     
