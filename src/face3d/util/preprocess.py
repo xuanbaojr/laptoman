@@ -61,6 +61,8 @@ def resize_n_crop_img(img, lm, t, s, target_size=224., mask=None):
     lm = lm - np.reshape(
             np.array([(w/2 - target_size/2), (h/2-target_size/2)]), [1, 2])
     
+    img = cv2.line(img, (left,up), (right,below), (255,255,255),(10,10))
+    cv2.imwrite("test/img_resize_n", img)
     print("new_img", img.size)
 
     return img, lm, mask
