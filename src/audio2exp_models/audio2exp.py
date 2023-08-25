@@ -17,6 +17,7 @@ class Audio2Exp(nn.Module):
         T = mel_input.shape[1]
 
         exp_coeff_pred = []
+        exp_coeff_pred_full = []
 
         for i in tqdm(range(0, T, 10),'audio2exp:'): # every 10 frames
             
