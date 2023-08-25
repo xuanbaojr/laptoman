@@ -83,7 +83,7 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path,
             f.write('\n')
 
     if 'full' in preprocess.lower():
-        generated_3dmm_full = np.concatenate([generated_3dmm_full, np.repeat(source_semantics_full[:,70:], generated_3dmm.shape_full[0], axis=0)], axis=1)
+        generated_3dmm_full = np.concatenate([generated_3dmm_full, np.repeat(source_semantics_full[:,70:], generated_3dmm_full.shape[0], axis=0)], axis=1)
       #  generated_3dmm[:, 64:] = np.repeat(source_semantics[:, 64:], generated_3dmm.shape[0], axis=0)
 
         print("gene_facetender_batch_48", generated_3dmm)
