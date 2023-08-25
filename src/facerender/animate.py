@@ -237,16 +237,8 @@ class AnimateFromCoeff():
             result = [ cv2.resize(result_i,(img_size, int(img_size * original_size[1]/original_size[0]) )) for result_i in result ]
             print("result_i", result[0].shape)
             print("original_size", original_size[0], original_size[1])
-        
-        video_name = x['video_name']  + '.mp4'
-        path = os.path.join(video_save_dir, 'temp_'+video_name)
-        
-        imageio.mimsave(path, result,  fps=float(25))
 
-        av_path = os.path.join(video_save_dir, video_name)
-        return_path = av_path 
-
-        video_name_full = x['video_name']  + '_full.mp4'
+        video_name_full = x['video_name']  + '_full01.mp4'
         path = os.path.join(video_save_dir, 'temp_'+video_name)
         
         imageio.mimsave(path, result_full,  fps=float(25))
