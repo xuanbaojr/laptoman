@@ -115,7 +115,8 @@ def make_animation(source_image, source_semantics, target_semantics,
 
         kp_canonical = kp_detector(source_image)
         print("kp_canonical_make_animation.py" , kp_canonical)   
-        he_source = mapping(source_semantics)       
+        he_source = mapping(source_semantics)  
+        print("he_source", he_source)     
             
         kp_source = keypoint_transformation(kp_canonical, he_source)
         print("kp_source", kp_source)
