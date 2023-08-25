@@ -199,7 +199,7 @@ class AnimateFromCoeff():
         original_size = crop_info[0]
         if original_size:
             result = [ cv2.resize(result_i,(img_size, int(img_size * original_size[1]/original_size[0]) )) for result_i in result ]
-            print("result_i", result[0].size)
+            print("result_i", result[0].shape)
             print("original_size", original_size[0], original_size[1])
         
         video_name = x['video_name']  + '.mp4'
