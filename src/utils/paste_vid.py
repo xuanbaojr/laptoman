@@ -58,7 +58,7 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
         head = cv2.resize(full_frame_head[key].astype(np.uint8), (ox2 - ox1, oy2 - oy1))
         mask = 255*np.ones(head.shape, head.dtype)
         location = ((ox1+ox2)//2 ,( oy1 + oy2 ) //2 )
-        gen_img = cv2.seamlessClone(head, full_frame_body[key], mask, location, cv2.MIXED_CLONE)
+        gen_img = cv2.seamlessClone(head, full_frame_body[key], mask, location, cv2.NORMAL_CLONE)
         out_tmp.write(gen_img)
 
     out_tmp.release()
