@@ -8,8 +8,11 @@ from src.utils.videoio import save_video_with_watermark
 def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, extended_crop=False):
 
     print("video_path", video_path)
+    
     print("pic_path", pic_path)
-    if not os.path.isfile(video_path):
+    pic_path = "./results/art_0.png"
+    print("pic_path", pic_path)
+    if not os.path.isfile(pic_path):
         print('ko thay file')
 
 
