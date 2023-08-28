@@ -47,7 +47,7 @@ class Image_Preprocess():
         crx = int(crx + min(clx,rsize[0]-crx)/rate)
         clx = int(clx - min(clx,rsize[0]-crx)/rate)
         cly = int(cly - min(cly,rsize[1]-cry)/rate_)
-        cry = int(cry + (rsize[1]-cry)/rate_)
+        cry = max(int(cry + (cry - cly)/rate_), rsize[1])
 
         img_np = img_np[cly:cry, clx:crx]
         new_source_image = os.path.join('results', pic_name + '.png')
