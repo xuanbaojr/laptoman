@@ -245,6 +245,7 @@ class AnimateFromCoeff():
 
 
         av_path = os.path.join(video_save_dir, video_name)
+        av_path_test = os.path.join(video_save_dir, 'xuanbao' + video_name)
         return_path = av_path 
         
         audio_path =  x['audio_path'] 
@@ -260,6 +261,7 @@ class AnimateFromCoeff():
         word.export(new_audio_path, format="wav")
 
         save_video_with_watermark(path, new_audio_path, av_path, watermark= False)
+        save_video_with_watermark(path_test, new_audio_path, av_path, watermark= False)
         print(f'The generated video is named {video_save_dir}/{video_name}') 
 
         if 'full' in preprocess.lower():
