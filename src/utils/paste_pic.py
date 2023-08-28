@@ -33,9 +33,10 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
                 break 
             break 
         full_img = frame
-    cv2.resize(full_img, (256,256))
+    full_img = cv2.resize(full_img, (256,256))
     frame_h = full_img.shape[0]
     frame_w = full_img.shape[1]
+    print("full_img", full_img.shape)
 
     video_stream = cv2.VideoCapture(video_path)
     fps = video_stream.get(cv2.CAP_PROP_FPS)
