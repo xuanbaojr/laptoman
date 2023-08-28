@@ -12,7 +12,7 @@ class Image_Preprocess():
     def img_pre(self, input_path, xsize = 512):
 
         rate = 5
-        rate_ = 2
+        rate_ = 3
 
         pic_name = os.path.splitext(os.path.split(input_path)[-1])[0]
 
