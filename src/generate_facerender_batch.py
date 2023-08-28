@@ -66,7 +66,8 @@ def get_facerender_data(coeff_path, pic_path ,first_coeff_path, audio_path,
 
 
     if 'full' in preprocess.lower():
-        generated_3dmm = np.concatenate([generated_3dmm, np.repeat(source_semantics[:,70:], generated_3dmm.shape[0], axis=0)], axis=1)
+        # bat ko chuyen dong
+      #  generated_3dmm = np.concatenate([generated_3dmm, np.repeat(source_semantics[:,70:], generated_3dmm.shape[0], axis=0)], axis=1)
         generated_3dmm_full = np.concatenate([generated_3dmm_full, np.repeat(source_semantics_full[:,70:], generated_3dmm_full.shape[0], axis=0)], axis=1)
 
 
