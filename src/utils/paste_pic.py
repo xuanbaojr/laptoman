@@ -69,7 +69,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     for crop_frame in tqdm(crop_frames, 'seamlessClone:'):
         p = crop_frame.astype(np.uint8)
 
-        mask = 160*np.ones(p.shape, p.dtype)
+        mask = 120*np.ones(p.shape, p.dtype)
         location = ((p.shape[0]) // 2, (p.shape[1]) // 2)
         gen_img = cv2.seamlessClone(p, full_img, mask, location, cv2.NORMAL_CLONE)
         out_tmp.write(gen_img)
