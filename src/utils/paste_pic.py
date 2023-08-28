@@ -68,6 +68,8 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'MP4V'), fps, (frame_w, frame_h))
     for crop_frame in tqdm(crop_frames, 'seamlessClone:'):
         p = crop_frame.astype(np.uint8)
+        value = 50  # Giá trị này có thể thay đổi tùy ý, tùy vào mức độ giảm sáng bạn muốn
+        p = cv2.subtract(p, np.ones(p.shape, dtype="uint8") * value)
 
         mask = 220*np.ones(p.shape, p.dtype)
         location = ((p.shape[0]) // 2, (p.shape[1]) // 2)
