@@ -23,6 +23,7 @@ from pydub import AudioSegment
 from src.utils.face_enhancer import enhancer_generator_with_len, enhancer_list
 from src.utils.paste_pic import paste_pic
 from src.utils.videoio import save_video_with_watermark
+from src.utils.paste_vid import paste_vid
 
 try:
     import webui  # in webui
@@ -162,6 +163,13 @@ class AnimateFromCoeff():
         source_image=source_image.to(self.device)
         source_semantics=source_semantics.to(self.device)
         target_semantics=target_semantics.to(self.device)
+
+        source_image_full=x['source_image_full'].type(torch.FloatTensor)
+        source_semantics_full=x['source_semantics_full'].type(torch.FloatTensor)
+        target_semantics_full=x['target_semantics_list_full'].type(torch.FloatTensor) 
+        source_image_full=source_image_full.to(self.device)
+        source_semantics_full=source_semantics_full.to(self.device)
+        target_semantics_full=target_semantics_full.to(self.device)
         if 'yaw_c_seq' in x:
             yaw_c_seq = x['yaw_c_seq'].type(torch.FloatTensor)
             yaw_c_seq = x['yaw_c_seq'].to(self.device)
@@ -183,26 +191,52 @@ class AnimateFromCoeff():
         predictions_video = make_animation(source_image, source_semantics, target_semantics,
                                         self.generator, self.kp_extractor, self.he_estimator, self.mapping, 
                                         yaw_c_seq, pitch_c_seq, roll_c_seq, use_exp = True)
-
+        
+        
         predictions_video = predictions_video.reshape((-1,)+predictions_video.shape[2:])
         predictions_video = predictions_video[:frame_num]
 
+        predictions_video_full = make_animation(source_image_full, source_semantics_full, target_semantics_full,
+                                        self.generator, self.kp_extractor, self.he_estimator, self.mapping, 
+                                        yaw_c_seq, pitch_c_seq, roll_c_seq, use_exp = True)
+        
+        
+        predictions_video_full = predictions_video_full.reshape((-1,)+predictions_video_full.shape[2:])
+        predictions_video_full = predictions_video_full[:frame_num]
+
+
+        
+
+
         video = []
+        video_full = []
         for idx in range(predictions_video.shape[0]):
             image = predictions_video[idx]
             image = np.transpose(image.data.cpu().numpy(), [1, 2, 0]).astype(np.float32)
             video.append(image)
+
+            image_full = predictions_video_full[idx]
+            image_full = np.transpose(image_full.data.cpu().numpy(), [1, 2, 0]).astype(np.float32)
+            video_full.append(image_full)
+
         result = img_as_ubyte(video)
+        result_full = img_as_ubyte(video_full)
 
         ### the generated video is 256x256, so we keep the aspect ratio, 
         original_size = crop_info[0]
         if original_size:
             result = [ cv2.resize(result_i,(img_size, int(img_size * original_size[1]/original_size[0]) )) for result_i in result ]
+            result_full = [ cv2.resize(result_i,(img_size, int(img_size * original_size[1]/original_size[0]) )) for result_i in result_full ]
         
         video_name = x['video_name']  + '.mp4'
         path = os.path.join(video_save_dir, 'temp_'+video_name)
+        path_test = os.path.join(video_save_dir, 'haha' + video_name)
         
         imageio.mimsave(path, result,  fps=float(25))
+        imageio.mimsave(path_test, result_full,  fps=float(25))
+
+
+
 
         av_path = os.path.join(video_save_dir, video_name)
         return_path = av_path 
@@ -233,7 +267,7 @@ class AnimateFromCoeff():
             full_video_path = av_path 
 
         #### paste back then enhancers
-        if enhancer:  # enhancer = None
+        if enhancer:
             video_name_enhancer = x['video_name']  + '_enhanced.mp4'
             enhanced_path = os.path.join(video_save_dir, 'temp_'+video_name_enhancer)
             av_path_enhancer = os.path.join(video_save_dir, video_name_enhancer) 
@@ -252,6 +286,10 @@ class AnimateFromCoeff():
 
         os.remove(path)
         os.remove(new_audio_path)
-        
+
+        final_video_name = x['video_name'] + '_final.mp4'
+        final_video_path = os.path.join(video_save_dir, final_video_name)
+        return_path = paste_vid(path, path_test, crop_info, new_audio_path, final_video_path)
+
         return return_path
 

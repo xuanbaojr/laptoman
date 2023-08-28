@@ -32,6 +32,8 @@ class Audio2Coeff():
         fcfg_exp = open(sadtalker_path['audio2exp_yaml_path'])
         cfg_exp = CN.load_cfg(fcfg_exp)
         cfg_exp.freeze()
+        print("device", device)
+
 
         # load audio2pose_model
         self.audio2pose_model = Audio2Pose(cfg_pose, None, device=device)
@@ -39,7 +41,6 @@ class Audio2Coeff():
         self.audio2pose_model.eval()
         for param in self.audio2pose_model.parameters():
             param.requires_grad = False 
-        
         try:
             if sadtalker_path['use_safetensor']:
                 checkpoints = safetensors.torch.load_file(sadtalker_path['checkpoint'])
@@ -48,6 +49,7 @@ class Audio2Coeff():
                 load_cpk(sadtalker_path['audio2pose_checkpoint'], model=self.audio2pose_model, device=device)
         except:
             raise Exception("Failed in loading audio2pose_checkpoint")
+            
 
         # load audio2exp_model
         netG = SimpleWrapperV2()
@@ -77,6 +79,7 @@ class Audio2Coeff():
             #test
             results_dict_exp= self.audio2exp_model.test(batch)
             exp_pred = results_dict_exp['exp_coeff_pred']                         #bs T 64
+            exp_pred_full = results_dict_exp['exp_coeff_pred_full']    
 
             #for class_id in  range(1):
             #class_id = 0#(i+10)%45
@@ -84,23 +87,31 @@ class Audio2Coeff():
             batch['class'] = torch.LongTensor([pose_style]).to(self.device)
             results_dict_pose = self.audio2pose_model.test(batch) 
             pose_pred = results_dict_pose['pose_pred']                        #bs T 6
+            pose_pred_full = results_dict_pose['pose_pred_full']  
 
             pose_len = pose_pred.shape[1]
             if pose_len<13: 
                 pose_len = int((pose_len-1)/2)*2+1
                 pose_pred = torch.Tensor(savgol_filter(np.array(pose_pred.cpu()), pose_len, 2, axis=1)).to(self.device)
+                
+                pose_pred_full = torch.Tensor(savgol_filter(np.array(pose_pred_full.cpu()), pose_len, 2, axis=1)).to(self.device)
             else:
                 pose_pred = torch.Tensor(savgol_filter(np.array(pose_pred.cpu()), 13, 2, axis=1)).to(self.device) 
+                pose_pred_full = torch.Tensor(savgol_filter(np.array(pose_pred_full.cpu()), 13, 2, axis=1)).to(self.device) 
             
             coeffs_pred = torch.cat((exp_pred, pose_pred), dim=-1)            #bs T 70
 
             coeffs_pred_numpy = coeffs_pred[0].clone().detach().cpu().numpy() 
 
+            coeffs_pred_full = torch.cat((exp_pred_full, pose_pred_full), dim=-1)            #bs T 70
+
+            coeffs_pred_numpy_full = coeffs_pred_full[0].clone().detach().cpu().numpy() 
+
             if ref_pose_coeff_path is not None: 
                  coeffs_pred_numpy = self.using_refpose(coeffs_pred_numpy, ref_pose_coeff_path)
         
             savemat(os.path.join(coeff_save_dir, '%s##%s.mat'%(batch['pic_name'], batch['audio_name'])),  
-                    {'coeff_3dmm': coeffs_pred_numpy})
+                    {'coeff_3dmm': coeffs_pred_numpy,'coeff_3dmm_full': coeffs_pred_numpy_full })
 
             return os.path.join(coeff_save_dir, '%s##%s.mat'%(batch['pic_name'], batch['audio_name']))
     

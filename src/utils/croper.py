@@ -67,15 +67,15 @@ class Preprocesser:
 
         # Choose oriented crop rectangle.
         x = eye_to_eye - np.flipud(eye_to_mouth) * [-1, 1]  # Addition of binocular difference and double mouth difference
-        x /= np.hypot(*x)   # 
-        x *= max(np.hypot(*eye_to_eye) * 2.0, np.hypot(*eye_to_mouth) * 1.8)    # 
+        x /= np.hypot(*x)   # hypot函数计算直角三角形的斜边长，用斜边长对三角形两条直边做归一化
+        x *= max(np.hypot(*eye_to_eye) * 2.0, np.hypot(*eye_to_mouth) * 1.8)    # 双眼差和眼嘴差，选较大的作为基准尺度
         y = np.flipud(x) * [-1, 1]
         c = eye_avg + eye_to_mouth * 0.1
-        quad = np.stack([c - x - y, c - x + y, c + x + y, c + x - y])   # 
-        qsize = np.hypot(*x) * 2    # 
+        quad = np.stack([c - x - y, c - x + y, c + x + y, c + x - y])   # 定义四边形，以面部基准位置为中心上下左右平移得到四个顶点
+        qsize = np.hypot(*x) * 2    # 定义四边形的大小（边长），为基准尺度的2倍
 
         # Shrink.
-        # 
+        # 如果计算出的四边形太大了，就按比例缩小它
         shrink = int(np.floor(qsize / output_size * 0.5))
         if shrink > 1:
             rsize = (int(np.rint(float(img.size[0]) / shrink)), int(np.rint(float(img.size[1]) / shrink)))
@@ -137,10 +137,27 @@ class Preprocesser:
             _inp = img_np_list[_i]
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
             _inp = _inp[cly:cry, clx:crx]
-            _inp = cv2.line(_inp,(clx,cly),(crx,cry),(255,255,255),15)
-
             if not still:
                 _inp = _inp[ly:ry, lx:rx]
-                _inp = cv2.line(_inp, (lx,ly),(rx,ry),(0,0,0),15)
             img_np_list[_i] = _inp
+        print("crop")
+        return img_np_list, crop, quad
+
+    def crop_(self, img_np_list, still=False, xsize=512):    # first frame for all video
+        img_np = img_np_list[0]
+        lm = self.get_landmark(img_np)
+
+        if lm is None:
+            raise 'can not detect the landmark from source image'
+        rsize, crop, quad = self.align_face(img=Image.fromarray(img_np), lm=lm, output_size=xsize)
+        clx, cly, crx, cry = crop
+        lx, ly, rx, ry = quad
+        lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
+        for _i in range(len(img_np_list)):
+            _inp = img_np_list[_i]
+            _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
+     #       _inp = _inp[cly:cry, clx:crx]
+
+            img_np_list[_i] = _inp
+        print("crop---------------")
         return img_np_list, crop, quad

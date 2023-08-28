@@ -14,14 +14,14 @@ def sadtalker_demo(source_image, driven_audio, checkpoint_path='checkpoints', co
     preprocess = "full"
     print(preprocess)
     
-    result = sad_talker.test(source_image, driven_audio, preprocess, still_mode = False)
+    result = sad_talker.test(source_image, driven_audio, preprocess, still_mode = True)
 
     return result
     
 
 if __name__ == "__main__":
     source_image = 'test/test.jpg'
-    driven_audio = 'test/bus_chinese.wav'
+    driven_audio = 'test/deyu.wav'
     demo = sadtalker_demo(source_image, driven_audio)
     print(demo)
 
