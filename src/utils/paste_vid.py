@@ -69,8 +69,8 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
 
     out_tmp.release()
     print("dang noi video")
- #   save_video_with_watermark(tmp_path, new_audio_path, full_video_path, watermark=False)
-  #  os.remove(tmp_path)
+    save_video_with_watermark(tmp_path, new_audio_path, full_video_path, watermark=False)
+    os.remove(tmp_path)
     
 
 
