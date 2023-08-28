@@ -40,6 +40,7 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
 
     head_w = int((crx - clx)*(256/ body_w))
     head_h = int((cry - cly)*(256/ body_h))
+    print("head_w, head_h", head_w, head_h)
 
     clx = int(clx*(256/body_w))
     crx = int(crx*(256/body_w))
