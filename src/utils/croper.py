@@ -135,7 +135,7 @@ class Preprocesser:
         lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
         for _i in range(len(img_np_list)):
             _inp = img_np_list[_i]
-            _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
+       #     _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
             _inp = _inp[cly:cry, clx:crx]
             if not still:
                 _inp = _inp[ly:ry, lx:rx]
@@ -155,9 +155,10 @@ class Preprocesser:
         lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
         for _i in range(len(img_np_list)):
             _inp = img_np_list[_i]
-            _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
+         #   _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
      #       _inp = _inp[cly:cry, clx:crx]
 
             img_np_list[_i] = _inp
         print("crop---------------")
         return img_np_list, crop, quad
+# neu sau co anh gap bug thi dong 158
