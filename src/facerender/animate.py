@@ -227,7 +227,9 @@ class AnimateFromCoeff():
         if original_size:
             result = [ cv2.resize(result_i,(img_size, int(img_size * original_size[1]/original_size[0]) )) for result_i in result ]
 
-            body_w, body_h = cv2.imread(pic_path).size
+            img = cv2.imread(pic_path)
+            body_h, body_w = img.shape[:2]
+
             print("body_w", body_w)
             print("body_h", body_h)
             result_full = [ cv2.resize(result_i,(img_size, int(img_size * original_size[1]/original_size[0]) )) for result_i in result_full ]
