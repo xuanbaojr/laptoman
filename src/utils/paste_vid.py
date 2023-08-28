@@ -49,7 +49,7 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
     for key in tqdm(range(len(full_frame_head)), 'Dang noi video'):
         head = cv2.resize(full_frame_head[key].astype(np.uint8), (head_w, head_h))
         mask = 255*np.ones(head.shape, head.dtype)
-        location = (location_w, location_h )
+        location = (location_h, location_w )
         gen_img = cv2.seamlessClone(head, full_frame_body[key], mask, location, cv2.NORMAL_CLONE)
         out_tmp.write(gen_img)
 
