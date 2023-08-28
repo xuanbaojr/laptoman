@@ -35,7 +35,7 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
 
     tmp_path = str(uuid.uuid4())+'.mp4'
     out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'MP4V'), fps, (frame_w, frame_h))
-    for key in range(len(full_frame_head)):
+    for key in tqdm(range(len(full_frame_head)), 'Dang noi video'):
         head = cv2.resize(full_frame_head[key].astype(np.uint8), (crx-clx, cry-cry))
         mask = 255*np.ones(head.shape, head.dtype)
         location = ((clx + crx)//2 , (cly + cry)//2 )
@@ -43,12 +43,9 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
         out_tmp.write(gen_img)
 
     out_tmp.release()
-
+    print("dang noi video")
  #   save_video_with_watermark(tmp_path, new_audio_path, full_video_path, watermark=False)
   #  os.remove(tmp_path)
     
 
-if __name__ == "__main__":
-    head_video = 'test/head.mp4'
-    body_video = 'test/body.mp4'
-    demo = paste_vid(head_video, body_video)
+
