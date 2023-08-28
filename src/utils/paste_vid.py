@@ -41,8 +41,8 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
     head_w = int(256*((crx - clx)/ body_w))
     head_h = int(256*((cry - cly)/ body_h))
 
-    location_w = int(256*(((clx+crx)//2)/ body_w))
-    location_h = int(256*(((cly+cry)//2)/ body_h))
+    location_w = int(256*(((clx+crx)/2)/ body_w))
+    location_h = int(256*(((cly+cry)/2)/ body_h))
 
     tmp_path = str(uuid.uuid4())+'.mp4'
     out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'MP4V'), fps, (frame_w, frame_h))
