@@ -16,6 +16,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         print('ko thay file')
 
 
+
     if not os.path.isfile(pic_path):
         raise ValueError('pic_path must be a valid path to video/image file')
     elif pic_path.split('.')[-1] in ['jpg', 'png', 'jpeg']:
@@ -37,6 +38,9 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     frame_h = full_img.shape[0]
     frame_w = full_img.shape[1]
     print("full_img", full_img.shape)
+    value = 50  # Giá trị này có thể thay đổi tùy ý, tùy vào mức độ giảm sáng bạn muốn
+    full_img = cv2.subtract(full_img, np.ones(full_img.shape, dtype="uint8") * value)
+
 
     video_stream = cv2.VideoCapture(video_path)
     fps = video_stream.get(cv2.CAP_PROP_FPS)
