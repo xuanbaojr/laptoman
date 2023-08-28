@@ -295,7 +295,7 @@ class AnimateFromCoeff():
 
         final_video_name = x['video_name'] + '_final.mp4'
         final_video_path = os.path.join(video_save_dir, final_video_name)
-        return_path = paste_vid(path, path_test, crop_info, new_audio_path, final_video_path, pic_path)
+        return_path = paste_vid(path, path_test, crop_info, new_audio_path, final_video_path, pic_path, body_h, body_w)
 
         return return_path
 
