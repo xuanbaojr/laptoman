@@ -55,7 +55,7 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
    # crop_info = (45, 13, 363, 332)
     clx, cly, crx, cry = crop_info[1]
 
-    frame_w = 256
+    frame_w = 257
     frame_h = 256
 
     tmp_path = str(uuid.uuid4())+'.mp4'
