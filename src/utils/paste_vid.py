@@ -7,6 +7,9 @@ from src.utils.videoio import save_video_with_watermark
 
 def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path):
 
+    if not os.path.isfile(head_video):
+        print('ko thay file')
+
     video_head = cv2.VideoCapture(head_video)
     fps = 25
     full_frame_head = []
@@ -27,8 +30,8 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
             break
         full_frame_body.append(frame)
     
-    crop_info = (45, 13, 363, 332)
-    clx, cly, crx, cry = crop_info
+   # crop_info = (45, 13, 363, 332)
+    clx, cly, crx, cry = crop_info[1]
 
     frame_w = 256
     frame_h = 256
