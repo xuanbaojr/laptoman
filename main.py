@@ -14,7 +14,7 @@ def sadtalker_demo(source_image, driven_audio, checkpoint_path='checkpoints', co
     
 
 if __name__ == "__main__":
-    source_image = 'test/test.jpg'
+    source_image = 'test/art_4.png'
     driven_audio = 'test/test_vi.wav'
     demo = sadtalker_demo(source_image, driven_audio)
     print(demo)
