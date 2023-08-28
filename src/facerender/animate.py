@@ -284,8 +284,8 @@ class AnimateFromCoeff():
             print(f'The generated video is named {video_save_dir}/{video_name_enhancer}')
             os.remove(enhanced_path)
 
-        os.remove(path)
-        os.remove(new_audio_path)
+      #  os.remove(path)
+       # os.remove(new_audio_path)
 
         final_video_name = x['video_name'] + '_final.mp4'
         final_video_path = os.path.join(video_save_dir, final_video_name)
