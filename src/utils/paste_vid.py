@@ -61,9 +61,9 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
     tmp_path = str(uuid.uuid4())+'.mp4'
     out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'MP4V'), fps, (frame_w, frame_h))
     for key in tqdm(range(len(full_frame_head)), 'Dang noi video'):
-        head = cv2.resize(full_frame_head[key].astype(np.uint8), (10, 10))
+        head = cv2.resize(full_frame_head[key].astype(np.uint8), (100, 100))
         mask = 255*np.ones(head.shape, head.dtype)
-        location = (20,20 )
+        location = (100,100 )
         gen_img = cv2.seamlessClone(head, full_frame_body[key], mask, location, cv2.NORMAL_CLONE)
         out_tmp.write(gen_img)
 
