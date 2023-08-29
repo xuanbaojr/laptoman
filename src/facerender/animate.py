@@ -268,6 +268,24 @@ class AnimateFromCoeff():
            
 
         #### paste back then enhancers
+        
+      #  os.remove(path)
+       # os.remove(new_audio_path)
+
+        final_video_name = x['video_name'] + '_final.mp4'
+        final_video_path = os.path.join(video_save_dir, final_video_name)
+        return_path = paste_vid(path, path_test, crop_info, new_audio_path, final_video_path, body_h, body_w)
+
+        if 'full' in preprocess.lower():
+            # only add watermark to the full image.
+            video_name_full = x['video_name']  + '_full.mp4'
+            full_video_path = os.path.join(video_save_dir, video_name_full)
+          #  return_path = full_video_path
+            paste_pic(final_video_path, pic_path, crop_info, new_audio_path, full_video_path, extended_crop= True if 'ext' in preprocess.lower() else False)
+            print(f'The generated video is named {video_save_dir}/{video_name_full}') 
+        else:
+            full_video_path = av_path 
+
         if enhancer:
             video_name_enhancer = x['video_name']  + '_enhanced.mp4'
             enhanced_path = os.path.join(video_save_dir, 'temp_'+video_name_enhancer)
@@ -285,22 +303,6 @@ class AnimateFromCoeff():
             print(f'The generated video is named {video_save_dir}/{video_name_enhancer}')
             os.remove(enhanced_path)
 
-      #  os.remove(path)
-       # os.remove(new_audio_path)
-
-        final_video_name = x['video_name'] + '_final.mp4'
-        final_video_path = os.path.join(video_save_dir, final_video_name)
-        return_path = paste_vid(path, path_test, crop_info, new_audio_path, final_video_path, body_h, body_w)
-
-        if 'full' in preprocess.lower():
-            # only add watermark to the full image.
-            video_name_full = x['video_name']  + '_full.mp4'
-            full_video_path = os.path.join(video_save_dir, video_name_full)
-          #  return_path = full_video_path
-            paste_pic(final_video_path, pic_path, crop_info, new_audio_path, full_video_path, extended_crop= True if 'ext' in preprocess.lower() else False)
-            print(f'The generated video is named {video_save_dir}/{video_name_full}') 
-        else:
-            full_video_path = av_path 
 
 
 
