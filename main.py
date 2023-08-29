@@ -9,7 +9,7 @@ def sadtalker_demo(source_image, driven_audio, checkpoint_path='checkpoints', co
         print("Source_image is not exits!")
 
     preprocess = "full"    
-    result = sad_talker.test(source_image, driven_audio, preprocess, still_mode = True, use_enhancer = True)
+    result = sad_talker.test(source_image, driven_audio, preprocess, still_mode = True, use_enhancer = False)
     return result
     
 
