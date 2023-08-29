@@ -52,6 +52,8 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
             break
         crop_frames.append(frame)
     
+    print("crop_frame", crop_frames[0].shape)
+    
     if len(crop_info) != 3:
         print("you didn't crop the image")
         return
@@ -71,7 +73,8 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     tmp_path = str(uuid.uuid4())+'.mp4'
     out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'MP4V'), fps, (frame_w, frame_h))
     for crop_frame in tqdm(crop_frames, 'seamlessClone:'):
-        p = cv2.resize(crop_frame.astype(np.uint8), (50,50))
+        
+        p = (crop_frame.astype(np.uint8))
 
 
         mask = 150*np.ones(p.shape, p.dtype)
