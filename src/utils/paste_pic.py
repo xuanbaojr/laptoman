@@ -10,7 +10,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     print("video_path", video_path)
     
     print("pic_path", pic_path)
-    pic_path = "./results/test.jpg"
+    pic_path = "./results/test.png"
     print("pic_path", pic_path)
     if not os.path.isfile(pic_path):
         print('ko thay file')
