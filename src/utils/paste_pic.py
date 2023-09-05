@@ -107,7 +107,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     else:
         print("Pixel ở vị trí [0, 0] không phải là màu đen")
     
-    for n in range(100):
+    for n in range(50):
         for i in range (256):
             for j in range (256):
                 crop_frames[n][i,j] = full_img[i,j]
