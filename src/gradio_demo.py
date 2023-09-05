@@ -1,5 +1,5 @@
 import torch, uuid
-import os, sys, shutil
+import os, sys, shutil, cv2
 from src.utils.preprocess import CropAndExtract
 from src.test_audio2coeff import Audio2Coeff  
 from src.facerender.animate import AnimateFromCoeff
@@ -76,6 +76,8 @@ class SadTalker():
             
         print("output_path", output_path)
         print("source_image", source_image)
+        nobg = cv2.imread(output_path)
+        print(nobg)
 
         pic_path = os.path.join(input_dir, os.path.basename(output_path)) 
         pic_path_source = os.path.join(input_dir, os.path.basename(source_image)) 
