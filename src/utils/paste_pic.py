@@ -80,7 +80,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
         mask = 255*np.ones(p.shape, p.dtype)
         location = ((p.shape[0]) // 2, (p.shape[1]) // 2)
-        gen_img = cv2.seamlessClone(p, full_img, mask, location, cv2.NORMAL_CLONE)
+        gen_img = cv2.seamlessClone(p, full_img, mask, location, cv2.MIXED_CLONE)
         for i in range (512):
             for j in range (512):
                 if (crop_frame[i,j] == np.array([0,0,0])).all():
