@@ -112,5 +112,5 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
             for j in range (256):
                 crop_frames[n][i,j] = full_img[i,j]
 
-
+    print("Frame hien tai:", crop_frames[0])
     
