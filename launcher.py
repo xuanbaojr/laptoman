@@ -1,8 +1,11 @@
-import cv2
+from rembg import remove
 
-if __name__ == "__main__":
-    img = cv2.imread('test/art_0.png')
-    print(img)
-    cv2.imshow("xuanbao", img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+input_path = 'test/art_0.png'
+output_path = 'test/output.png'
+
+with open(input_path, 'rb') as i:
+    with open(output_path, 'wb') as o:
+        input = i.read()
+        output = remove(input)
+        o.write(output)
+

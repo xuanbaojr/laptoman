@@ -7,6 +7,7 @@ from src.generate_batch import get_data
 from src.generate_facerender_batch import get_facerender_data
 from src.check_crop import Image_Preprocess
 from src.utils.init_path import init_path
+from rembg import remove
 
 
 from pydub import AudioSegment
@@ -62,8 +63,22 @@ class SadTalker():
         print(source_image)
             # result/timetag/input/source_image.png
         source_image = self.img_pre.img_pre(source_image)
-        pic_path = os.path.join(input_dir, os.path.basename(source_image)) 
-        shutil.copy(source_image, input_dir)
+        pic_name = os.path.splitext(os.path.split(source_image)[-1])[0] 
+
+      #  input_path = source_image
+        output_path = 'test/' + pic_name + '_nobg.png'
+
+        with open(source_image, 'rb') as i:
+            with open(output_path, 'wb') as o:
+                input = i.read()
+                output = remove(input)
+                o.write(output)
+            
+        print("output_path", output_path)
+        print("source_image", source_image)
+
+        pic_path = os.path.join(input_dir, os.path.basename(output_path)) 
+        shutil.copy(output_path, input_dir)
 
          # audio_path
         if driven_audio is not None and os.path.isfile(driven_audio):
