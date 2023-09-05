@@ -86,7 +86,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
     save_video_with_watermark(tmp_path, new_audio_path, full_video_path, watermark=False)
 
-    video_stream = cv2.VideoCapture(video_path)
+    video_stream = cv2.VideoCapture(full_video_path)
     fps = video_stream.get(cv2.CAP_PROP_FPS)
     crop_frames = []
     while 1:
@@ -97,13 +97,9 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         crop_frames.append(frame)
     
     print("video cuoi cung", crop_frames[0])
-    cv2.imshow("haha", crop_frames[0])
-  
-# waits for user to press any key
-# (this is necessary to avoid Python kernel form crashing)
-    cv2.waitKey(0)
-  
-# closing all open windows
-    cv2.destroyAllWindows()
 
-    os.remove(tmp_path)
+    if crop_frame[0,0] == [0,0,0] :
+        print("dung roi")
+    else:
+        print("linh tinh")
+    
