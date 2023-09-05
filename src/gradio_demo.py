@@ -78,6 +78,9 @@ class SadTalker():
         print("source_image", source_image)
 
         pic_path = os.path.join(input_dir, os.path.basename(output_path)) 
+        pic_path_source = os.path.join(input_dir, os.path.basename(source_image)) 
+        shutil.copy(source_image, input_dir)
+
         shutil.copy(output_path, input_dir)
 
          # audio_path
@@ -104,6 +107,6 @@ class SadTalker():
         coeff_path = self.audio_to_coeff.generate(batch, save_dir, pose_style, ref_pose_coeff_path=None)
         #
         data = get_facerender_data(coeff_path, crop_pic_path, first_coeff_path, audio_path, batch_size, still_mode=still_mode, preprocess=preprocess, size=size, expression_scale = exp_scale,  pic_path_full =crop_pic_path_full,)
-        return_path = self.animate_from_coeff.generate(data, save_dir,  pic_path, crop_info, enhancer='gfpgan' if use_enhancer else None, preprocess=preprocess, img_size=size)
+        return_path = self.animate_from_coeff.generate(data, save_dir,  pic_path, crop_info, enhancer='gfpgan' if use_enhancer else None, preprocess=preprocess, img_size=size, pic_path_source = pic_path_source)
         
         return preprocess, return_path
