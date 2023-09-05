@@ -89,17 +89,21 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     video_stream = cv2.VideoCapture(full_video_path)
     fps = video_stream.get(cv2.CAP_PROP_FPS)
     crop_frames = []
-    while 1:
+
+    while True:
         still_reading, frame = video_stream.read()
         if not still_reading:
             video_stream.release()
             break
         crop_frames.append(frame)
-    
-    print("video cuoi cung", crop_frames[0])
 
-    if crop_frames[0,0] == [0,0,0] :
-        print("dung roi")
+# In frame đầu tiên để debug (chú ý: đoạn này có thể tạo ra output lớn tùy thuộc vào kích thước của frame)
+    print("Frame đầu tiên:", crop_frames[0])
+
+# Kiểm tra giá trị của pixel ở vị trí [0, 0] của frame đầu tiên
+    if (crop_frames[0][0, 0] == np.array([0, 0, 0])).all():
+        print("Pixel ở vị trí [0, 0] là màu đen")
     else:
-        print("linh tinh")
+        print("Pixel ở vị trí [0, 0] không phải là màu đen")
+
     
