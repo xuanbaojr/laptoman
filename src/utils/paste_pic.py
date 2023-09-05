@@ -85,4 +85,17 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     out_tmp.release()
 
     save_video_with_watermark(tmp_path, new_audio_path, full_video_path, watermark=False)
+
+    video_stream = cv2.VideoCapture(video_path)
+    fps = video_stream.get(cv2.CAP_PROP_FPS)
+    crop_frames = []
+    while 1:
+        still_reading, frame = video_stream.read()
+        if not still_reading:
+            video_stream.release()
+            break
+        crop_frames.append(frame)
+    
+    print("video cuoi cung", crop_frames[0].shape)
+
     os.remove(tmp_path)
