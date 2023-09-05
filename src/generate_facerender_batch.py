@@ -73,8 +73,8 @@ def get_facerender_data(coeff_path, pic_path ,first_coeff_path, audio_path,
 
     if still_mode:
         # bat ko chuyen dong
-        generated_3dmm[:, 64:] = np.repeat(source_semantics[:, 64:], generated_3dmm.shape[0], axis=0)
-        generated_3dmm_full[:, 64:] = np.repeat(source_semantics_full[:, 64:], generated_3dmm_full.shape[0], axis=0)
+        #generated_3dmm[:, 64:] = np.repeat(source_semantics[:, 64:], generated_3dmm.shape[0], axis=0)
+       # generated_3dmm_full[:, 64:] = np.repeat(source_semantics_full[:, 64:], generated_3dmm_full.shape[0], axis=0)
         temp = 1
 
     with open(txt_path+'.txt', 'w') as f:
