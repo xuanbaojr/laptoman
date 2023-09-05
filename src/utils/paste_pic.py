@@ -22,9 +22,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     elif pic_path.split('.')[-1] in ['jpg', 'png', 'jpeg']:
         # loader for first frame
         full_img = cv2.imread(pic_path)
-        cv2.imshow("haha", full_img)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        print("full_img", full_img)
     else:
         # loader for videos
         video_stream = cv2.VideoCapture(pic_path)
