@@ -81,6 +81,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         mask = 255*np.ones(p.shape, p.dtype)
         location = ((p.shape[0]) // 2, (p.shape[1]) // 2)
         gen_img = cv2.seamlessClone(p, full_img, mask, location, cv2.NORMAL_CLONE)
+        gen_img[0:256, 0:256] = np.copy(full_img[0:256,0:256])
         out_tmp.write(gen_img)
 
     out_tmp.release()
@@ -101,16 +102,5 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 # In frame đầu tiên để debug (chú ý: đoạn này có thể tạo ra output lớn tùy thuộc vào kích thước của frame)
     print("Frame đầu tiên:", crop_frames[0])
 
-# Kiểm tra giá trị của pixel ở vị trí [0, 0] của frame đầu tiên
-    if (crop_frames[0][0, 0] == np.array([0, 0, 0])).all():
-        print("Pixel ở vị trí [0, 0] là màu đen")
-    else:
-        print("Pixel ở vị trí [0, 0] không phải là màu đen")
-    
-    for n in range(50):
-        for i in range (256):
-            for j in range (256):
-                crop_frames[n][i,j] = full_img[i,j]
 
-    print("Frame hien tai:", crop_frames[0])
     
