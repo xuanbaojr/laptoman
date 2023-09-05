@@ -98,7 +98,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     
     print("video cuoi cung", crop_frames[0])
 
-    if crop_frame[0,0] == [0,0,0] :
+    if crop_frames[0,0] == [0,0,0] :
         print("dung roi")
     else:
         print("linh tinh")
