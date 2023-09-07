@@ -26,7 +26,7 @@ if image_bg is None:
 image_bg = cv2.resize(image_bg, (w, h))
 
 # Apply adaptive thresholding
-adaptive_threshold_image = cv2.adaptiveThreshold(image_test, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
+adaptive_threshold_image = cv2.adaptiveThreshold(image_test, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 20, 10)
 
 # Loop to manipulate image
 for i in range(h):
