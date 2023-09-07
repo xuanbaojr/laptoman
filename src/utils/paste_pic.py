@@ -80,7 +80,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     for crop_frame in tqdm(crop_frames, 'seamlessClone:'):
 
         test_img = cv2.cvtColor(crop_frame, cv2.COLOR_BGR2GRAY)
-        test_img = cv2.adaptiveThreshold(test_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+        test_img = cv2.adaptiveThreshold(test_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 4)
         
         p = (crop_frame.astype(np.uint8))
 
