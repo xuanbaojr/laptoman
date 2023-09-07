@@ -18,13 +18,9 @@ if image is None:
     exit()
 
 image_test = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-image_bg = cv2.imread('test/art_0_360.png')
 
-if image_bg is None:
-    print("Could not read the background image.")
-    exit()
 
-image_bg = cv2.resize(image_bg, (w, h))
+
 
 # Apply adaptive thresholding
 adaptive_threshold_image = cv2.adaptiveThreshold(image_test, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 20, 10)
@@ -47,7 +43,4 @@ for i in range(h):
             image[i,j] = [255,255,0]
 cv2.imwrite('test/result_img.png', image)
 
-cv2.imshow('Original', image)
-cv2.imshow('Adaptive Threshold', adaptive_threshold_image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+
