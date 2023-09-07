@@ -46,7 +46,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     value = 0  # Giá trị này có thể thay đổi tùy ý, tùy vào mức độ giảm sáng bạn muốn
     full_img = cv2.subtract(full_img, np.ones(full_img.shape, dtype="uint8") * value)
 
-    #blur_img = cv2.blur(full_img, (5,5))
+    blur_img = cv2.blur(full_img, (5,5))
 
 
     video_stream = cv2.VideoCapture(video_path)
@@ -97,7 +97,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
                 if test_img[i, j] == 0 :  # Change here to correct the indices
 
                     crop_frame[i, 0:j, :] = np.copy(full_img[i,0:j, :])
-                  #  gen_img[i,j,:] = np.copy(blur_img[i,j,:])
+                    crop_frame[i,j,:] = np.copy(blur_img[i,j,:])
                     break
             for j in range(frame_w-1, 0, -1):
                 if test_img[i, j] == 0 :  # Change here to correct the indices
