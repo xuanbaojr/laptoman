@@ -3,8 +3,10 @@ import numpy as np
 
 # Read grayscale image
 image = cv2.imread('test/test.png')
-for i in range(322):
-    for j in range(248):
+h, w = image.shape[:2]
+
+for i in range(h):
+    for j in range(w):
         if (image[i,j] == np.array([0,0,0])).all():
             image[i,j] = [255,255,0]
 #cv2.imshow('Original1', image)
@@ -15,7 +17,6 @@ if image is None:
     print("Could not read the image.")
     exit()
 
-h, w = image.shape[:2]
 image_test = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 image_bg = cv2.imread('test/art_0_360.png')
 
