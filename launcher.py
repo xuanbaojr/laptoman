@@ -36,5 +36,7 @@ for i in range(h):
         if (image[i,j] == np.array([0,0,0])).all():
             image[i,j] = [255,255,0]
 cv2.imwrite('test/result_img.png', image)
+cv2.imwrite('test/threshold.png',adaptive_threshold_image)
+
 
 
