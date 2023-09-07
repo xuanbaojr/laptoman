@@ -97,7 +97,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
                 if test_img[i, j] == 0 :  # Change here to correct the indices
 
                     crop_frame[i, 0:j, :] = np.copy(full_img[i,0:j, :])
-                    crop_frame[i,j,:] = np.copy(blur_img[i,j,:])
+                    crop_frame[i,j+5,:] = np.copy(blur_img[i,j+5,:])
                     break
             for j in range(frame_w-1, 0, -1):
                 if test_img[i, j] == 0 :  # Change here to correct the indices
