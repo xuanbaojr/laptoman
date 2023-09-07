@@ -97,7 +97,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
                 if test_img[i, j] == 0 :  # Change here to correct the indices
 
                     crop_frame[i, 0:j, :] = np.copy(full_img[i,0:j, :])
-                    crop_frame[i,j+20,:] = np.copy(blur_img[i,j+20,:])
+                    
                     break
             for j in range(frame_w-1, 0, -1):
                 if test_img[i, j] == 0 :  # Change here to correct the indices
@@ -105,6 +105,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
                     break
         
         out_tmp.write(crop_frame)
+        crop_frame = cv2.blur(crop_frame, (5,5))
 
     out_tmp.release()
 
