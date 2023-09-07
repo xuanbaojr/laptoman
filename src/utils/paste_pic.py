@@ -96,15 +96,15 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
             for j in range(frame_w - 1):  # Change here to avoid index out of bound
                 if test_img[i, j] == 0 :  # Change here to correct the indices
 
-                    gen_img[i, 0:j, :] = np.copy(full_img[i,0:j, :])
+                    crop_frame[i, 0:j, :] = np.copy(full_img[i,0:j, :])
                   #  gen_img[i,j,:] = np.copy(blur_img[i,j,:])
                     break
             for j in range(frame_w-1, 0, -1):
                 if test_img[i, j] == 0 :  # Change here to correct the indices
-                    gen_img[i, j:frame_w-1, :] = np.copy(full_img[i, j:frame_w-1, :])
+                    crop_frame[i, j:frame_w-1, :] = np.copy(full_img[i, j:frame_w-1, :])
                     break
         
-        out_tmp.write(gen_img)
+        out_tmp.write(crop_frame)
 
     out_tmp.release()
 
