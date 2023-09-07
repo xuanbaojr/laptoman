@@ -23,7 +23,7 @@ image_test = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 
 # Apply adaptive thresholding
-adaptive_threshold_image = cv2.adaptiveThreshold(image_test, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 20, 10)
+adaptive_threshold_image = cv2.adaptiveThreshold(image_test, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
 
 # Loop to manipulate image
 for i in range(h):
