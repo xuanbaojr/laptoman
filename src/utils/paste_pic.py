@@ -105,7 +105,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
                     break
         
         out_tmp.write(crop_frame)
-        crop_frame = cv2.GaussianBlur(crop_frame, (5,5), 0)
+        crop_frame = cv2.GaussianBlur(crop_frame, (15,15), 0)
 
     out_tmp.release()
 
