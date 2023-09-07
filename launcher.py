@@ -2,13 +2,13 @@ import cv2
 import numpy as np
 
 # Read grayscale image
-image = cv2.imread('test/art_0_360_nobg.png')
-# for i in range(322):
-#     for j in range(248):
-#         if (image[i,j] == np.array([0,0,0])).all():
-#             image[i,j] = [255,255,0]
-cv2.imshow('Original1', image)
-# cv2.imwrite('test/result_img01.png', image)
+image = cv2.imread('test/test.png')
+for i in range(322):
+    for j in range(248):
+        if (image[i,j] == np.array([0,0,0])).all():
+            image[i,j] = [255,255,0]
+#cv2.imshow('Original1', image)
+cv2.imwrite('test/result_img01.png', image)
 
 
 if image is None:
@@ -40,7 +40,11 @@ for i in range(h):
             break
 
 # Show images
-
+for i in range(h):
+    for j in range(w):
+        if (image[i,j] == np.array([0,0,0])).all():
+            image[i,j] = [255,255,0]
+cv2.imwrite('test/result_img.png', image)
 
 cv2.imshow('Original', image)
 cv2.imshow('Adaptive Threshold', adaptive_threshold_image)
