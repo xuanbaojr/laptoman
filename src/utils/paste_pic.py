@@ -87,7 +87,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
         mask = 255*np.ones(p.shape, p.dtype)
         location = ((p.shape[0]) // 2, (p.shape[1]) // 2)
-        gen_img = cv2.seamlessClone(p, full_img, mask, location, cv2.NORMAL_CLONE)
+        gen_img = cv2.seamlessClone(p, full_img, mask, location, cv2.MIXED_CLONE)
         for i in range (frame_h):
             for j in range(frame_w - 1):  # Change here to avoid index out of bound
                 if test_img[i, j] == 0 and test_img[i, j + 1] == 255:  # Change here to correct the indices
