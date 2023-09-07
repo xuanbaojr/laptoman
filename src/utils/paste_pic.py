@@ -95,15 +95,15 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         for i in range (frame_h):
             for j in range(frame_w - 1):  # Change here to avoid index out of bound
                 if test_img[i, j] == 0 :  # Change here to correct the indices
-                    crop_frame[i, 0:j, :] = np.copy(full_img[i,0:j, :])
+                    crop_frame[i, 0:j+10, :] = np.copy(full_img[i,0:j+10, :])
                     
                     break
             for j in range(frame_w-1, 0, -1):
                 if test_img[i, j] == 0 :  # Change here to correct the indices
-                    crop_frame[i, j:frame_w-1, :] = np.copy(full_img[i, j:frame_w-1, :])
+                    crop_frame[i, j-10:frame_w-1, :] = np.copy(full_img[i, j-10:frame_w-1, :])
                     break
-                
-        crop_frame = cv2.GaussianBlur(crop_frame, (15,15), 0)
+
+      #  crop_frame = cv2.GaussianBlur(crop_frame, (15,15), 0)
         out_tmp.write(crop_frame)
         
 
