@@ -83,7 +83,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
         test_img = cv2.cvtColor(crop_frame, cv2.COLOR_BGR2GRAY)
         test_img = cv2.adaptiveThreshold(test_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 25, 2)
-        value_ = 50
+        value_ = 0
         crop_frame = cv2.subtract(crop_frame, np.ones(crop_frame.shape, dtype="uint8") * value_)
 
         p = (crop_frame.astype(np.uint8))
