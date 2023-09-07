@@ -80,14 +80,14 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     for crop_frame in tqdm(crop_frames, 'seamlessClone:'):
 
         test_img = cv2.cvtColor(crop_frame, cv2.COLOR_BGR2GRAY)
-        test_img = cv2.adaptiveThreshold(test_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
+        test_img = cv2.adaptiveThreshold(test_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
         
         p = (crop_frame.astype(np.uint8))
 
 
         mask = 255*np.ones(p.shape, p.dtype)
         location = ((p.shape[0]) // 2, (p.shape[1]) // 2)
-        gen_img = cv2.seamlessClone(p, full_img, mask, location, cv2.MIXED_CLONE)
+        gen_img = cv2.seamlessClone(p, full_img, mask, location, cv2.NORMAL_CLONE)
         for i in range (frame_h):
             for j in range(frame_w - 1):  # Change here to avoid index out of bound
                 if test_img[i, j] == 0 and test_img[i, j + 1] == 255:  # Change here to correct the indices
