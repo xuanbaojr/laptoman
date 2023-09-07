@@ -43,7 +43,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
 
 
-    value = 75  # Giá trị này có thể thay đổi tùy ý, tùy vào mức độ giảm sáng bạn muốn
+    value = 90  # Giá trị này có thể thay đổi tùy ý, tùy vào mức độ giảm sáng bạn muốn
     full_img = cv2.subtract(full_img, np.ones(full_img.shape, dtype="uint8") * value)
 
 
