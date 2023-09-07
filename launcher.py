@@ -13,14 +13,8 @@ for i in range(h):
 cv2.imwrite('test/result_img01.png', image)
 
 
-if image is None:
-    print("Could not read the image.")
-    exit()
 
 image_test = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-
-
 
 # Apply adaptive thresholding
 adaptive_threshold_image = cv2.adaptiveThreshold(image_test, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
