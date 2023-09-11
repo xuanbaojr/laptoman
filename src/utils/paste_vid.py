@@ -47,10 +47,10 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
     lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
     oy1, oy2, ox1, ox2 = cly+ly, cly+ry, clx+lx, clx+rx
 
-    ox1 = int(ox1*(256/body_w))
-    ox2 = int(ox2*(256/body_w))
-    oy1 = int(oy1*(256/body_h))
-    oy2 = int(oy2*(256/body_h))
+    ox1 = int(ox1*(frame_w/body_w))
+    ox2 = int(ox2*(frame_w/body_w))
+    oy1 = int(oy1*(frame_h/body_h))
+    oy2 = int(oy2*(frame_h/body_h))
 
 
 
