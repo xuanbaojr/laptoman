@@ -79,11 +79,11 @@ class SadTalker():
         nobg = cv2.imread(output_path)
         print(nobg)
 
-        pic_path = os.path.join(input_dir, os.path.basename(output_path)) 
+        pic_path = os.path.join(input_dir, os.path.basename(source_image)) 
         pic_path_source = os.path.join(input_dir, os.path.basename(source_image)) 
         shutil.copy(source_image, input_dir)
 
-        shutil.copy(output_path, input_dir)
+        shutil.copy(source_image, input_dir)
 
          # audio_path
         if driven_audio is not None and os.path.isfile(driven_audio):
