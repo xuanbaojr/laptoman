@@ -70,7 +70,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         array_1, array_2 = (np.where(adaptive_img == 0))
         array = np.column_stack((array_1, array_2))
         for x,y in array:
-            crop_frame[x,y] = [110,110,255]
+            crop_frame[x,y] = np.copy(full_img[x,y])
         crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
         for x,y in array:
             if y < frame_w:
