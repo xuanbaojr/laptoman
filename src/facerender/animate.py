@@ -297,7 +297,7 @@ class AnimateFromCoeff():
             print(f'The generated video is named {video_save_dir}/{video_name_enhancer}')
             os.remove(enhanced_path)
 
-        if 'haha' in preprocess.lower():
+        if 'full' in preprocess.lower():
             # only add watermark to the full image.
             video_name_full = x['video_name']  + '_full.mp4'
             full_video_path = os.path.join(video_save_dir, video_name_full)
