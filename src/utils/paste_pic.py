@@ -67,9 +67,12 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         img_blur = cv2.cvtColor(crop_frame, cv2.COLOR_BGR2GRAY)
         blur_img = cv2.blur(full_img, (49,49))
         adaptive_img = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 45, 30)
-        crop_frame = np.where(adaptive_img[:,:,None] == 0, [255,255,255], crop_frame)
-        crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
-        crop_frame = np.where(adaptive_img[:,:,None] == 0, full_img, crop_frame)
+        array_1, array_2 = (np.where(adaptive_img == 0))
+        array = np.column_stack((array_1, array_2))
+        for x,y in array:
+            crop_frame[x,y] = [255,255,255]
+            crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
+            
         crop_frame = crop_frame.astype(np.uint8)
       #  crop_frame = cv2.GaussianBlur(crop_frame, (15,15), 0)
         cv2.imwrite('haha.png',crop_frame[0])
@@ -93,6 +96,6 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
 # In frame đầu tiên để debug (chú ý: đoạn này có thể tạo ra output lớn tùy thuộc vào kích thước của frame)
     print("Frame đầu tiên:", crop_frames[0])
-
-
-    
+        # crop_frame = np.where(adaptive_img[:,:,None] == 0, [255,255,255], crop_frame)
+        # crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
+        # crop_frame = np.where(adaptive_img[:,:,None] == 0, full_img, crop_frame)
