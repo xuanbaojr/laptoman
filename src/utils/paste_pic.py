@@ -69,8 +69,8 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         adaptive_img = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 45, 30)
         array_1, array_2 = (np.where(adaptive_img == 0))
         array = np.column_stack((array_1, array_2))
-        # for x,y in array:
-        #     crop_frame[x,y] = [255,255,255]
+        for x,y in array:
+            crop_frame[x,y] = [255,255,255]
         #     crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
 
         crop_frame = crop_frame.astype(np.uint8)
