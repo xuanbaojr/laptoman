@@ -18,6 +18,9 @@ adaptive_threshold_image = cv2.adaptiveThreshold(image_test, 255, cv2.ADAPTIVE_T
 # This will set pixels to [110, 255, 0] where adaptive_threshold_image is 0, 
 # otherwise it will keep the original values from `image`
 image = np.where(adaptive_threshold_image[:, :, None] == 0, [255, 255, 255], image)
+image = np.where(adaptive_threshold_image[:, :, None] == 0, [112,110,254], image)
+
+        
 image_[np.where(adaptive_threshold_image == 0)] = [255,255,255]
 #image = np.where(image[:, :, :] == [110,255,0], backgound, image)
 
