@@ -8,6 +8,7 @@ from src.utils.videoio import save_video_with_watermark
 def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path, body_h, body_w):
 
     print("head_video", head_video)
+    
     print("body_video", body_video)
     if not os.path.isfile(head_video):
         print('ko thay file')
