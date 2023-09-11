@@ -277,11 +277,13 @@ class AnimateFromCoeff():
         return_path = paste_vid(path, path_test, crop_info, new_audio_path, final_video_path, body_h, body_w)
 
         
-
+        video_name_enhancer = x['video_name']  + '_enhanced.mp4'
+        enhanced_path = os.path.join(video_save_dir, 'temp_'+video_name_enhancer)
+        av_path_enhancer = os.path.join(video_save_dir, video_name_enhancer) 
         if enhancer:
-            video_name_enhancer = x['video_name']  + '_enhanced.mp4'
-            enhanced_path = os.path.join(video_save_dir, 'temp_'+video_name_enhancer)
-            av_path_enhancer = os.path.join(video_save_dir, video_name_enhancer) 
+            # video_name_enhancer = x['video_name']  + '_enhanced.mp4'
+            # enhanced_path = os.path.join(video_save_dir, 'temp_'+video_name_enhancer)
+            # av_path_enhancer = os.path.join(video_save_dir, video_name_enhancer) 
             return_path_ = av_path_enhancer
 
             try:
