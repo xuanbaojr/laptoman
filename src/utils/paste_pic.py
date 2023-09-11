@@ -66,7 +66,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         crop_frame[np.all(crop_frame == (0,0,0), axis=2)] = [255,255,255]
         img_blur = cv2.cvtColor(crop_frame, cv2.COLOR_BGR2GRAY)
         blur_img = cv2.blur(full_img, (49,49))
-        adaptive_img = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 45, 30)
+        adaptive_img = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 15, 65)
         array_1, array_2 = (np.where(adaptive_img == 0))
         array = np.column_stack((array_1, array_2))
         for x,y in array:
@@ -74,7 +74,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
         for x,y in array:
             if y < frame_w:
-                crop_frame[x,y+5:y+15] = np.copy(blur_img[x, y+5:y+15])
+                crop_frame[x,y:y+10] = np.copy(blur_img[x, y:y+10])
         crop_frame = crop_frame.astype(np.uint8)
       #  crop_frame = cv2.GaussianBlur(crop_frame, (15,15), 0)
         cv2.imwrite('haha.png',crop_frame[0])
