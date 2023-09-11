@@ -75,9 +75,9 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
                 crop_frame[x,y:y+15] = np.copy(full_img[x,y:y+15])
             else:
                 crop_frame[x,y:y-15] = np.copy(full_img[x,y:y-15])
-        crop_frame = np.where(adaptive_img[:,:,None] == 0, [255,255,255], crop_frame)
-        crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
-        crop_frame = np.where(adaptive_img[:,:,None] == 0, full_img, crop_frame)
+        # crop_frame = np.where(adaptive_img[:,:,None] == 0, [255,255,255], crop_frame)
+        # crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
+        # crop_frame = np.where(adaptive_img[:,:,None] == 0, full_img, crop_frame)
         crop_frame = crop_frame.astype(np.uint8)
       #  crop_frame = cv2.GaussianBlur(crop_frame, (15,15), 0)
         cv2.imwrite('haha.png',crop_frame[0])
