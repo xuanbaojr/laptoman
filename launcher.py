@@ -13,7 +13,7 @@ image_test = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 # Apply adaptive thresholding
 
-adaptive_threshold_image = cv2.adaptiveThreshold(image_test, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 15, 85)
+adaptive_threshold_image = cv2.adaptiveThreshold(image_test, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 21, 85)
 
 # This will set pixels to [110, 255, 0] where adaptive_threshold_image is 0, 
 # otherwise it will keep the original values from `image`
