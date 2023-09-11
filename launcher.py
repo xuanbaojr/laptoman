@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 
 # Read grayscale image
-image = cv2.imread('test/test.png')
-image_ = cv2.imread('test/test.png')
+image = cv2.imread('test/test5.png')
+image_ = cv2.imread('test/test5.png')
 
 # Changing black pixels to [110,255,0]
 image[np.all(image == [0,0,0], axis=2)] = [255,255,255]
