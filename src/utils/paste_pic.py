@@ -72,6 +72,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         crop_frame = np.where(adaptive_img[:,:,None] == 0, [112,110,254], crop_frame)
         crop_frame = crop_frame.astype(np.uint8)
       #  crop_frame = cv2.GaussianBlur(crop_frame, (15,15), 0)
+        cv2.imwrite('haha.png',crop_frame[0])
         out_tmp.write(crop_frame)
         
 
