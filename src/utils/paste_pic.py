@@ -59,7 +59,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'MP4V'), fps, (frame_w, frame_h))
     for crop_frame in tqdm(crop_frames, 'seamlessClone:'):
 
-        crop_frame = crop_frame.astype(np.uint8)
+        
         print("full_img dtype:", full_img.dtype)
         print("crop_frame dtype:", crop_frame.dtype)
 
@@ -74,7 +74,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         crop_frame = np.where(adaptive_img[:,:,None] == 0, [255,255,255], crop_frame)
         crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
         crop_frame = np.where(adaptive_img[:,:,None] == 0, blur_img, crop_frame)
-        
+        crop_frame = crop_frame.astype(np.uint8)
       #  crop_frame = cv2.GaussianBlur(crop_frame, (15,15), 0)
         out_tmp.write(crop_frame)
         
