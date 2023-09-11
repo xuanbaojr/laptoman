@@ -71,8 +71,10 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         array = np.column_stack((array_1, array_2))
         for x,y in array:
             crop_frame[x,y] = [110,110,255]
-       # crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
-
+        crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
+        for x,y in array:
+            if y < frame_w:
+                crop_frame[x,y+5:y+15] = np.copy(blur_img[x, y+5:y+15])
         crop_frame = crop_frame.astype(np.uint8)
       #  crop_frame = cv2.GaussianBlur(crop_frame, (15,15), 0)
         cv2.imwrite('haha.png',crop_frame[0])
