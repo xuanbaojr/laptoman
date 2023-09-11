@@ -71,7 +71,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         array = np.column_stack((array_1, array_2))
         for x,y in array:
             crop_frame[x,y] = [255,255,255]
-            crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
+        crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
 
         crop_frame = crop_frame.astype(np.uint8)
       #  crop_frame = cv2.GaussianBlur(crop_frame, (15,15), 0)
