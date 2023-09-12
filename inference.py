@@ -33,10 +33,12 @@ print(array)
 
 for x,y in array:
     if adaptive_threshold_image[x,y] == 0:
-        if y < w//2 and y > 15:
-            test3[x,y:y+15] = np.copy(test3[x,y-15:y])
-        if y > w // 2 and y < w - 15:
-            test3[x,y-15:y] = np.copy(test3[x,y:y+15])
+        if y < w//2:
+            y_l = y
+            test3[x,y:y+y_l] = np.copy(test3[x,y-y_l:y])
+        if y > w // 2 :
+            y_r = w - y
+            test3[x,y-y_r:y] = np.copy(test3[x,y:y+y_r])
 cv2.imwrite('test/test3_.png', test3)
 cv2.imwrite('test/test4_.png', test4_)
 cv2.imwrite('test/threshold_img.png', adaptive_threshold_image)

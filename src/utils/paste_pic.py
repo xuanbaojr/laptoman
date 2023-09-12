@@ -29,10 +29,11 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     array_crop_1, array_crop_2 = (np.where(adaptive_crop == 0))
     array_crop = np.column_stack((array_crop_1, array_crop_2))
     for x,y in array_crop:
-        if y < w//2 and y > 20:
-            full_img[x,y:y+15] = np.copy(full_img[x, y -15 : y])
-        if y > w//2 and y < w - 15:
-            full_img[x,y-15:y] =  np.copy(full_img[x, y:y+15])
+        if y < w//2:
+            full_img[x,y:y+y] = np.copy(full_img[x, 0 : y])
+        if y > w//2 :
+            y_r = w - y
+            full_img[x,y-y_r:y] =  np.copy(full_img[x, y:y_r])
     full_img = cv2.resize(full_img, (256,256))
     frame_w = full_img.shape[0]
     frame_h = full_img.shape[1]
