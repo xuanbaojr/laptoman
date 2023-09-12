@@ -27,9 +27,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     blur_crop = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
     adaptive_crop = cv2.adaptiveThreshold(blur_crop, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 35, 45)
 
-    adaptive_crop = adaptive_crop.astype(np.uint8)
-    kernel = np.ones((15,15), np.uint8)
-    adaptive_crop = cv2.dilate(adaptive_crop, kernel, iterations=1)
+
 
     array_crop_1, array_crop_2 = (np.where(adaptive_crop == 0))
     array_crop = np.column_stack((array_crop_1, array_crop_2))
@@ -87,6 +85,11 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         img_blur = cv2.cvtColor(crop_frame, cv2.COLOR_BGR2GRAY)
         blur_img = cv2.blur(full_img, (49,49))
         adaptive_img = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 35, 45)
+
+        adaptive_img = adaptive_img.astype(np.uint8)
+        kernel = np.ones((15,15), np.uint8)
+        adaptive_img = cv2.dilate(adaptive_img, kernel, iterations=1)  
+
         array_1, array_2 = (np.where(adaptive_img == 0))
         array = np.column_stack((array_1, array_2))
         
