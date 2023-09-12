@@ -82,10 +82,10 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         # mask = 255*np.ones(p.shape, p.dtype)
         # location = ((p.shape[0]) // 2, (p.shape[1]) // 2)
         # gen_img = cv2.seamlessClone(p, full_img, mask, location, cv2.NORMAL_CLONE)
-        crop_frame[np.all(crop_frame == (0,0,0), axis=2)] = [255,255,255]
+      #  crop_frame[np.all(crop_frame == (0,0,0), axis=2)] = [255,255,255]
         img_blur = cv2.cvtColor(crop_frame, cv2.COLOR_BGR2GRAY)
         blur_img = cv2.blur(full_img, (49,49))
-        adaptive_img = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 5, 10)
+        adaptive_img = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 35, 2)
 
         # adaptive_img = adaptive_img.astype(np.uint8)
         kernel = np.ones((2,2), np.uint8)
@@ -93,12 +93,11 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
         array_1, array_2 = (np.where(adaptive_img == 0))
         array = np.column_stack((array_1, array_2))
-        
-        # for x,y in array:
-        #     if y < frame_w//2:
-        #         crop_frame[x,y:y+15] = np.copy(full_img[x,y:y+15])
-        #     else:
-        #         crop_frame[x,y:y-15] = np.copy(full_img[x,y:y-15])
+
+        for i in range(frame_h):
+            for j in range(frame_w):
+                if(adaptive_img[i,j] == 0):
+                    crop_frame[i,0:j] = [255,255,255]
       #  crop_frame = np.where(adaptive_img[:,:,None] == 0, [255,255,255], crop_frame)
         crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
 
