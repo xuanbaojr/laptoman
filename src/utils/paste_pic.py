@@ -100,19 +100,19 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
     save_video_with_watermark(tmp_path, new_audio_path, full_video_path, watermark=False)
 
-    video_stream = cv2.VideoCapture(full_video_path)
-    fps = video_stream.get(cv2.CAP_PROP_FPS)
-    crop_frames = []
+#     video_stream = cv2.VideoCapture(full_video_path)
+#     fps = video_stream.get(cv2.CAP_PROP_FPS)
+#     crop_frames = []
 
-    while True:
-        still_reading, frame = video_stream.read()
-        if not still_reading:
-            video_stream.release()
-            break
-        crop_frames.append(frame)
+#     while True:
+#         still_reading, frame = video_stream.read()
+#         if not still_reading:
+#             video_stream.release()
+#             break
+#         crop_frames.append(frame)
 
-# In frame đầu tiên để debug (chú ý: đoạn này có thể tạo ra output lớn tùy thuộc vào kích thước của frame)
-    print("Frame đầu tiên:", crop_frames[0])
+# # In frame đầu tiên để debug (chú ý: đoạn này có thể tạo ra output lớn tùy thuộc vào kích thước của frame)
+#     print("Frame đầu tiên:", crop_frames[0])
         # crop_frame = np.where(adaptive_img[:,:,None] == 0, [255,255,255], crop_frame)
         # crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
         # crop_frame = np.where(adaptive_img[:,:,None] == 0, full_img, crop_frame)
