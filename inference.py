@@ -22,7 +22,7 @@ test3_ = cv2.imread(source_image)
 test3_blur = cv2.blur(test3, (51,51))
 test4[np.all(test4 == [0,0,0], axis=2)] = [255,255,255]
 blur_img = cv2.cvtColor(test4, cv2.COLOR_BGR2GRAY)
-adaptive_threshold_image = cv2.adaptiveThreshold(blur_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 45, 50)
+adaptive_threshold_image = cv2.adaptiveThreshold(blur_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 45, 65)
 #test3_ = np.where(adaptive_threshold_image[:,:,None] == 0, [255,255,255], test3)
 
 #test4[np.where(adaptive_threshold_image == 0)] = [110,255,255]
@@ -33,10 +33,9 @@ print(array)
 
 for x,y in array:
     if adaptive_threshold_image[x,y] == 0:
-        if y < w//2:
-            if ((test4[x,y] + test4[x,y-1] + test4[x,y-2] ) % 255 == 0).all():
-                test4_[x,y] = [255,255,255]
-cv2.imwrite('test/test3_.png', test3_)
+        if y < w//2 and y > 15:
+            test3[x,y:y+15] = np.copy(test3[x,y-15:y])
+cv2.imwrite('test/test3_.png', test3)
 cv2.imwrite('test/test4_.png', test4_)
 cv2.imwrite('test/threshold_img.png', adaptive_threshold_image)
 
