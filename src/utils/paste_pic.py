@@ -28,7 +28,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     adaptive_crop = cv2.adaptiveThreshold(blur_crop, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 35, 45)
 
     adaptive_crop = adaptive_crop.astype(np.uint8)
-    kernel = np.ones((5,5), np.uint8)
+    kernel = np.ones((10,10), np.uint8)
     adaptive_crop = cv2.dilate(adaptive_crop, kernel, iterations=1)
 
     array_crop_1, array_crop_2 = (np.where(adaptive_crop == 0))
