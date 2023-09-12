@@ -10,7 +10,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
 
     full_img = cv2.imread(pic_path)
-    full_img = (np.zeros_like(full_img))
+    full_img = np.subtract((np.zeros_like(full_img)), 40 )
     
     
     # w,h = full_img.shape[:2]
