@@ -10,33 +10,34 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
 
     full_img = cv2.imread(pic_path)
+    full_img = (np.zeros_like(full_img))
     
     
-    w,h = full_img.shape[:2]
+    # w,h = full_img.shape[:2]
 
-    output_path = './test/test4.png'
+    # output_path = './test/test4.png'
 
-    with open(pic_path, 'rb') as i:
-        with open(output_path, 'wb') as o:
-            input = i.read()
-            output = remove(input)
-            o.write(output)
-    crop_img = cv2.imread(output_path)
+    # with open(pic_path, 'rb') as i:
+    #     with open(output_path, 'wb') as o:
+    #         input = i.read()
+    #         output = remove(input)
+    #         o.write(output)
+    # crop_img = cv2.imread(output_path)
 
-    crop_img[np.all(crop_img == [0,0,0], axis = 2)] = [255,255,255]
-    blur_crop = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
-    adaptive_crop = cv2.adaptiveThreshold(blur_crop, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 35, 45)
+    # crop_img[np.all(crop_img == [0,0,0], axis = 2)] = [255,255,255]
+    # blur_crop = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
+    # adaptive_crop = cv2.adaptiveThreshold(blur_crop, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 35, 45)
 
 
 
-    array_crop_1, array_crop_2 = (np.where(adaptive_crop == 0))
-    array_crop = np.column_stack((array_crop_1, array_crop_2))
-    for x,y in array_crop:
-        if y < w//2:
-            full_img[x,y:y+y] = np.copy(np.fliplr(full_img[x, 0 : y]))
-        if y > w//2  and y < w :
-            y_r = w - y
-            full_img[x,y-y_r + 1:y] =  np.copy(np.fliplr(full_img[x, y:y + y_r -1]))
+    # array_crop_1, array_crop_2 = (np.where(adaptive_crop == 0))
+    # array_crop = np.column_stack((array_crop_1, array_crop_2))
+    # for x,y in array_crop:
+    #     if y < w//2:
+    #         full_img[x,y:y+y] = np.copy(np.fliplr(full_img[x, 0 : y]))
+    #     if y > w//2  and y < w :
+    #         y_r = w - y
+    #         full_img[x,y-y_r + 1:y] =  np.copy(np.fliplr(full_img[x, y:y + y_r -1]))
     full_img = cv2.resize(full_img, (256,256))
     frame_w = full_img.shape[0]
     frame_h = full_img.shape[1]
