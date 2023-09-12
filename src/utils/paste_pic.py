@@ -12,8 +12,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     full_img = cv2.imread(pic_path)
     
     
-    frame_w = full_img.shape[0]
-    frame_h = full_img.shape[1]
+    w,h = full_img.shape[:2]
 
     output_path = './test/test4.png'
 
@@ -30,10 +29,12 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     array_crop_1, array_crop_2 = (np.where(adaptive_crop == 0))
     array_crop = np.column_stack((array_crop_1, array_crop_2))
     for x,y in array_crop:
-        if y < frame_w//2 and y > 20:
+        if y < w//2 and y > 20:
             full_img[x,y:y+15] = np.copy(full_img[x, y -15 : y])
 
     full_img = cv2.resize(full_img, (256,256))
+    frame_w = full_img.shape[0]
+    frame_h = full_img.shape[1]
     full_img = full_img.astype(np.uint8)
     cv2.imwrite('./test/full_img.png', full_img)
 
