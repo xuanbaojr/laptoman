@@ -20,15 +20,15 @@ adaptive_threshold_image = cv2.adaptiveThreshold(image_test, 255, cv2.ADAPTIVE_T
 # This will set pixels to [110, 255, 0] where adaptive_threshold_image is 0, 
 # otherwise it will keep the original values from `image`
 #image = np.where(adaptive_threshold_image[:, :, None] == 0, [255, 255, 255], image)
-image = np.where(adaptive_threshold_image[:, :, None] == 0, [112,110,254], image)
-
+#image = np.where(adaptive_threshold_image[:, :, None] == 0, [112,110,254], image)
 array_1, array_2 = (np.where(adaptive_threshold_image == 0))
 array = np.column_stack((array_1, array_2))
-for x in range(h):
-    for y in range(w):
-        if np.array_equal(image[x,y], [112,110,254]):
-            image[x,0:y] = [255,255,255]
-            break
+kernel = np.ones((2,2), np.uint8)
+
+adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations=10)
+image = np.where(adaptive_threshold_image[:, :, None] == 0, [255, 255, 255], image)
+
+
 
 cv2.imwrite('test/result_img.png', image)
 cv2.imwrite('test/threshold.png',adaptive_threshold_image)

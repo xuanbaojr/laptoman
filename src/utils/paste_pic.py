@@ -94,16 +94,12 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         array_1, array_2 = (np.where(adaptive_img == 0))
         array = np.column_stack((array_1, array_2))
 
-        for i in range(frame_h):
-            for j in range(frame_w):
-                if(adaptive_img[i,j] == 0):
-                    crop_frame[i,0:j] = np.copy(full_img[i,0:j])
-                    break
-      #  crop_frame = np.where(adaptive_img[:,:,None] == 0, [255,255,255], crop_frame)
-        crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
+        adaptive_img = cv2.dilate(adaptive_img, kernel, iterations=10)
 
+      #  crop_frame = np.where(adaptive_img[:,:,None] == 0, [255,255,255], crop_frame)
+        crop_frame = np.where(crop_frame[:,:,:] == [0,0,0], full_img, crop_frame)
         crop_frame = np.where(adaptive_img[:,:,None] == 0, full_img, crop_frame)
-        crop_frame = cv2.dilate(crop_frame, kernel, iterations= 1)
+
         crop_frame = crop_frame.astype(np.uint8)
       #  crop_frame = cv2.GaussianBlur(crop_frame, (15,15), 0)
         cv2.imwrite('haha.png',adaptive_img)
