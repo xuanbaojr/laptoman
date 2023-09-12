@@ -31,7 +31,8 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     for x,y in array_crop:
         if y < w//2 and y > 20:
             full_img[x,y:y+15] = np.copy(full_img[x, y -15 : y])
-
+        if y > w//2 and y < w - 15:
+            full_img[x,y-15:y] =  np.copy(full_img[x, y:y+15])
     full_img = cv2.resize(full_img, (256,256))
     frame_w = full_img.shape[0]
     frame_h = full_img.shape[1]
