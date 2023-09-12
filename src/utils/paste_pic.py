@@ -81,7 +81,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         crop_frame[np.all(crop_frame == (0,0,0), axis=2)] = [255,255,255]
         img_blur = cv2.cvtColor(crop_frame, cv2.COLOR_BGR2GRAY)
         blur_img = cv2.blur(full_img, (49,49))
-        adaptive_img = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 15, 65)
+        adaptive_img = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 35, 45)
         array_1, array_2 = (np.where(adaptive_img == 0))
         array = np.column_stack((array_1, array_2))
         
