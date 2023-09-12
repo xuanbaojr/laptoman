@@ -88,7 +88,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         adaptive_img = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 21, 2)
 
         # adaptive_img = adaptive_img.astype(np.uint8)
-        # kernel = np.ones((30,30), np.uint8)
+        kernel = np.ones((30,30), np.uint8)
         # adaptive_img = cv2.dilate(adaptive_img, kernel, iterations=1)  
 
         array_1, array_2 = (np.where(adaptive_img == 0))
@@ -101,6 +101,8 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         #         crop_frame[x,y:y-15] = np.copy(full_img[x,y:y-15])
       #  crop_frame = np.where(adaptive_img[:,:,None] == 0, [255,255,255], crop_frame)
         crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
+        crop_frame = cv2.cvtColor(crop_frame, cv2.COLOR_BGR2GRAY)
+        crop_frame = cv2.dilate(crop_frame, kernel, iterations= 1)
       #  crop_frame = np.where(adaptive_img[:,:,None] == 0, full_img, crop_frame)
         crop_frame = crop_frame.astype(np.uint8)
       #  crop_frame = cv2.GaussianBlur(crop_frame, (15,15), 0)
