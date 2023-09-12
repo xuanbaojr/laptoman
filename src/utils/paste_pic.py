@@ -25,7 +25,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
     crop_img[np.all(crop_img == [0,0,0], axis = 2)] = [255,255,255]
     blur_crop = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
-    adaptive_crop = cv2.adaptiveThreshold(blur_crop, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 15, 45)
+    adaptive_crop = cv2.adaptiveThreshold(blur_crop, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 35, 45)
 
 
 
@@ -87,7 +87,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         adaptive_img = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 45, 45)
 
         adaptive_img = adaptive_img.astype(np.uint8)
-        kernel = np.ones((15,15), np.uint8)
+        kernel = np.ones((1,1), np.uint8)
         adaptive_img = cv2.dilate(adaptive_img, kernel, iterations=1)  
 
         array_1, array_2 = (np.where(adaptive_img == 0))
