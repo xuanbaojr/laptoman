@@ -30,7 +30,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     array_crop_1, array_crop_2 = (np.where(adaptive_crop == 0))
     array_crop = np.column_stack((array_crop_1, array_crop_2))
     for x,y in array_crop:
-        if y < frame_w/2 and y > 15:
+        if y < frame_w/2 and y > 20:
             full_img[x,y:y+15] = np.copy(full_img[x, y -15 : y])
 
     full_img = full_img.astype(np.uint8)
