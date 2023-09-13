@@ -10,7 +10,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
 
     full_img = cv2.imread(pic_path)
-    full_img = np.subtract((np.zeros_like(full_img)), 40 )
+   # full_img = np.subtract((np.zeros_like(full_img)), 40 )
     
     
     # w,h = full_img.shape[:2]
@@ -88,7 +88,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         adaptive_img = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 45, 2)
 
         # adaptive_img = adaptive_img.astype(np.uint8)
-        kernel = np.ones((2,2), np.uint8)
+        kernel = np.ones((2,1), np.uint8)
        # adaptive_img = cv2.dilate(adaptive_img, kernel, iterations=1)  
 
         array_1, array_2 = (np.where(adaptive_img == 0))
