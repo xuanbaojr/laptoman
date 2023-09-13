@@ -96,9 +96,20 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
         adaptive_img = cv2.dilate(adaptive_img, kernel, iterations=10)
 
-      #  crop_frame = np.where(adaptive_img[:,:,None] == 0, [255,255,255], crop_frame)
-        crop_frame = np.where(crop_frame[:,:,:] == [0,0,0], full_img, crop_frame)
-        crop_frame = np.where(adaptive_img[:,:,None] == 0, full_img, crop_frame)
+        contour_img = adaptive_img.copy()
+        contours, _ = cv2.findContours(contour_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        largest_contour = max(contours, key=cv2.contourArea)
+
+        mask = np.zeros((frame_h+2, frame_w+2), dtype=np.uint8)
+        cv2.drawContours(crop_frame, [largest_contour], 0, (255, 0, 0), 3)
+        loDiff = (50, 50, 255)
+        upDiff = (50, 50, 255)
+        cv2.floodFill(crop_frame, mask, (0, 0), (255, 255, 255), loDiff, upDiff)
+
+# test4[np.where(np.all(contour_img_color == [100, 255, 0], axis = 2))] = [0,0,0]
+        crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, test4)
+        crop_frame = np.where(crop_frame[:,:,:] == [255,0,0], full_img, crop_frame)
+
 
         crop_frame = crop_frame.astype(np.uint8)
       #  crop_frame = cv2.GaussianBlur(crop_frame, (15,15), 0)
