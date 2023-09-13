@@ -107,7 +107,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         cv2.floodFill(crop_frame, mask, (0, 0), (255, 255, 255), loDiff, upDiff)
 
 # test4[np.where(np.all(contour_img_color == [100, 255, 0], axis = 2))] = [0,0,0]
-        crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, test4)
+        crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
         crop_frame = np.where(crop_frame[:,:,:] == [255,0,0], full_img, crop_frame)
 
 
