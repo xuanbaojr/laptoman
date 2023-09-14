@@ -3,7 +3,7 @@ import numpy as np
 from src.inference import SadTalker
 def sadtalker_demo(source_image, driven_audio, checkpoint_path='checkpoints', config_path='src/config', warpfn=None):
     img = np.zeros((60,60))
-    cv2.imwrite("test/haha.png", img)
+    cv2.imwrite("haha.png", img)
    
     # sad_talker = SadTalker(checkpoint_path, config_path, lazy_load=True)
 
