@@ -42,7 +42,7 @@ def crop_full(full_video_path, crop_info, new_audio_path, av_path):
         # clx = int(clx - min(clx,w-crx)/rate)
         # cly = int(cly - min(cly,h-cry)/rate_)
         # cry = min(int(cry + (cry - cly)/rate_), h)
-        # crop_frame = crop_frame[cly:cry, clx:crx]
+        crop_frame = crop_frame[0:h, 0:w]
 
         out_tmp.write(crop_frame)
 
