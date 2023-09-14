@@ -10,8 +10,7 @@ def sadtalker_demo(source_image, driven_audio, checkpoint_path='checkpoints', co
     else:
         print("Source_image is not exits!")
 
-    preprocess = "full"    
-    result = sad_talker.test(source_image, driven_audio, preprocess, still_mode = False, use_enhancer = False)
+    result = sad_talker.test(source_image, driven_audio, preprocess, still_mode, use_enhancer = False)
     return result
     
 
@@ -19,7 +18,8 @@ if __name__ == "__main__":
 
     source_image = 'test/art_0.jpg'
     driven_audio = 'test/test_vi.wav'
-    demo = sadtalker_demo(source_image, driven_audio)
+    preprocess = "crop"
+    still_mode = "False"
+    demo = sadtalker_demo(source_image, driven_audio, preprocess, still_mode)
     print(demo)
 
-# sinh -> chu dong sinh ko background
