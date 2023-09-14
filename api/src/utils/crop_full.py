@@ -13,6 +13,8 @@ def crop_full(full_video_path, crop_info, new_audio_path, av_path):
     rate = 8
     rate_ = 5
 
+    if not os.path.isfile(full_video_path):
+        print("ko co video")
 
     video_stream = cv2.VideoCapture(full_video_path)
     fps = video_stream.get(cv2.CAP_PROP_FPS)
@@ -23,6 +25,7 @@ def crop_full(full_video_path, crop_info, new_audio_path, av_path):
             video_stream.release()
             break 
         full_frames.append(frame) 
+
 
     h,w = full_frames[0].shape[:2]
 #---------------------------------------------------------------------------------------
