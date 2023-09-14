@@ -11,7 +11,6 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     print(crop_info)
     video_path = './test/video.mp4'
     pic_path = './test/art_0.png'
-
     full_img = cv2.imread(pic_path)
     if not os.path.isfile(pic_path):
         print("ko co file")
@@ -49,6 +48,9 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     full_img = full_img.astype(np.uint8)
     cv2.imwrite('./test/full_img.png', full_img)
     test3 = cv2.imread('./test/full_img.png')
+    test3 = cv2.resize(test3, (256,256))
+ #   test3_ = np.ones_like(test3)*120
+
 
 
 
@@ -63,34 +65,24 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         crop_frames.append(frame)
     
     print("crop_frame", crop_frames[0].shape)
-    
-    if len(crop_info) != 3:
-        print("you didn't crop the image")
-        return
-    else:
-        r_w, r_h = crop_info[0]
-        clx, cly, crx, cry = crop_info[1]
-        lx, ly, rx, ry = crop_info[2]
-        lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
-        # oy1, oy2, ox1, ox2 = cly+ly, cly+ry, clx+lx, clx+rx
-        # oy1, oy2, ox1, ox2 = cly+ly, cly+ry, clx+lx, clx+rx
+    cv2.imwrite('./test/haha.png', crop_frames[0])
 
-        if extended_crop:
-            oy1, oy2, ox1, ox2 = cly, cry, clx, crx
-        else:
-            oy1, oy2, ox1, ox2 = cly+ly, cly+ry, clx+lx, clx+rx
-
-   # tmp_path = str(uuid.uuid4())+'.mp4'
     tmp_path = './test/output.mp4'
     out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'XVID'), fps, (w, h))
-    for crop_frame in tqdm(crop_frames, 'seamlessClone:'):
 
-        test4 = cv2.resize(crop_frame, (256,256))
+    for frame in tqdm(crop_frames, 'SeamlessClone:'):
+     #   test4 = cv2.imread('test/haha.png')
+        test4 = cv2.resize(frame, (256,256))
+        test4 = cv2.resize(frame, (256,256))
    #     test4_temp = cv2.imread(output_path)
         test4_temp = cv2.resize(test4, (256,256))
 
         blur_img = cv2.cvtColor(test4, cv2.COLOR_BGR2GRAY)
         adaptive_threshold_image = cv2.adaptiveThreshold(blur_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 45, 2)
+        #test3_ = np.where(adaptive_threshold_image[:,:,None] == 0, [255,255,255], test3)
+        #test4[np.where(adaptive_threshold_image == 0)] = [110,255,255]
+
+
 
         kernel = np.ones((2,1), np.uint8)
         adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 10)
@@ -98,6 +90,8 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
         #     adaptive_threshold_image[h-1-i, 0:w-1] = 255
         cv2.imwrite('test/threshold_img.png', adaptive_threshold_image)
+
+
         # ...
         contour_img = adaptive_threshold_image.copy()
         contours, _ = cv2.findContours(contour_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -118,6 +112,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         # Tạo danh sách tọa độ
         points = list(zip(indices[0], indices[1]))
 
+        # comprehension
         array_y = []
         for x in range(w):
             col_indices = [point for point in points if point[1] == x]
@@ -138,6 +133,10 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
         cv2.imwrite('test/test4_draw_array.png', test4)
 
+
+
+
+
         loDiff = (10, 20, 20)
         upDiff = (255, 255, 254)
         cv2.floodFill(test4, mask, (0, 0), (255, 255, 255), loDiff, upDiff)
@@ -152,10 +151,14 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
         #   test4 = np.where(test4[:,:,:] == [255,0,0], test3, test4)
 
-     #   cv2.imwrite('test/contour.png', test3)
+        cv2.imwrite('test/contour.png', test3)
         cv2.imwrite('test/test4_.png', test4_temp)
-        
 
+
+
+
+        
+        out_tmp.write(test4_temp)
     out_tmp.release()
 
    # save_video_with_watermark(tmp_path, new_audio_path, full_video_path, watermark=False)
