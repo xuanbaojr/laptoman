@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from rembg import remove
 
-source_image = 'test/full3.png'
+source_image = 'test/art_9.png'
 output_path = 'test/test4.png'
 
 with open(source_image, 'rb') as i:
@@ -78,14 +78,14 @@ cv2.imwrite('test/test4_draw_array.png', test4)
 
 
 
-loDiff = (0, 0, 0)
+loDiff = (1, 20, 20)
 upDiff = (255, 255, 254)
 cv2.floodFill(test4, mask, (0, 0), (255, 255, 255), loDiff, upDiff)
 cv2.imwrite('test/test4_fill.png', test4)
 
 test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))] = np.copy(test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))])
-test4_temp[np.where(np.all(test4 == [255, 255, 255], axis = 2))] = np.copy(test3[np.where(np.all(test4 == [255, 255, 255], axis = 2))])
-test4_temp[np.where(np.all(test4 == [0, 0, 255], axis = 2))] = np.copy(test3[np.where(np.all(test4 == [0, 0, 255], axis = 2))])
+test4_temp[np.where(np.all(test4 == [255, 255, 255], axis = 2))] = np.copy(test3_[np.where(np.all(test4 == [255, 255, 255], axis = 2))])
+test4_temp[np.where(np.all(test4 == [0, 0, 255], axis = 2))] = np.copy(test3_[np.where(np.all(test4 == [0, 0, 255], axis = 2))])
 
 # test4 = np.where(test4[:,:,:] == [255,255,255], test3, test4)
 
