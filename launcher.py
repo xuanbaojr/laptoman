@@ -85,6 +85,8 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
 
         kernel = np.ones((2,1), np.uint8)*200
         adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 10)
+      #  adaptive_threshold_image[:, 0] = 255
+        
         # for i in range(5):
 
         #     adaptive_threshold_image[h-1-i, 0:w-1] = 255
@@ -99,7 +101,10 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
         # Tạo bản sao 3 kênh của adaptive_threshold_image
         mask = np.zeros((h+2, w+2), dtype=np.uint8)
         cv2.drawContours(test4, [largest_contour], 0, (255, 0, 0), thickness=1)
-        cv2.imwrite('test/test4_draw.png', test4)
+
+        if (test4[0,0] == [255,0,0]).all():
+            cv2.imwrite('test/test4_draw.png', test4)
+            break
 
         #.....
 
@@ -131,6 +136,7 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
             test4[y, x] = [100, 100, 255]
 
         cv2.imwrite('test/test4_draw_array.png', test4)
+
 
 
 
