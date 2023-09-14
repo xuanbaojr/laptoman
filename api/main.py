@@ -1,5 +1,4 @@
 import os, cv2
-import numpy as np
 from src.inference import SadTalker
 def sadtalker_demo(source_image, driven_audio, checkpoint_path='checkpoints', config_path='src/config', warpfn=None):
     

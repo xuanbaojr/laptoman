@@ -72,7 +72,7 @@ class SadTalker:
         os.makedirs(input_dir, exist_ok=True)
         # chuyen anh folder goc qua result/timetag/input/source_image.png
         pic_path = os.path.join(input_dir, os.path.basename(source_image))
-        shutil.move(source_image, input_dir)
+        shutil.copy(source_image, input_dir)
 
         # audio_path
         if driven_audio is not None and os.path.isfile(driven_audio):
@@ -83,7 +83,7 @@ class SadTalker:
                 mp3_to_wav(driven_audio, audio_path.replace(".mp3", ".wav"), 16000)
                 audio_path = audio_path.replace(".mp3", ".wav")
             else:
-                shutil.move(driven_audio, input_dir)
+                shutil.copy(driven_audio, input_dir)
 
         # first_frame_dir 
         first_frame_dir = os.path.join(save_dir, "first_frame_dir")
