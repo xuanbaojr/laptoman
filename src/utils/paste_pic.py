@@ -49,6 +49,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     cv2.imwrite('./test/full_img.png', full_img)
     test3 = cv2.imread('./test/full_img.png')
     test3 = cv2.resize(test3, (256,256))
+    test3_blur = cv2.blur(test3, (51,51))
     test3_ = np.ones_like(test3)*120
 
 
@@ -85,7 +86,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
 
         kernel = np.ones((2,1), np.uint8)
-        adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 10)
+        adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 11)
         # for i in range(5):
 
         #     adaptive_threshold_image[h-1-i, 0:w-1] = 255
@@ -146,7 +147,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
         test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))] = np.copy(test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))])
         test4_temp[np.where(np.all(test4 == [255, 255, 255], axis = 2))] = np.copy(test3_[np.where(np.all(test4 == [255, 255, 255], axis = 2))])
-        test4_temp[np.where(np.all(test4 == [100, 100, 255], axis = 2))] = np.copy(test3_[np.where(np.all(test4 == [100, 100, 255], axis = 2))])
+        test4_temp[np.where(np.all(test4 == [100, 100, 255], axis = 2))] = np.copy(test3_blur[np.where(np.all(test4 == [100, 100, 255], axis = 2))])
 
         # test4 = np.where(test4[:,:,:] == [255,255,255], test3, test4)
 

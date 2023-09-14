@@ -84,7 +84,7 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
 
 
         kernel = np.ones((2,1), np.uint8)
-        adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 10)
+        adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 11)
         
         
       #  adaptive_threshold_image[:, 0] = 255
