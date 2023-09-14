@@ -78,7 +78,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         test4_temp = cv2.resize(test4, (256,256))
 
         blur_img = cv2.cvtColor(test4, cv2.COLOR_BGR2GRAY)
-        adaptive_threshold_image = cv2.adaptiveThreshold(blur_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 35, 2)
+        adaptive_threshold_image = cv2.adaptiveThreshold(blur_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 37, 3)
         #test3_ = np.where(adaptive_threshold_image[:,:,None] == 0, [255,255,255], test3)
         #test4[np.where(adaptive_threshold_image == 0)] = [110,255,255]
 
