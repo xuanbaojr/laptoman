@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from rembg import remove
 
-source_image = 'test/art_9.png'
+source_image = 'test/full3.png'
 output_path = 'test/test4.png'
 
 with open(source_image, 'rb') as i:
