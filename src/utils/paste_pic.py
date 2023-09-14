@@ -138,7 +138,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
 
         loDiff = (0, 0, 0)
-        upDiff = (90, 90, 254)
+        upDiff = (80, 80, 80)
         cv2.floodFill(test4, mask, (w-1, 0), (255, 255, 255), loDiff, upDiff)
         cv2.floodFill(test4, mask, (0, 0), (255, 255, 255), loDiff, upDiff)
 
