@@ -44,7 +44,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     h = full_img.shape[1]
     full_img = full_img.astype(np.uint8)
     cv2.imwrite('./test/full_img.png', full_img)
-    test3 = cv2.imread(full_img)
+    test3 = cv2.imread('./test/full_img.png')
 
 
 
