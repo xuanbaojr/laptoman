@@ -305,10 +305,11 @@ class AnimateFromCoeff:
         save_video_with_watermark(path, new_audio_path, av_path, watermark=False)
         print(f"The generated video is named {video_save_dir}/{video_name}")
 
+        full_video_path = os.path.join(video_save_dir, video_name_full)
         if "full" in preprocess.lower():
             # only add watermark to the full image.
             video_name_full = x["video_name"] + "_full.mp4"
-            full_video_path = os.path.join(video_save_dir, video_name_full)
+            
             return_path = full_video_path
             paste_pic(
                 path,
