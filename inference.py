@@ -70,7 +70,7 @@ for y in range(h):
 unique_points = set(array_x + array_y)
 
 for y, x in unique_points:
-    test4[y, x] = [0, 0, 255]
+    test4[y, x] = [100, 100, 255]
 
 cv2.imwrite('test/test4_draw_array.png', test4)
 cv2.imshow('haha', test4)
@@ -81,8 +81,8 @@ cv2.destroyAllWindows()
 
 
 
-loDiff = (1, 20, 20)
-upDiff = (255, 255, 254)
+loDiff = (0, 0, 0)
+upDiff = (80, 80, 254)
 cv2.floodFill(test4, mask, (0, 0), (255, 255, 255), loDiff, upDiff)
 cv2.floodFill(test4, mask, (w-1, 0), (255, 255, 255), loDiff, upDiff)
 cv2.imwrite('test/test4_fill.png', test4)

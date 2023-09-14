@@ -128,7 +128,7 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
 
 
         for y, x in unique_points:
-            test4[y, x] = [21, 60, 255]
+            test4[y, x] = [100, 100, 255]
 
         cv2.imwrite('test/test4_draw_array.png', test4)
         cv2.imshow("haha",test4)
@@ -139,7 +139,7 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
 
 
         loDiff = (0, 0, 0)
-        upDiff = (20, 20, 254)
+        upDiff = (80, 80, 254)
         cv2.floodFill(test4, mask, (0, 0), (255, 255, 255), loDiff, upDiff)
         cv2.imwrite('test/test4_fill.png', test4)
 
