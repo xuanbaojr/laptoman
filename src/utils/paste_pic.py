@@ -11,6 +11,8 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     print(crop_info)
 
     full_img = cv2.imread(pic_path)
+    if not os.path.isfile(pic_path):
+        print("ko co file")
    # full_img = np.subtract((np.zeros_like(full_img)), 40 )
     
     
@@ -76,7 +78,8 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         else:
             oy1, oy2, ox1, ox2 = cly+ly, cly+ry, clx+lx, clx+rx
 
-    tmp_path = str(uuid.uuid4())+'.mp4'
+   # tmp_path = str(uuid.uuid4())+'.mp4'
+    tmp_path = './test/output.mp4'
     out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'XVID'), fps, (w, h))
     for crop_frame in tqdm(crop_frames, 'seamlessClone:'):
 

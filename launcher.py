@@ -47,8 +47,8 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
     cv2.imwrite('./test/full_img.png', full_img)
     test3 = cv2.imread('./test/full_img.png')
     test3 = cv2.resize(test3, (256,256))
-    test3_ = np.ones_like(test3)*120
-    test3_blur = cv2.blur(test3, (51,51))
+ #   test3_ = np.ones_like(test3)*120
+
 
 
 
