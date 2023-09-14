@@ -29,20 +29,23 @@ def crop_full(full_video_path, crop_info, new_audio_path, av_path):
 
     h,w = full_frames[0].shape[:2]
 #---------------------------------------------------------------------------------------
+    clx, cly, crx, cry = crop_info[1]
+    crx = int(crx + min(clx,w-crx)/rate)
+    clx = int(clx - min(clx,w-crx)/rate)
+    cly = int(cly - min(cly,h-cry)/rate_)
+    cry = min(int(cry + (cry - cly)/rate_), h)
 
+    new_w = crx - clx
+    new_h = cry - cly
     tmp_path = str(uuid.uuid4()) + ".mp4"
     out_tmp = cv2.VideoWriter(
-        tmp_path, cv2.VideoWriter_fourcc(*"MP4V"), fps, (w, h)
+        tmp_path, cv2.VideoWriter_fourcc(*"MP4V"), fps, (new_w, new_h)
     )
     for crop_frame in tqdm(full_frames, "cropFromFull:"):
 
-        # clx, cly, crx, cry = crop_info[1]
 
-        # crx = int(crx + min(clx,w-crx)/rate)
-        # clx = int(clx - min(clx,w-crx)/rate)
-        # cly = int(cly - min(cly,h-cry)/rate_)
-        # cry = min(int(cry + (cry - cly)/rate_), h)
-        crop_frame = crop_frame[0:h-1, 0:w]
+
+        crop_frame = crop_frame[cly:cry, clx:crx]
 
         out_tmp.write(crop_frame)
 
