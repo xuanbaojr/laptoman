@@ -146,7 +146,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         cv2.imwrite('test/test4_fill.png', test4)
 
         test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))] = np.copy(test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))])
-        test4_temp[np.where(np.all(test4 == [255, 255, 255], axis = 2))] = np.copy(test3_[np.where(np.all(test4 == [255, 255, 255], axis = 2))])
+        test4_temp[np.where(np.all(test4 == [255, 255, 255], axis = 2))] = np.copy(test3[np.where(np.all(test4 == [255, 255, 255], axis = 2))])
         test4_temp[np.where(np.all(test4 == [100, 100, 255], axis = 2))] = np.copy(test3_blur[np.where(np.all(test4 == [100, 100, 255], axis = 2))])
 
         # test4 = np.where(test4[:,:,:] == [255,255,255], test3, test4)
