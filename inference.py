@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from rembg import remove
 
-source_image = 'test/full3.png'
+source_image = 'test/art_0.png'
 output_path = 'test/test4.png'
 
 with open(source_image, 'rb') as i:
@@ -73,6 +73,9 @@ for y, x in unique_points:
     test4[y, x] = [0, 0, 255]
 
 cv2.imwrite('test/test4_draw_array.png', test4)
+cv2.imshow('haha', test4)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
 
 

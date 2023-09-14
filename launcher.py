@@ -128,7 +128,7 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
 
 
         for y, x in unique_points:
-            test4[y, x] = [21, 21, 255]
+            test4[y, x] = [21, 60, 255]
 
         cv2.imwrite('test/test4_draw_array.png', test4)
         cv2.imshow("haha",test4)
