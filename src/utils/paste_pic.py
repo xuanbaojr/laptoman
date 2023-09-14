@@ -77,7 +77,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
             oy1, oy2, ox1, ox2 = cly+ly, cly+ry, clx+lx, clx+rx
 
     tmp_path = str(uuid.uuid4())+'.mp4'
-    out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'MP4V'), fps, (w, h))
+    out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'XVID'), fps, (w, h))
     for crop_frame in tqdm(crop_frames, 'seamlessClone:'):
 
         test4 = cv2.resize(crop_frame, (256,256))
