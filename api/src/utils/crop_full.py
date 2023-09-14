@@ -23,7 +23,8 @@ def crop_full(full_video_path, crop_info, new_audio_path, av_path):
             video_stream.release()
             break 
         full_frames.append(frame) 
-    h,w = full_frames[0].shape[:1]
+
+    h,w = full_frames[0].shape[:2]
 #---------------------------------------------------------------------------------------
 
     tmp_path = str(uuid.uuid4()) + ".mp4"
