@@ -48,7 +48,7 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
     test3 = cv2.imread('./test/full_img.png')
     test3 = cv2.resize(test3, (256,256))
     test3_blur = cv2.blur(test3, (51,51))
- #   test3_ = np.ones_like(test3)*120
+    test3_ = np.ones_like(test3)*120
 
 
 
@@ -77,20 +77,22 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
         test4_temp = cv2.resize(test4, (256,256))
 
         blur_img = cv2.cvtColor(test4, cv2.COLOR_BGR2GRAY)
-        adaptive_threshold_image = cv2.adaptiveThreshold(blur_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 45, 2)
+        adaptive_threshold_image = cv2.adaptiveThreshold(blur_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 35, 2)
         #test3_ = np.where(adaptive_threshold_image[:,:,None] == 0, [255,255,255], test3)
         #test4[np.where(adaptive_threshold_image == 0)] = [110,255,255]
 
 
 
-        kernel = np.ones((2,1), np.uint8)*200
+        kernel = np.ones((2,1), np.uint8)
         adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 10)
-      #  adaptive_threshold_image[:, 0] = 255
         
+        
+      #  adaptive_threshold_image[:, 0] = 255
         # for i in range(5):
 
         #     adaptive_threshold_image[h-1-i, 0:w-1] = 255
         cv2.imwrite('test/threshold_img.png', adaptive_threshold_image)
+        
 
 
         # ...
@@ -101,10 +103,11 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
         # Tạo bản sao 3 kênh của adaptive_threshold_image
         mask = np.zeros((h+2, w+2), dtype=np.uint8)
         cv2.drawContours(test4, [largest_contour], 0, (255, 0, 0), thickness=1)
+        cv2.imwrite('./test/test4_test.png', test4)
 
         if (test4[0,0] == [255,0,0]).all():
             cv2.imwrite('test/test4_draw.png', test4)
-            break
+          #  break
 
         #.....
 
