@@ -81,6 +81,7 @@ cv2.imwrite('test/test4_draw_array.png', test4)
 loDiff = (1, 20, 20)
 upDiff = (255, 255, 254)
 cv2.floodFill(test4, mask, (0, 0), (255, 255, 255), loDiff, upDiff)
+cv2.floodFill(test4, mask, (w-1, 0), (255, 255, 255), loDiff, upDiff)
 cv2.imwrite('test/test4_fill.png', test4)
 
 test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))] = np.copy(test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))])
