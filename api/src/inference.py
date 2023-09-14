@@ -128,5 +128,6 @@ class SadTalker:
             enhancer="gfpgan" if use_enhancer else None,
             preprocess=preprocess,
             img_size=size,
+            still_mode = still_mode
         )
         return return_path

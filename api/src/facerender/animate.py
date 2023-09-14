@@ -25,6 +25,8 @@ from src.facerender.modules.make_animation import make_animation
 from src.facerender.modules.mapping import MappingNet
 from src.utils.face_enhancer import enhancer_generator_with_len, enhancer_list
 from src.utils.paste_pic import paste_pic
+from src.utils.crop_full import crop_full
+
 from src.utils.videoio import save_video_with_watermark
 
 try:
@@ -217,6 +219,7 @@ class AnimateFromCoeff:
         background_enhancer=None,
         preprocess="crop",
         img_size=256,
+        still_mode = False
     ):
         source_image = x["source_image"].type(torch.FloatTensor)
         source_semantics = x["source_semantics"].type(torch.FloatTensor)
@@ -317,7 +320,11 @@ class AnimateFromCoeff:
             )
             print(f"The generated video is named {video_save_dir}/{video_name_full}")
         else:
+            return_path = av_path
+            crop_full(full_video_path, crop_info, new_audio_path, av_path)
             full_video_path = av_path
+
+        
 
         #### paste back then enhancers
         if enhancer:
