@@ -1,5 +1,5 @@
 import os
-from api.src.inference import SadTalker
+from src.inference import SadTalker
 def sadtalker_demo(source_image, driven_audio, checkpoint_path='checkpoints', config_path='src/config', warpfn=None):
     sad_talker = SadTalker(checkpoint_path, config_path, lazy_load=True)
 
