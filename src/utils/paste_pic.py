@@ -9,8 +9,8 @@ from src.utils.videoio import save_video_with_watermark
 def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, extended_crop=False):
 
     print(crop_info)
-    video_path = './test/video.mp4'
-    pic_path = './test/art_0.png'
+  #  video_path = './test/video.mp4'
+  #  pic_path = './test/art_0.png'
     full_img = cv2.imread(pic_path)
     if not os.path.isfile(pic_path):
         print("ko co file")
