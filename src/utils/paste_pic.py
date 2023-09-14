@@ -8,6 +8,7 @@ from src.utils.videoio import save_video_with_watermark
 
 def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, extended_crop=False):
 
+    print(crop_info)
 
     full_img = cv2.imread(pic_path)
    # full_img = np.subtract((np.zeros_like(full_img)), 40 )
@@ -39,10 +40,11 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     #         y_r = w - y
     #         full_img[x,y-y_r + 1:y] =  np.copy(np.fliplr(full_img[x, y:y + y_r -1]))
     full_img = cv2.resize(full_img, (256,256))
-    frame_w = full_img.shape[0]
-    frame_h = full_img.shape[1]
+    w = full_img.shape[0]
+    h = full_img.shape[1]
     full_img = full_img.astype(np.uint8)
     cv2.imwrite('./test/full_img.png', full_img)
+    test3 = cv2.imread(full_img)
 
 
 
@@ -75,46 +77,78 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
             oy1, oy2, ox1, ox2 = cly+ly, cly+ry, clx+lx, clx+rx
 
     tmp_path = str(uuid.uuid4())+'.mp4'
-    out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'MP4V'), fps, (frame_w, frame_h))
+    out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'MP4V'), fps, (w, h))
     for crop_frame in tqdm(crop_frames, 'seamlessClone:'):
 
-        # p = (crop_frame.astype(np.uint8))
-        # mask = 255*np.ones(p.shape, p.dtype)
-        # location = ((p.shape[0]) // 2, (p.shape[1]) // 2)
-        # gen_img = cv2.seamlessClone(p, full_img, mask, location, cv2.NORMAL_CLONE)
-      #  crop_frame[np.all(crop_frame == (0,0,0), axis=2)] = [255,255,255]
-        img_blur = cv2.cvtColor(crop_frame, cv2.COLOR_BGR2GRAY)
-        blur_img = cv2.blur(full_img, (49,49))
-        adaptive_img = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 45, 2)
+        test4 = cv2.resize(crop_frame, (256,256))
+   #     test4_temp = cv2.imread(output_path)
+        test4_temp = cv2.resize(test4, (256,256))
 
-        # adaptive_img = adaptive_img.astype(np.uint8)
+        blur_img = cv2.cvtColor(test4, cv2.COLOR_BGR2GRAY)
+        adaptive_threshold_image = cv2.adaptiveThreshold(blur_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 45, 2)
+
         kernel = np.ones((2,1), np.uint8)
-       # adaptive_img = cv2.dilate(adaptive_img, kernel, iterations=1)  
+        adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 10)
+        # for i in range(5):
 
-        array_1, array_2 = (np.where(adaptive_img == 0))
-        array = np.column_stack((array_1, array_2))
-
-        adaptive_img = cv2.dilate(adaptive_img, kernel, iterations=10)
-
-        contour_img = adaptive_img.copy()
+        #     adaptive_threshold_image[h-1-i, 0:w-1] = 255
+        cv2.imwrite('test/threshold_img.png', adaptive_threshold_image)
+        # ...
+        contour_img = adaptive_threshold_image.copy()
         contours, _ = cv2.findContours(contour_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         largest_contour = max(contours, key=cv2.contourArea)
 
-        mask = np.zeros((frame_h+2, frame_w+2), dtype=np.uint8)
-        cv2.drawContours(crop_frame, [largest_contour], 0, (255, 0, 0), 3)
-        loDiff = (50, 50, 255)
-        upDiff = (50, 50, 255)
-        cv2.floodFill(crop_frame, mask, (0, 0), (255, 255, 255), loDiff, upDiff)
+        # Tạo bản sao 3 kênh của adaptive_threshold_image
+        mask = np.zeros((h+2, w+2), dtype=np.uint8)
+        cv2.drawContours(test4, [largest_contour], 0, (255, 0, 0), thickness=1)
+        cv2.imwrite('test/test4_draw.png', test4)
 
-# test4[np.where(np.all(contour_img_color == [100, 255, 0], axis = 2))] = [0,0,0]
-        crop_frame = np.where(crop_frame[:,:,:] == [255,255,255], full_img, crop_frame)
-        crop_frame = np.where(crop_frame[:,:,:] == [255,0,0], full_img, crop_frame)
+        #.....
+
+        target_color = [255, 0, 0]
+
+        # Tìm tất cả các điểm có màu [255, 0, 0]
+        indices = np.where(np.all(test4 == target_color, axis=-1))
+
+        # Tạo danh sách tọa độ
+        points = list(zip(indices[0], indices[1]))
+
+        array_y = []
+        for x in range(w):
+            col_indices = [point for point in points if point[1] == x]
+            if col_indices:
+                array_y.append(col_indices[0])
+
+        array_x = []
+        for y in range(h):
+            row_indices = [point for point in points if point[0] == y]
+            if row_indices:
+                array_x.extend([row_indices[0], row_indices[-1]])
+
+        unique_points = set(array_x + array_y)
 
 
-        crop_frame = crop_frame.astype(np.uint8)
-      #  crop_frame = cv2.GaussianBlur(crop_frame, (15,15), 0)
-        cv2.imwrite('haha.png',adaptive_img)
-        out_tmp.write(crop_frame)
+        for y, x in unique_points:
+            test4[y, x] = [0, 0, 255]
+
+        cv2.imwrite('test/test4_draw_array.png', test4)
+
+        loDiff = (10, 20, 20)
+        upDiff = (255, 255, 254)
+        cv2.floodFill(test4, mask, (0, 0), (255, 255, 255), loDiff, upDiff)
+        cv2.imwrite('test/test4_fill.png', test4)
+
+        test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))] = np.copy(test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))])
+        test4_temp[np.where(np.all(test4 == [255, 255, 255], axis = 2))] = np.copy(test3[np.where(np.all(test4 == [255, 255, 255], axis = 2))])
+        test4_temp[np.where(np.all(test4 == [0, 0, 255], axis = 2))] = np.copy(test3[np.where(np.all(test4 == [0, 0, 255], axis = 2))])
+
+        # test4 = np.where(test4[:,:,:] == [255,255,255], test3, test4)
+
+
+        #   test4 = np.where(test4[:,:,:] == [255,0,0], test3, test4)
+
+     #   cv2.imwrite('test/contour.png', test3)
+        cv2.imwrite('test/test4_.png', test4_temp)
         
 
     out_tmp.release()
