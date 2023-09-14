@@ -131,9 +131,7 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
             test4[y, x] = [100, 100, 255]
 
         cv2.imwrite('test/test4_draw_array.png', test4)
-        cv2.imshow("haha",test4)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+
 
 
 
@@ -145,7 +143,7 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
 
         test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))] = np.copy(test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))])
         test4_temp[np.where(np.all(test4 == [255, 255, 255], axis = 2))] = np.copy(test3[np.where(np.all(test4 == [255, 255, 255], axis = 2))])
-        test4_temp[np.where(np.all(test4 == [21, 21, 255], axis = 2))] = np.copy(test3_blur[np.where(np.all(test4 == [21, 21, 255], axis = 2))])
+        test4_temp[np.where(np.all(test4 == [100, 100, 255], axis = 2))] = np.copy(test3_blur[np.where(np.all(test4 == [21, 21, 255], axis = 2))])
 
         # test4 = np.where(test4[:,:,:] == [255,255,255], test3, test4)
 
