@@ -36,13 +36,13 @@ def crop_full(full_video_path, crop_info, new_audio_path, av_path):
     )
     for crop_frame in tqdm(full_frames, "cropFromFull:"):
 
-        clx, cly, crx, cry = crop_info[1]
+        # clx, cly, crx, cry = crop_info[1]
 
-        crx = int(crx + min(clx,w-crx)/rate)
-        clx = int(clx - min(clx,w-crx)/rate)
-        cly = int(cly - min(cly,h-cry)/rate_)
-        cry = min(int(cry + (cry - cly)/rate_), h)
-        crop_frame = crop_frame[cly:cry, clx:crx]
+        # crx = int(crx + min(clx,w-crx)/rate)
+        # clx = int(clx - min(clx,w-crx)/rate)
+        # cly = int(cly - min(cly,h-cry)/rate_)
+        # cry = min(int(cry + (cry - cly)/rate_), h)
+        # crop_frame = crop_frame[cly:cry, clx:crx]
 
         out_tmp.write(crop_frame)
 
