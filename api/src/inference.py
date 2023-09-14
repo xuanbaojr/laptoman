@@ -52,7 +52,7 @@ class SadTalker:
         use_idle_mode=False,
         length_of_audio=0,
         use_blink=True,
-        result_dir="./results/",
+        result_dir="./api/results/",
     ):
         self.sadtalker_paths = init_path(
             self.checkpoint_path, self.config_path, size, False, preprocess
