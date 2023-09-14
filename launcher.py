@@ -83,7 +83,7 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
 
 
 
-        kernel = np.ones((2,1), np.uint8)
+        kernel = np.ones((2,1), np.uint8)*200
         adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 10)
         # for i in range(5):
 
@@ -136,14 +136,16 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
 
 
 
-        loDiff = (0, 0, 0)
-        upDiff = (80, 80, 254)
+        loDiff = (45, 45, 45)
+        upDiff = (80, 80, 80)
         cv2.floodFill(test4, mask, (0, 0), (255, 255, 255), loDiff, upDiff)
+        cv2.floodFill(test4, mask, (w-1, 0), (255, 255, 255), loDiff, upDiff)
+
         cv2.imwrite('test/test4_fill.png', test4)
 
         test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))] = np.copy(test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))])
         test4_temp[np.where(np.all(test4 == [255, 255, 255], axis = 2))] = np.copy(test3[np.where(np.all(test4 == [255, 255, 255], axis = 2))])
-        test4_temp[np.where(np.all(test4 == [100, 100, 255], axis = 2))] = np.copy(test3_blur[np.where(np.all(test4 == [21, 21, 255], axis = 2))])
+        test4_temp[np.where(np.all(test4 == [100, 100, 255], axis = 2))] = np.copy(test3_blur[np.where(np.all(test4 == [100, 100, 255], axis = 2))])
 
         # test4 = np.where(test4[:,:,:] == [255,255,255], test3, test4)
 
