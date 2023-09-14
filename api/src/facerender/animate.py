@@ -304,9 +304,10 @@ class AnimateFromCoeff:
 
         save_video_with_watermark(path, new_audio_path, av_path, watermark=False)
         print(f"The generated video is named {video_save_dir}/{video_name}")
-        
+
         video_name_full = x["video_name"] + "_full.mp4"
         full_video_path = os.path.join(video_save_dir, video_name_full)
+        preprocess = "full"
         if "full" in preprocess.lower():
             # only add watermark to the full image.
             
@@ -321,8 +322,7 @@ class AnimateFromCoeff:
                 extended_crop=True if "ext" in preprocess.lower() else False,
             )
             print(f"The generated video is named {video_save_dir}/{video_name_full}")
-        else:
-            return_path = av_path
+        
             crop_full(full_video_path, crop_info, new_audio_path, av_path)
             full_video_path = av_path
 
