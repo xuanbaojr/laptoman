@@ -121,7 +121,7 @@ class SadTalker:
 
         # first_coeff_path (b0, p0)
         first_coeff_path, crop_pic_path, crop_info, pic_path_full = self.preprocess_model.generate(
-            pic_path, first_frame_dir, preprocess, True, size
+            pic_path, first_frame_dir, preprocess, True, size, still_mode = still_mode
         )
         #
         batch = get_data(

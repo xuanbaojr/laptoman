@@ -60,7 +60,7 @@ class CropAndExtract():
         self.lm3d_std = load_lm3d(sadtalker_path['dir_of_BFM_fitting'])
         self.device = device
     
-    def generate(self, input_path, save_dir, crop_or_resize='crop', source_image_flag=False, pic_size=256):
+    def generate(self, input_path, save_dir, crop_or_resize='crop', source_image_flag=False, pic_size=256, still_mode = False):
 
         pic_name = os.path.splitext(os.path.split(input_path)[-1])[0]  
 
@@ -139,7 +139,8 @@ class CropAndExtract():
         # 2. get the landmark according to the detected face. 
         if not os.path.isfile(landmarks_path): 
             lm = self.propress.predictor.extract_keypoint(frames_pil, landmarks_path)
-            lm_full = self.propress.predictor.extract_keypoint(frames_pil_full, landmarks_path)
+            if not still_mode and crop_or_resize == "crop":
+                lm_full = self.propress.predictor.extract_keypoint(frames_pil_full, landmarks_path)
             
         else:
             print(' Using saved landmarks.')
