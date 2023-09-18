@@ -50,7 +50,7 @@ class Image_Preprocess():
         cry = min(int(cry + (cry - cly)/rate_), rsize[1])
 
         img_np = img_np[cly:cry, clx:crx]
-        new_source_image = os.path.join('results', pic_name + '.png')
+        new_source_image = os.path.join('./results', pic_name + '.png')
         cv2.imwrite(new_source_image, cv2.cvtColor(np.array(img_np), cv2.COLOR_RGB2BGR))
         print("new", new_source_image)
         return new_source_image

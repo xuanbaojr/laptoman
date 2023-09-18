@@ -76,6 +76,7 @@ class SadTalker:
         # chuyen anh folder goc qua result/timetag/input/source_image.png
         pic_path = os.path.join(input_dir, os.path.basename(source_image))
         pic_path_source = os.path.join(input_dir, os.path.basename(source_image))
+        print("old", pic_path_source)
 
         shutil.copy(source_image, input_dir)
         
@@ -95,6 +96,7 @@ class SadTalker:
         if not still_mode and preprocess == 'crop':
             source_image = self.img_pre.img_pre(source_image)
             pic_path_source = os.path.join(input_dir, os.path.basename(source_image))
+            print("new", pic_path_source)
             pic_name = os.path.splitext(os.path.split(source_image)[-1])[0] 
 
             output_path = 'test/' + pic_name + '_nobg.png'
