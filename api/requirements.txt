@@ -27,3 +27,4 @@ asgiref
 h11
 diffusers
 packaging
+huggingface_hub

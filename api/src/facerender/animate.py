@@ -317,6 +317,7 @@ class AnimateFromCoeff():
                 video_save_dir, video_name_still_final)
             paste_vid(av_path, av_path_full, crop_info,
                       new_audio_path, full_video_path, body_h, body_w)
+            
             paste_pic(full_video_path, pic_path_source, crop_info,
                       new_audio_path, full_video_path, extended_crop=False)
             return_path = full_video_path
