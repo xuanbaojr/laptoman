@@ -109,12 +109,12 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     yl_= min(5, array_y[0][1])
     yr = min(10, (w - array_y[-1][1]-1))
     
-    for x, y in unique_points:
-        if y < w/2:
-            yl = min(5, y)
-            full_img[x,y:y+yl] = np.copy(full_img[x,y-yl:y])
-        if y > w/2:
-            full_img[x,y-yr:y+1] = np.copy(full_img[x, y:y+yr+1])
+    # for x, y in unique_points:
+    #     if y < w/2:
+    #         yl = min(5, y)
+    #         full_img[x,y:y+yl] = np.copy(full_img[x,y-yl:y])
+    #     if y > w/2:
+    #         full_img[x,y-yr:y+1] = np.copy(full_img[x, y:y+yr+1])
 
     #   unique_points_sorted = sorted(unique_points, key=lambda point: (point[0], point[1]))
 
