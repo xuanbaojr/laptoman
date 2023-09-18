@@ -20,7 +20,7 @@ def sadtalker_demo(source_image, driven_audio, preprocess, still_mode, checkpoin
 if __name__ == "__main__":
 
     source_image = 'test/art_2.jpg'
-    driven_audio = 'test/test_vi.wav'
+    driven_audio = 'test/bus_chinese_out.wav'
     preprocess = "crop"
     still_mode = False
     demo = sadtalker_demo(source_image, driven_audio, preprocess, still_mode)
