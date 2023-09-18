@@ -75,6 +75,7 @@ def paste_pic_full(
 
         mask = 255 * np.ones(p.shape, p.dtype)
         location = ((ox1 + ox2) // 2, (oy1 + oy2) // 2)
+        print("location", location)
         gen_img = cv2.seamlessClone(p, full_img, mask, location, cv2.NORMAL_CLONE)
         out_tmp.write(gen_img)
 
