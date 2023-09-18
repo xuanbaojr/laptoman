@@ -9,7 +9,6 @@ from src.utils.videoio import save_video_with_watermark
 
 def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path, body_h, body_w):
 
-    full_video_path_test = './result/test.mp4'
     if not os.path.isfile(head_video):
         print('file is not exist!')
 
@@ -63,8 +62,7 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
     out_tmp.release()
     save_video_with_watermark(tmp_path, new_audio_path,
                               full_video_path, watermark=False)
-    save_video_with_watermark(tmp_path, new_audio_path,
-                              full_video_path_test, watermark=False)
+
     
     
     #os.remove(tmp_path)
