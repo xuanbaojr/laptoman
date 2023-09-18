@@ -22,8 +22,6 @@ from src.facerender.modules.make_animation import make_animation
 from pydub import AudioSegment 
 from src.utils.face_enhancer import enhancer_generator_with_len, enhancer_list
 from src.utils.paste_pic import paste_pic
-from src.utils.paste_pic_full import paste_pic_full
-
 from src.utils.crop_full import crop_full
 from src.utils.videoio import save_video_with_watermark
 from src.utils.paste_vid import paste_vid
@@ -167,14 +165,12 @@ class AnimateFromCoeff():
         source_semantics=source_semantics.to(self.device)
         target_semantics=target_semantics.to(self.device)
 
-        if not still_mode:
-
-            source_image_full=x['source_image_full'].type(torch.FloatTensor)
-            source_semantics_full=x['source_semantics_full'].type(torch.FloatTensor)
-            target_semantics_full=x['target_semantics_list_full'].type(torch.FloatTensor) 
-            source_image_full=source_image_full.to(self.device)
-            source_semantics_full=source_semantics_full.to(self.device)
-            target_semantics_full=target_semantics_full.to(self.device)
+        source_image_full=x['source_image_full'].type(torch.FloatTensor)
+        source_semantics_full=x['source_semantics_full'].type(torch.FloatTensor)
+        target_semantics_full=x['target_semantics_list_full'].type(torch.FloatTensor) 
+        source_image_full=source_image_full.to(self.device)
+        source_semantics_full=source_semantics_full.to(self.device)
+        target_semantics_full=target_semantics_full.to(self.device)
         if 'yaw_c_seq' in x:
             yaw_c_seq = x['yaw_c_seq'].type(torch.FloatTensor)
             yaw_c_seq = x['yaw_c_seq'].to(self.device)
@@ -208,7 +204,12 @@ class AnimateFromCoeff():
             image = np.transpose(image.data.cpu().numpy(), [1, 2, 0]).astype(np.float32)
             video.append(image)
 
+            image_full = predictions_video_full[idx]
+            image_full = np.transpose(image_full.data.cpu().numpy(), [1, 2, 0]).astype(np.float32)
+            video_full.append(image_full)
+
         result = img_as_ubyte(video)
+        result_full = img_as_ubyte(video_full)
 
         ### the generated video is 256x256, so we keep the aspect ratio, 
         original_size = crop_info[0]
@@ -220,6 +221,7 @@ class AnimateFromCoeff():
 
             print("body_w", body_w)
             print("body_h", body_h)
+            result_full = [ cv2.resize(result_i,(img_size, int(img_size * original_size[1]/original_size[0]) )) for result_i in result_full ]
 
         # sinh video head
 
@@ -258,7 +260,7 @@ class AnimateFromCoeff():
                 
                 
                 return_path = full_video_path
-                paste_pic_full(
+                paste_pic(
                     path,
                     pic_path,
                     crop_info,
@@ -300,9 +302,9 @@ class AnimateFromCoeff():
             save_video_with_watermark(path, new_audio_path, av_path_full, watermark=False)
 
             video_name_still_final = x["video_name"] + "_still_final.mp4"
-            full_video_path = os.path.join(video_save_dir, video_name_still_final)
+            av_path = os.path.join(video_save_dir, video_name_still_final)
             paste_vid(av_path, av_path_full, crop_info, new_audio_path, full_video_path, body_h, body_w)
-            paste_pic(full_video_path, pic_path_source, crop_info, new_audio_path, full_video_path, extended_crop=False) 
+            paste_pic(full_video_path, pic_path, crop_info, new_audio_path, full_video_path, extended_crop=False)
             return_path = full_video_path
 
         #### paste back then enhancers

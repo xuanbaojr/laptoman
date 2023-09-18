@@ -1,5 +1,5 @@
-import torch
 import torch.nn as nn
+import torch
 
 
 class ResidualConv(nn.Module):
@@ -22,6 +22,7 @@ class ResidualConv(nn.Module):
         )
 
     def forward(self, x):
+
         return self.conv_block(x) + self.conv_skip(x)
 
 

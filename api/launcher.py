@@ -11,120 +11,40 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
 
     full_img = cv2.imread(pic_path)
     if not os.path.isfile(pic_path):
-        print("ko co file")    
+        print("ko co file")
+   # full_img = np.subtract((np.zeros_like(full_img)), 40 )
     
-    w,h = full_img.shape[:2]
+    
+    # w,h = full_img.shape[:2]
+
+    # output_path = './test/test4.png'
+
+    # with open(pic_path, 'rb') as i:
+    #     with open(output_path, 'wb') as o:
+    #         input = i.read()
+    #         output = remove(input)
+    #         o.write(output)
+    # crop_img = cv2.imread(output_path)
+
+    # crop_img[np.all(crop_img == [0,0,0], axis = 2)] = [255,255,255]
+    # blur_crop = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
+    # adaptive_crop = cv2.adaptiveThreshold(blur_crop, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 35, 45)
+
+
+
+    # array_crop_1, array_crop_2 = (np.where(adaptive_crop == 0))
+    # array_crop = np.column_stack((array_crop_1, array_crop_2))
+    # for x,y in array_crop:
+    #     if y < w//2:
+    #         full_img[x,y:y+y] = np.copy(np.fliplr(full_img[x, 0 : y]))
+    #     if y > w//2  and y < w :
+    #         y_r = w - y
+    #         full_img[x,y-y_r + 1:y] =  np.copy(np.fliplr(full_img[x, y:y + y_r -1]))
     full_img = cv2.resize(full_img, (256,256))
-    cv2.imwrite('./test/pic_path.png', full_img)
-    pic_path = './test/pic_path.png'
-
-    output_path = './test/test4.png'
-
-    with open(pic_path, 'rb') as i:
-        with open(output_path, 'wb') as o:
-            input = i.read()
-            output = remove(input)
-            o.write(output)
-    test4 = cv2.imread('./test/test10.png')
-    test4 = cv2.imread(output_path)
-
-#     test4_temp = cv2.imread(output_path)
-    test4_temp = cv2.resize(test4, (256,256))
-
-    blur_img = cv2.cvtColor(test4, cv2.COLOR_BGR2GRAY)
-    adaptive_threshold_image = cv2.adaptiveThreshold(blur_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 35, 2)
-    #test3_ = np.where(adaptive_threshold_image[:,:,None] == 0, [255,255,255], test3)
-    #test4[np.where(adaptive_threshold_image == 0)] = [110,255,255]
-
-
-    cv2.imwrite('test/threshold_img.png', adaptive_threshold_image)
-    kernel = np.ones((2,1), np.uint8)
-    adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 11)
-
-
-    
-    
-    #  adaptive_threshold_image[:, 0] = 255
-    # for i in range(5):
-
-    #     adaptive_threshold_image[h-1-i, 0:w-1] = 255
-    cv2.imwrite('test/threshold_img_kernel.png', adaptive_threshold_image)
-    
-
-
-    # ...
-    contour_img = adaptive_threshold_image.copy()
-    contours, _ = cv2.findContours(contour_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    largest_contour = max(contours, key=cv2.contourArea)
-
-    # Tạo bản sao 3 kênh của adaptive_threshold_image
-    mask = np.zeros((h+2, w+2), dtype=np.uint8)
-    cv2.drawContours(test4, [largest_contour], 0, (255, 0, 0), thickness=1)
-    cv2.imwrite('./test/test4_test.png', test4)
-    cv2.imwrite('test/test4_draw.png', test4)
-
-    #------------------------------------------------------------------------------------ new
-
-    # blur_img = cv2.cvtColor(test4, cv2.COLOR_BGR2GRAY)
-    # adaptive_threshold_image = cv2.adaptiveThreshold(blur_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 45, 2)
-    # cv2.imwrite('test/threshold_img_new.png', adaptive_threshold_image)
-    # kernel = np.ones((2,1), np.uint8)
-    # adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 11)
-    # cv2.imwrite('test/threshold_img_kernel_new.png', adaptive_threshold_image)
-    # contour_img = adaptive_threshold_image.copy()
-    # contours, _ = cv2.findContours(contour_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    # largest_contour = max(contours, key=cv2.contourArea)
-    # mask = np.zeros((h+2, w+2), dtype=np.uint8)
-    # cv2.drawContours(test4, [largest_contour], 0, (255, 0, 0), thickness=1)
-    # cv2.imwrite('./test/test4_test.png', test4)
-
-    #-----------------------------------------------------------------------------------------------
-    #.....
-
-    target_color = [255, 0, 0]
-
-    # Tìm tất cả các điểm có màu [255, 0, 0]
-    indices = np.where(np.all(test4 == target_color, axis=-1))
-
-    # Tạo danh sách tọa độ
-    points = list(zip(indices[0], indices[1]))
-
-    # comprehension
-    array_y = []
-    for x in range(w):
-        col_indices = [point for point in points if point[1] == x]
-        if col_indices:
-            array_y.append(col_indices[0])
-    
-
-    array_x = [] 
-    for y in range(h):
-        row_indices = [point for point in points if point[0] == y]
-        if row_indices:
-            array_x.extend([row_indices[0], row_indices[-1]])
-
-    unique_points = set(array_x + array_y)
-    print(array_y[0], array_y[-1])
-
-    yl_= min(5, array_y[0][1])
-    yr = min(10, (w - array_y[-1][1]-1))
-    
-    for x, y in unique_points:
-        if y < w/2:
-            yl = min(5, y)
-            full_img[x,y:y+yl] = np.copy(full_img[x,y-yl:y])
-        if y > w/2:
-            full_img[x,y-yr:y+1] = np.copy(full_img[x, y:y+yr+1])
-
-    #   unique_points_sorted = sorted(unique_points, key=lambda point: (point[0], point[1]))
-
-    cv2.imwrite('test/test4_draw_array.png', test4)
     w = full_img.shape[0]
     h = full_img.shape[1]
     full_img = full_img.astype(np.uint8)
     cv2.imwrite('./test/full_img.png', full_img)
-
-
     test3 = cv2.imread('./test/full_img.png')
     test3 = cv2.resize(test3, (256,256))
     test3_blur = cv2.blur(test3, (51,51))
@@ -152,6 +72,7 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
     for frame in tqdm(crop_frames, 'SeamlessClone:'):
      #   test4 = cv2.imread('test/haha.png')
         test4 = cv2.resize(frame, (256,256))
+        test4 = cv2.resize(frame, (256,256))
    #     test4_temp = cv2.imread(output_path)
         test4_temp = cv2.resize(test4, (256,256))
 
@@ -161,27 +82,16 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
         #test4[np.where(adaptive_threshold_image == 0)] = [110,255,255]
 
 
-        cv2.imwrite('test/threshold_img.png', adaptive_threshold_image)
+
         kernel = np.ones((2,1), np.uint8)
-        adaptive_threshold_image = cv2.erode(adaptive_threshold_image, kernel, iterations = 3)
-        cv2.imwrite('test/threshold_img_kernel_erode.png', adaptive_threshold_image)
-            
-        kernel = np.ones((2,1), np.uint8)
-        adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 12)
-        # cv2.imshow('haha', adaptive_threshold_image)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
-
-
-
-
+        adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 11)
         
         
       #  adaptive_threshold_image[:, 0] = 255
         # for i in range(5):
 
         #     adaptive_threshold_image[h-1-i, 0:w-1] = 255
-        cv2.imwrite('test/threshold_img_kernel.png', adaptive_threshold_image)
+        cv2.imwrite('test/threshold_img.png', adaptive_threshold_image)
         
 
 
@@ -194,27 +104,9 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
         mask = np.zeros((h+2, w+2), dtype=np.uint8)
         cv2.drawContours(test4, [largest_contour], 0, (255, 0, 0), thickness=1)
         cv2.imwrite('./test/test4_test.png', test4)
-        cv2.imwrite('test/test4_draw.png', test4)
-
-        #------------------------------------------------------------------------------------ new
-
-        # blur_img = cv2.cvtColor(test4, cv2.COLOR_BGR2GRAY)
-        # adaptive_threshold_image = cv2.adaptiveThreshold(blur_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 45, 2)
-        # cv2.imwrite('test/threshold_img_new.png', adaptive_threshold_image)
-        # kernel = np.ones((2,1), np.uint8)
-        # adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 11)
-        # cv2.imwrite('test/threshold_img_kernel_new.png', adaptive_threshold_image)
-        # contour_img = adaptive_threshold_image.copy()
-        # contours, _ = cv2.findContours(contour_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        # largest_contour = max(contours, key=cv2.contourArea)
-        # mask = np.zeros((h+2, w+2), dtype=np.uint8)
-        # cv2.drawContours(test4, [largest_contour], 0, (255, 0, 0), thickness=1)
-        # cv2.imwrite('./test/test4_test.png', test4)
-
-        #-----------------------------------------------------------------------------------------------
 
         if (test4[0,0] == [255,0,0]).all():
-            
+            cv2.imwrite('test/test4_draw.png', test4)
             break
 
         #.....
@@ -233,9 +125,8 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
             col_indices = [point for point in points if point[1] == x]
             if col_indices:
                 array_y.append(col_indices[0])
-        
 
-        array_x = [] 
+        array_x = []
         for y in range(h):
             row_indices = [point for point in points if point[0] == y]
             if row_indices:
@@ -243,13 +134,16 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
 
         unique_points = set(array_x + array_y)
 
-     #   unique_points_sorted = sorted(unique_points, key=lambda point: (point[0], point[1]))
-
 
         for y, x in unique_points:
             test4[y, x] = [100, 100, 255]
 
         cv2.imwrite('test/test4_draw_array.png', test4)
+
+
+
+
+
 
         loDiff = (45, 45, 45)
         upDiff = (80, 80, 80)
@@ -257,9 +151,6 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
         cv2.floodFill(test4, mask, (w-1, 0), (255, 255, 255), loDiff, upDiff)
 
         cv2.imwrite('test/test4_fill.png', test4)
-
-        blur_img = cv2.cvtColor(test4, cv2.COLOR_BGR2GRAY)
-
 
 
         # test3--------------------------------------------------
@@ -333,7 +224,7 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
 if __name__ == "__main__":
 
     video_path = './test/video.mp4'
-    pic_path = 'test/art_0.png'
+    pic_path = './test/art_0.png'
     full_video_path = './test/output.mp4'
     demo = paste_pic(video_path, pic_path, full_video_path = full_video_path)
     print(demo)
