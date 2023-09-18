@@ -12,6 +12,7 @@ from src.generate_facerender_batch import get_facerender_data
 from src.test_audio2coeff import Audio2Coeff
 from src.utils.init_path import init_path
 from src.utils.preprocess import CropAndExtract
+from rembg import remove
 
 
 def mp3_to_wav(mp3_filename, wav_filename, frame_rate):
@@ -71,8 +72,9 @@ class SadTalker:
         input_dir = os.path.join(save_dir, "input")
         os.makedirs(input_dir, exist_ok=True)
         # chuyen anh folder goc qua result/timetag/input/source_image.png
-        pic_path = os.path.join(input_dir, os.path.basename(source_image))
+        
         shutil.copy(source_image, input_dir)
+        pic_path_source = os.path.join(input_dir, os.path.basename(source_image)) 
 
         # audio_path
         if driven_audio is not None and os.path.isfile(driven_audio):
@@ -85,6 +87,25 @@ class SadTalker:
             else:
                 shutil.copy(driven_audio, input_dir)
 
+        if not still_mode:
+            source_image = self.img_pre.img_pre(source_image)
+            pic_path_source = os.path.join(input_dir, os.path.basename(source_image))
+            pic_name = os.path.splitext(os.path.split(source_image)[-1])[0] 
+
+            output_path = 'test/' + pic_name + '_nobg.png'
+
+            with open(source_image, 'rb') as i:
+                with open(output_path, 'wb') as o:
+                    input = i.read()
+                    output = remove(input)
+                    o.write(output)
+                
+            print("output_path", output_path)
+            print("source_image", source_image)            
+            shutil.copy(output_path, input_dir)
+            source_image = output_path
+
+        pic_path = os.path.join(input_dir, os.path.basename(source_image))
         # first_frame_dir 
         first_frame_dir = os.path.join(save_dir, "first_frame_dir")
         os.makedirs(first_frame_dir, exist_ok=True)
@@ -128,6 +149,8 @@ class SadTalker:
             enhancer="gfpgan" if use_enhancer else None,
             preprocess=preprocess,
             img_size=size,
-            still_mode = still_mode
+            pic_path_source = pic_path_source,
+            still_mode = still_mode,
+            
         )
         return return_path

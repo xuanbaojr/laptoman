@@ -166,8 +166,13 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
         adaptive_threshold_image = cv2.erode(adaptive_threshold_image, kernel, iterations = 3)
         cv2.imwrite('test/threshold_img_kernel_erode.png', adaptive_threshold_image)
             
-        kernel = np.ones((3,1), np.uint8)
-        adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 6)
+        kernel = np.ones((2,1), np.uint8)
+        adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 12)
+        # cv2.imshow('haha', adaptive_threshold_image)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+
+
 
 
         
@@ -325,3 +330,10 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
 
   #  save_video_with_watermark(tmp_path, new_audio_path = './test/bus_chinese.wav', full_video_path = full_video_path, watermark=False)
 
+if __name__ == "__main__":
+
+    video_path = './test/video.mp4'
+    pic_path = 'test/art_0.png'
+    full_video_path = './test/output.mp4'
+    demo = paste_pic(video_path, pic_path, full_video_path = full_video_path)
+    print(demo)
