@@ -131,6 +131,7 @@ class Preprocesser:
             raise 'can not detect the landmark from source image'
         rsize, crop, quad = self.align_face(img=Image.fromarray(img_np), lm=lm, output_size=xsize)
         clx, cly, crx, cry = crop
+        print("crop_info", crop)
         lx, ly, rx, ry = quad
         lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
         for _i in range(len(img_np_list)):
