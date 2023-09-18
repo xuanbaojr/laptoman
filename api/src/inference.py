@@ -12,6 +12,7 @@ from src.generate_facerender_batch import get_facerender_data
 from src.test_audio2coeff import Audio2Coeff
 from src.utils.init_path import init_path
 from src.utils.preprocess import CropAndExtract
+from src.check_crop import Image_Preprocess
 from rembg import remove
 
 
@@ -63,6 +64,7 @@ class SadTalker:
         self.audio_to_coeff = Audio2Coeff(self.sadtalker_paths, self.device)
         self.preprocess_model = CropAndExtract(self.sadtalker_paths, self.device)
         self.animate_from_coeff = AnimateFromCoeff(self.sadtalker_paths, self.device)
+        self.img_pre = Image_Preprocess()
 
         # pic_path - ok
         # time_tag ?
