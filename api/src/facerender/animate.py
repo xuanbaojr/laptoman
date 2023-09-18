@@ -22,6 +22,8 @@ from src.facerender.modules.make_animation import make_animation
 from pydub import AudioSegment 
 from src.utils.face_enhancer import enhancer_generator_with_len, enhancer_list
 from src.utils.paste_pic import paste_pic
+from src.utils.paste_pic_full import paste_pic_full
+
 from src.utils.crop_full import crop_full
 from src.utils.videoio import save_video_with_watermark
 from src.utils.paste_vid import paste_vid
@@ -256,14 +258,14 @@ class AnimateFromCoeff():
                 
                 
                 return_path = full_video_path
-                # paste_pic(
-                #     path,
-                #     pic_path,
-                #     crop_info,
-                #     new_audio_path,
-                #     full_video_path,
-                #     extended_crop=True if "ext" in preprocess.lower() else False,
-                # )
+                paste_pic_full(
+                    path,
+                    pic_path,
+                    crop_info,
+                    new_audio_path,
+                    full_video_path,
+                    extended_crop=True if "ext" in preprocess.lower() else False,
+                )
                 print(f"The generated video is named {video_save_dir}/{video_name_full}")
             
                 crop_full(full_video_path, crop_info, new_audio_path, av_path)
