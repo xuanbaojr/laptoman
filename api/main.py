@@ -20,7 +20,7 @@ if __name__ == "__main__":
     driven_audio = 'test/bus_chinese_out.wav'
     preprocess = "crop"
     still_mode = False
-    use_enhancer = True
+    use_enhancer = False
     demo = sadtalker_demo(source_image, driven_audio, preprocess, still_mode, use_enhancer )
     print(demo)
 
