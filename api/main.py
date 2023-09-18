@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
     source_image = 'test/art_0.jpg'
     driven_audio = 'test/test_vi.wav'
-    preprocess = "full"
+    preprocess = "crop"
     still_mode = False
     demo = sadtalker_demo(source_image, driven_audio, preprocess, still_mode )
     print(demo)
