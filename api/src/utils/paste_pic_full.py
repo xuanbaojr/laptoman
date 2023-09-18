@@ -62,6 +62,8 @@ def paste_pic_full(
             oy1, oy2, ox1, ox2 = cly, cry, clx, crx
         else:
             oy1, oy2, ox1, ox2 = cly + ly, cly + ry, clx + lx, clx + rx
+        
+        print("oy1", oy1,oy2,ox1,ox2)
     
 
     tmp_path = str(uuid.uuid4()) + ".mp4"
