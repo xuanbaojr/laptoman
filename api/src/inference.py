@@ -75,7 +75,7 @@ class SadTalker:
         pic_path = os.path.join(input_dir, os.path.basename(source_image))
         pic_path_source = os.path.join(input_dir, os.path.basename(source_image))
 
-        shutil.move(source_image, input_dir)
+        shutil.copy(source_image, input_dir)
         
         
 
@@ -117,7 +117,7 @@ class SadTalker:
         # results/time_tag/first_frame_dir ( art_0.mat, art_0.png, art_0_landmarks.txt )
 
         # first_coeff_path (b0, p0)
-        first_coeff_path, crop_pic_path, crop_info = self.preprocess_model.generate(
+        first_coeff_path, crop_pic_path, crop_info, pic_path_full = self.preprocess_model.generate(
             pic_path, first_frame_dir, preprocess, True, size
         )
         #
@@ -145,6 +145,7 @@ class SadTalker:
             preprocess=preprocess,
             size=size,
             expression_scale=exp_scale,
+            pic_path_full = pic_path_full
         )
 
         return_path = self.animate_from_coeff.generate(data, save_dir,  pic_path, crop_info, enhancer='gfpgan' if use_enhancer else None, preprocess=preprocess, img_size=size, pic_path_source = pic_path_source, still_mode = still_mode)
