@@ -221,7 +221,7 @@ class AnimateFromCoeff():
             print("body_w", body_w)
             print("body_h", body_h)
 
-        # sinh video head
+        # Generated head_video
 
         video_name = x["video_name"] + ".mp4"
         path = os.path.join(video_save_dir, "temp_" + video_name)
@@ -250,9 +250,7 @@ class AnimateFromCoeff():
         
         video_name_full = x["video_name"] + "_full.mp4"
         full_video_path = os.path.join(video_save_dir, video_name_full)
-        #  preprocess = "full"
-
-            
+        
         return_path = full_video_path
         paste_pic_full(
             path,

@@ -6,7 +6,6 @@ from PIL import Image
 
 class Image_Preprocess():
     def __init__(self, device):
-      #  self.divice = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.preprocess = Preprocesser(device=device)
 
     def img_pre(self, input_path, xsize = 512):

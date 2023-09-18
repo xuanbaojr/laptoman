@@ -44,10 +44,7 @@ class SimpleWrapperV2(nn.Module):
 
             Conv2d(256, 512, kernel_size=3, stride=1, padding=0),
             Conv2d(512, 512, kernel_size=1, stride=1, padding=0),
-            )
-
-        #### load the pre-trained audio_encoder 
-        #self.audio_encoder = self.audio_encoder.to(device)  
+            ) 
         '''
         wav2lip_state_dict = torch.load('/apdcephfs_cq2/share_1290939/wenxuazhang/checkpoints/wav2lip.pth')['state_dict']
         state_dict = self.audio_encoder.state_dict()
@@ -60,8 +57,6 @@ class SimpleWrapperV2(nn.Module):
         '''
 
         self.mapping1 = nn.Linear(512+64+1, 64)
-        #self.mapping2 = nn.Linear(30, 64)
-        #nn.init.constant_(self.mapping1.weight, 0.)
         nn.init.constant_(self.mapping1.bias, 0.)
 
     def forward(self, x, ref, ratio):

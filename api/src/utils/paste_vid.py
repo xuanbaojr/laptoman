@@ -7,11 +7,8 @@ from src.utils.videoio import save_video_with_watermark
 
 def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path, body_h, body_w):
 
-    print("head_video", head_video)
-   
-    print("body_video", body_video)
     if not os.path.isfile(head_video):
-        print('ko thay file')
+        print('file is not exist!')
 
     video_head = cv2.VideoCapture(head_video)
     fps = 25
@@ -33,7 +30,6 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
             break
         full_frame_body.append(frame)
     
-   # crop_info = (45, 13, 363, 332)
     clx, cly, crx, cry = crop_info[1]
 
     frame_w = 256
@@ -55,7 +51,7 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
 
     tmp_path = str(uuid.uuid4())+'.mp4'
     out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'MP4V'), fps, (frame_w, frame_h))
-    for key in tqdm(range(len(full_frame_head)), 'Dang noi video'):
+    for key in tqdm(range(len(full_frame_head)), 'Collecting video: '):
         head = cv2.resize(full_frame_head[key].astype(np.uint8), (ox2 - ox1, oy2 - oy1))
         mask = 255*np.ones(head.shape, head.dtype)
         location = ((ox1+ox2)//2 ,( oy1 + oy2 ) //2 )
@@ -63,7 +59,6 @@ def paste_vid(head_video, body_video, crop_info, new_audio_path, full_video_path
         out_tmp.write(gen_img)
 
     out_tmp.release()
-    print("dang noi video")
     save_video_with_watermark(tmp_path, new_audio_path, full_video_path, watermark=False)
     os.remove(tmp_path)
     

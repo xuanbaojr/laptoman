@@ -55,16 +55,11 @@ def paste_pic_full(
         print("ox1",crop_info[1])
         lx, ly, rx, ry = crop_info[2]
         lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
-        # oy1, oy2, ox1, ox2 = cly+ly, cly+ry, clx+lx, clx+rx
-        # oy1, oy2, ox1, ox2 = cly+ly, cly+ry, clx+lx, clx+rx
 
         if extended_crop:
             oy1, oy2, ox1, ox2 = cly, cry, clx, crx
         else:
-            oy1, oy2, ox1, ox2 = cly + ly, cly + ry, clx + lx, clx + rx
-        
-        print("oy1", oy1,oy2,ox1,ox2)
-    
+            oy1, oy2, ox1, ox2 = cly + ly, cly + ry, clx + lx, clx + rx    
 
     tmp_path = str(uuid.uuid4()) + ".mp4"
     out_tmp = cv2.VideoWriter(

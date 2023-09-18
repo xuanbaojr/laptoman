@@ -3,7 +3,6 @@ import cv2, os, sys, torch
 from tqdm import tqdm
 from PIL import Image 
 
-# 3dmm extraction
 import safetensors
 import safetensors.torch 
 from src.face3d.util.preprocess import align_img
@@ -69,15 +68,12 @@ class CropAndExtract():
         png_path =  os.path.join(save_dir, pic_name+'.png') 
         png_path_full = os.path.join(save_dir, pic_name+'full.png') 
 
-        #load input
         if not os.path.isfile(input_path):
             raise ValueError('input_path must be a valid path to video/image file')
         elif input_path.split('.')[-1] in ['jpg', 'png', 'jpeg']:
-            # loader for first frame
             full_frames = [cv2.imread(input_path)]
             fps = 25
         else:
-            # loader for videos
             video_stream = cv2.VideoCapture(input_path)
             fps = video_stream.get(cv2.CAP_PROP_FPS)
             full_frames = [] 
@@ -93,32 +89,23 @@ class CropAndExtract():
         x_full_frames= [cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  for frame in full_frames] 
         x_full_frames_full= [cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  for frame in full_frames] 
 
-        #### crop images as the 
         if 'crop' in crop_or_resize.lower(): # default crop
-            x_full_frames, crop, quad = self.propress.crop(x_full_frames, still=True if 'ext' in crop_or_resize.lower() else False, xsize=512)
-            print("gjjjjjjjjjj", crop)
-            
+            x_full_frames, crop, quad = self.propress.crop(x_full_frames, still=True if 'ext' in crop_or_resize.lower() else False, xsize=512)            
             x_full_frames_full, crop, quad = self.propress.crop_(x_full_frames_full, still=True if 'ext' in crop_or_resize.lower() else False, xsize=512)
-            
-            clx, cly, crx, cry = crop
-            
-            lx, ly, rx, ry = quad
-            lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
-            oy1, oy2, ox1, ox2 = cly+ly, cly+ry, clx+lx, clx+rx
-            crop_info = ((ox2 - ox1, oy2 - oy1), crop, quad)
-        elif 'full' in crop_or_resize.lower():
-            
-            x_full_frames, crop, quad = self.propress.crop(x_full_frames, still=True if 'ext' in crop_or_resize.lower() else False, xsize=512)
-            print(crop)
-            x_full_frames_full, crop, quad = self.propress.crop_(x_full_frames_full, still=True if 'ext' in crop_or_resize.lower() else False, xsize=512)
-            print(crop)
-
             clx, cly, crx, cry = crop
             lx, ly, rx, ry = quad
             lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
             oy1, oy2, ox1, ox2 = cly+ly, cly+ry, clx+lx, clx+rx
             crop_info = ((ox2 - ox1, oy2 - oy1), crop, quad)
-        else: # resize mode
+        elif 'full' in crop_or_resize.lower():          
+            x_full_frames, crop, quad = self.propress.crop(x_full_frames, still=True if 'ext' in crop_or_resize.lower() else False, xsize=512)
+            x_full_frames_full, crop, quad = self.propress.crop_(x_full_frames_full, still=True if 'ext' in crop_or_resize.lower() else False, xsize=512)
+            clx, cly, crx, cry = crop
+            lx, ly, rx, ry = quad
+            lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
+            oy1, oy2, ox1, ox2 = cly+ly, cly+ry, clx+lx, clx+rx
+            crop_info = ((ox2 - ox1, oy2 - oy1), crop, quad)
+        else: 
             oy1, oy2, ox1, ox2 = 0, x_full_frames[0].shape[0], 0, x_full_frames[0].shape[1] 
             crop_info = ((ox2 - ox1, oy2 - oy1), None, None)
 
