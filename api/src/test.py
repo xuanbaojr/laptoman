@@ -5,8 +5,6 @@ from tqdm import tqdm
 import uuid
 from rembg import remove
 
-from src.utils.videoio import save_video_with_watermark
-
 
 def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, extended_crop=False):
 
@@ -187,5 +185,10 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         out_tmp.write(test4_temp)
     out_tmp.release()
 
-    save_video_with_watermark(tmp_path, new_audio_path,
-                              full_video_path, watermark=False)
+   # save_video_with_watermark(tmp_path, new_audio_path,
+    #                          full_video_path, watermark=False)
+
+if __name__ ==  "__main__":
+    video_path = "./test/video.mp4"
+    pic_path = "./test/art_0.png"
+    paste_pic(video_path, pic_path, crop_info = 1, new_audio_path = 1, full_video_path = 1, extended_crop=False)

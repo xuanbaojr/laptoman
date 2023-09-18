@@ -17,7 +17,8 @@ class ResidualConv(nn.Module):
             nn.Conv2d(output_dim, output_dim, kernel_size=3, padding=1),
         )
         self.conv_skip = nn.Sequential(
-            nn.Conv2d(input_dim, output_dim, kernel_size=3, stride=stride, padding=1),
+            nn.Conv2d(input_dim, output_dim, kernel_size=3,
+                      stride=stride, padding=1),
             nn.BatchNorm2d(output_dim),
         )
 

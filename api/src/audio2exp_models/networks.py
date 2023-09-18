@@ -2,13 +2,14 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
+
 class Conv2d(nn.Module):
-    def __init__(self, cin, cout, kernel_size, stride, padding, residual=False, use_act = True, *args, **kwargs):
+    def __init__(self, cin, cout, kernel_size, stride, padding, residual=False, use_act=True, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.conv_block = nn.Sequential(
-                            nn.Conv2d(cin, cout, kernel_size, stride, padding),
-                            nn.BatchNorm2d(cout)
-                            )
+            nn.Conv2d(cin, cout, kernel_size, stride, padding),
+            nn.BatchNorm2d(cout)
+        )
         self.act = nn.ReLU()
         self.residual = residual
         self.use_act = use_act
@@ -17,11 +18,12 @@ class Conv2d(nn.Module):
         out = self.conv_block(x)
         if self.residual:
             out += x
-        
+
         if self.use_act:
             return self.act(out)
         else:
             return out
+
 
 class SimpleWrapperV2(nn.Module):
     def __init__(self) -> None:
@@ -36,15 +38,18 @@ class SimpleWrapperV2(nn.Module):
             Conv2d(64, 64, kernel_size=3, stride=1, padding=1, residual=True),
 
             Conv2d(64, 128, kernel_size=3, stride=3, padding=1),
-            Conv2d(128, 128, kernel_size=3, stride=1, padding=1, residual=True),
-            Conv2d(128, 128, kernel_size=3, stride=1, padding=1, residual=True),
+            Conv2d(128, 128, kernel_size=3, stride=1,
+                   padding=1, residual=True),
+            Conv2d(128, 128, kernel_size=3, stride=1,
+                   padding=1, residual=True),
 
             Conv2d(128, 256, kernel_size=3, stride=(3, 2), padding=1),
-            Conv2d(256, 256, kernel_size=3, stride=1, padding=1, residual=True),
+            Conv2d(256, 256, kernel_size=3, stride=1,
+                   padding=1, residual=True),
 
             Conv2d(256, 512, kernel_size=3, stride=1, padding=0),
             Conv2d(512, 512, kernel_size=1, stride=1, padding=0),
-            ) 
+        )
         '''
         wav2lip_state_dict = torch.load('/apdcephfs_cq2/share_1290939/wenxuazhang/checkpoints/wav2lip.pth')['state_dict']
         state_dict = self.audio_encoder.state_dict()
@@ -63,7 +68,7 @@ class SimpleWrapperV2(nn.Module):
         x = self.audio_encoder(x).view(x.size(0), -1)
         ref_reshape = ref.reshape(x.size(0), -1)
         ratio = ratio.reshape(x.size(0), -1)
-        
-        y = self.mapping1(torch.cat([x, ref_reshape, ratio], dim=1)) 
-        out = y.reshape(ref.shape[0], ref.shape[1], -1) #+ ref # resudial
+
+        y = self.mapping1(torch.cat([x, ref_reshape, ratio], dim=1))
+        out = y.reshape(ref.shape[0], ref.shape[1], -1)  # + ref # resudial
         return out

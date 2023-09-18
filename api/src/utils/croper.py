@@ -16,6 +16,7 @@ from facexlib.alignment import landmark_98_to_68
 import numpy as np
 from PIL import Image
 
+
 class Preprocesser:
     def __init__(self, device='cuda'):
         self.predictor = KeypointExtractor(device)
@@ -32,11 +33,12 @@ class Preprocesser:
         det = dets[0]
 
         img = img_np[int(det[1]):int(det[3]), int(det[0]):int(det[2]), :]
-        lm = landmark_98_to_68(self.predictor.detector.get_landmarks(img)) # [0]
+        lm = landmark_98_to_68(
+            self.predictor.detector.get_landmarks(img))  # [0]
 
-        #### keypoints to the original location
-        lm[:,0] += int(det[0])
-        lm[:,1] += int(det[1])
+        # keypoints to the original location
+        lm[:, 0] += int(det[0])
+        lm[:, 1] += int(det[1])
 
         return lm
 
@@ -66,22 +68,25 @@ class Preprocesser:
         eye_to_mouth = mouth_avg - eye_avg
 
         # Choose oriented crop rectangle.
-        x = eye_to_eye - np.flipud(eye_to_mouth) * [-1, 1]  # Addition of binocular difference and double mouth difference
-        x /= np.hypot(*x)   
-        x *= max(np.hypot(*eye_to_eye) * 2.0, np.hypot(*eye_to_mouth) * 1.8)   
+        # Addition of binocular difference and double mouth difference
+        x = eye_to_eye - np.flipud(eye_to_mouth) * [-1, 1]
+        x /= np.hypot(*x)
+        x *= max(np.hypot(*eye_to_eye) * 2.0, np.hypot(*eye_to_mouth) * 1.8)
         y = np.flipud(x) * [-1, 1]
         c = eye_avg + eye_to_mouth * 0.1
-        quad = np.stack([c - x - y, c - x + y, c + x + y, c + x - y])   
-        qsize = np.hypot(*x) * 2   
+        quad = np.stack([c - x - y, c - x + y, c + x + y, c + x - y])
+        qsize = np.hypot(*x) * 2
 
         shrink = int(np.floor(qsize / output_size * 0.5))
         if shrink > 1:
-            rsize = (int(np.rint(float(img.size[0]) / shrink)), int(np.rint(float(img.size[1]) / shrink)))
+            rsize = (int(np.rint(
+                float(img.size[0]) / shrink)), int(np.rint(float(img.size[1]) / shrink)))
             img = img.resize(rsize, Image.ANTIALIAS)
             quad /= shrink
             qsize /= shrink
         else:
-            rsize = (int(np.rint(float(img.size[0]))), int(np.rint(float(img.size[1]))))
+            rsize = (int(np.rint(float(img.size[0]))), int(
+                np.rint(float(img.size[1]))))
 
         # Crop.
         border = max(int(np.rint(qsize * 0.1)), 3)
@@ -107,16 +112,17 @@ class Preprocesser:
 
         # Save aligned image.
         return rsize, crop, [lx, ly, rx, ry]
-    
+
     def crop(self, img_np_list, still=False, xsize=512):    # first frame for all video
         img_np = img_np_list[0]
         lm = self.get_landmark(img_np)
 
         if lm is None:
             raise 'can not detect the landmark from source image'
-        rsize, crop, quad = self.align_face(img=Image.fromarray(img_np), lm=lm, output_size=xsize)
+        rsize, crop, quad = self.align_face(
+            img=Image.fromarray(img_np), lm=lm, output_size=xsize)
         clx, cly, crx, cry = crop
-        
+
         lx, ly, rx, ry = quad
         lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
         for _i in range(len(img_np_list)):
@@ -134,7 +140,8 @@ class Preprocesser:
 
         if lm is None:
             raise 'can not detect the landmark from source image'
-        rsize, crop, quad = self.align_face(img=Image.fromarray(img_np), lm=lm, output_size=xsize)
+        rsize, crop, quad = self.align_face(
+            img=Image.fromarray(img_np), lm=lm, output_size=xsize)
         clx, cly, crx, cry = crop
         lx, ly, rx, ry = quad
         lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
@@ -142,4 +149,5 @@ class Preprocesser:
             _inp = img_np_list[_i]
             _inp = cv2.resize(_inp, (rsize[0], rsize[1]))
             img_np_list[_i] = _inp
+
         return img_np_list, crop, quad

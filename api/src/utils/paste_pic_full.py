@@ -52,14 +52,14 @@ def paste_pic_full(
     else:
         r_w, r_h = crop_info[0]
         clx, cly, crx, cry = crop_info[1]
-        print("ox1",crop_info[1])
+        print("ox1", crop_info[1])
         lx, ly, rx, ry = crop_info[2]
         lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
 
         if extended_crop:
             oy1, oy2, ox1, ox2 = cly, cry, clx, crx
         else:
-            oy1, oy2, ox1, ox2 = cly + ly, cly + ry, clx + lx, clx + rx    
+            oy1, oy2, ox1, ox2 = cly + ly, cly + ry, clx + lx, clx + rx
 
     tmp_path = str(uuid.uuid4()) + ".mp4"
     out_tmp = cv2.VideoWriter(
@@ -69,7 +69,8 @@ def paste_pic_full(
         p = cv2.resize(crop_frame.astype(np.uint8), (ox2 - ox1, oy2 - oy1))
         mask = 255 * np.ones(p.shape, p.dtype)
         location = ((ox1 + ox2) // 2, (oy1 + oy2) // 2)
-        gen_img = cv2.seamlessClone(p, full_img, mask, location, cv2.NORMAL_CLONE)
+        gen_img = cv2.seamlessClone(
+            p, full_img, mask, location, cv2.NORMAL_CLONE)
         out_tmp.write(gen_img)
 
     out_tmp.release()
