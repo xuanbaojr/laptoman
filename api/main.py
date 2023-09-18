@@ -10,7 +10,7 @@ def sadtalker_demo(source_image, driven_audio, preprocess, still_mode, use_enhan
     else:
         print("Source_image is not exits!")
 
-    result = sad_talker.test(source_image, driven_audio, preprocess, still_mode, use_enhancer)
+    result = sad_talker.test(source_image, driven_audio, preprocess, still_mode, use_enhancer = False)
     return result
     
 
@@ -20,7 +20,6 @@ if __name__ == "__main__":
     driven_audio = 'test/test_vi.wav'
     preprocess = "crop"
     still_mode = False
-    use_enhancer = False
-    demo = sadtalker_demo(source_image, driven_audio, preprocess, still_mode, use_enhancer )
+    demo = sadtalker_demo(source_image, driven_audio, preprocess, still_mode )
     print(demo)
 
