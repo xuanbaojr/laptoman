@@ -247,24 +247,22 @@ class AnimateFromCoeff():
         print(f"The generated video is named {video_save_dir}/{video_name}")
         ################################################
 
-
-        if preprocess == "full":
         
-            video_name_full = x["video_name"] + "_full.mp4"
-            full_video_path = os.path.join(video_save_dir, video_name_full)
-          #  preprocess = "full"
+        video_name_full = x["video_name"] + "_full.mp4"
+        full_video_path = os.path.join(video_save_dir, video_name_full)
+        #  preprocess = "full"
 
-                
-            return_path = full_video_path
-            paste_pic_full(
-                path,
-                pic_path,
-                crop_info,
-                new_audio_path,
-                full_video_path,
-                extended_crop=True if "ext" in preprocess.lower() else False,
-            )
-            print(f"The generated video is named {video_save_dir}/{video_name_full}")
+            
+        return_path = full_video_path
+        paste_pic_full(
+            path,
+            pic_path,
+            crop_info,
+            new_audio_path,
+            full_video_path,
+            extended_crop=True if "ext" in preprocess.lower() else False,
+        )
+        print(f"The generated video is named {video_save_dir}/{video_name_full}")
 
         if preprocess == "crop" and still_mode:
 
