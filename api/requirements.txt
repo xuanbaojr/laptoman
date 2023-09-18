@@ -26,3 +26,4 @@ click
 asgiref 
 h11
 diffusers
+packaging
