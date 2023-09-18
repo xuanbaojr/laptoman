@@ -70,7 +70,6 @@ class SadTalker:
         os.makedirs(input_dir, exist_ok=True)
         pic_path = os.path.join(input_dir, os.path.basename(source_image))
         pic_path_source = os.path.join(input_dir, os.path.basename(source_image))
-        print("old", pic_path_source)
 
         shutil.copy(source_image, input_dir)
         

@@ -126,8 +126,6 @@ class Preprocesser:
             if not still:
                 _inp = _inp[ly:ry, lx:rx]
             img_np_list[_i] = _inp
-        print("crop", still)
-        print("crop_info", crop)
         return img_np_list, crop, quad
 
     def crop_(self, img_np_list, still=False, xsize=512):    # first frame for all video
