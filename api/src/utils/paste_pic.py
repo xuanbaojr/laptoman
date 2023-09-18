@@ -6,7 +6,7 @@ from rembg import remove
 
 from src.utils.videoio import save_video_with_watermark 
 
-def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
+def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path extended_crop=False):
 
 
     full_img = cv2.imread(pic_path)
@@ -328,12 +328,5 @@ def paste_pic(video_path, pic_path, full_video_path, extended_crop=False):
 
 #     out_tmp.release()
 
-  #  save_video_with_watermark(tmp_path, new_audio_path = './test/bus_chinese.wav', full_video_path = full_video_path, watermark=False)
+    save_video_with_watermark(tmp_path, new_audio_path = './test/bus_chinese.wav', full_video_path = full_video_path, watermark=False)
 
-if __name__ == "__main__":
-
-    video_path = './test/video.mp4'
-    pic_path = 'test/art_0.png'
-    full_video_path = './test/output.mp4'
-    demo = paste_pic(video_path, pic_path, full_video_path = full_video_path)
-    print(demo)
