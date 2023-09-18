@@ -84,9 +84,7 @@ upDiff = (80, 80, 80)
 cv2.floodFill(test4, mask, (0, 0), (255, 255, 255), loDiff, upDiff)
 cv2.floodFill(test4, mask, (w-1, 0), (255, 255, 255), loDiff, upDiff)
 cv2.imwrite('test/test4_fill.png', test4)
-cv2.imshow('haha', test4)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+
 
 test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))] = np.copy(test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))])
 test4_temp[np.where(np.all(test4 == [255, 255, 255], axis = 2))] = np.copy(test3_[np.where(np.all(test4 == [255, 255, 255], axis = 2))])
