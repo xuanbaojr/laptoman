@@ -1,101 +1,152 @@
-import cv2
-import numpy as np
+import os
+import shutil
+import sys
+import uuid
+
+import torch
+from pydub import AudioSegment
+
+from src.facerender.animate import AnimateFromCoeff
+from src.generate_batch import get_data
+from src.generate_facerender_batch import get_facerender_data
+from src.test_audio2coeff import Audio2Coeff
+from src.utils.init_path import init_path
+from src.utils.preprocess import CropAndExtract
 from rembg import remove
 
-source_image = 'test/art_0.png'
-output_path = 'test/test4.png'
 
-with open(source_image, 'rb') as i:
-    with open(output_path, 'wb') as o:
-        input = i.read()
-        output = remove(input)
-        o.write(output)
-
-test3 = cv2.imread(source_image)
-test3 = cv2.resize(test3, (256,256))
-test3_ = np.ones_like(test3)*100
-h = test3.shape[0]
-w = test3.shape[1]
-
-test4 = cv2.imread('./test/test4_test.png')
-test4 = cv2.resize(test4, (256,256))
-test4_temp = cv2.imread('./test/test4_.png')
-test4_temp = cv2.resize(test4, (256,256))
-
-blur_img = cv2.cvtColor(test4, cv2.COLOR_BGR2GRAY)
-adaptive_threshold_image = cv2.adaptiveThreshold(blur_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 99, 2)
-#test3_ = np.where(adaptive_threshold_image[:,:,None] == 0, [255,255,255], test3)
-#test4[np.where(adaptive_threshold_image == 0)] = [110,255,255]
+def mp3_to_wav(mp3_filename, wav_filename, frame_rate):
+    mp3_file = AudioSegment.from_file(file=mp3_filename)
+    mp3_file.set_frame_rate(frame_rate).export(wav_filename, format="wav")
 
 
+class SadTalker:
+    def __init__(
+        self, checkpoint_path="checkpoints", config_path="src/config", lazy_load=False
+    ):
+        if torch.cuda.is_available():
+            device = "cuda:0"
+        else:
+            device = "cpu"
 
-kernel = np.ones((2,1), np.uint8)
-#adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 10)
-# for i in range(5):
+        self.device = device
 
-#     adaptive_threshold_image[h-1-i, 0:w-1] = 255
-cv2.imwrite('test/threshold_img.png', adaptive_threshold_image)
+        os.environ["TORCH_HOME"] = checkpoint_path
+
+        self.checkpoint_path = checkpoint_path
+        self.config_path = config_path
+
+    def test(
+        self,
+        source_image,
+        driven_audio,
+        preprocess="crop",
+        still_mode=False,
+        use_enhancer=False,
+        batch_size=1,
+        size=256,
+        pose_style=0,
+        exp_scale=1.0,
+        use_ref_video=False,
+        ref_video=None,
+        ref_info=None,
+        use_idle_mode=False,
+        length_of_audio=0,
+        use_blink=True,
+        result_dir="./results/",
+    ):
+        self.sadtalker_paths = init_path(
+            self.checkpoint_path, self.config_path, size, False, preprocess
+        )
+        print(self.sadtalker_paths)
+
+        self.audio_to_coeff = Audio2Coeff(self.sadtalker_paths, self.device)
+        self.preprocess_model = CropAndExtract(self.sadtalker_paths, self.device)
+        self.animate_from_coeff = AnimateFromCoeff(self.sadtalker_paths, self.device)
+
+        # pic_path - ok
+        # time_tag ?
+        time_tag = str(uuid.uuid4())
+        save_dir = os.path.join(result_dir, time_tag)
+        os.makedirs(save_dir, exist_ok=True)
+        input_dir = os.path.join(save_dir, "input")
+        os.makedirs(input_dir, exist_ok=True)
+        # chuyen anh folder goc qua result/timetag/input/source_image.png
+        pic_path = os.path.join(input_dir, os.path.basename(source_image))
+        pic_path_source = os.path.join(input_dir, os.path.basename(source_image))
+
+        shutil.move(source_image, input_dir)
+        
+        
+
+        # audio_path
+        if driven_audio is not None and os.path.isfile(driven_audio):
+            audio_path = os.path.join(input_dir, os.path.basename(driven_audio))
+
+            #### mp3 to wav
+            if ".mp3" in audio_path:
+                mp3_to_wav(driven_audio, audio_path.replace(".mp3", ".wav"), 16000)
+                audio_path = audio_path.replace(".mp3", ".wav")
+            else:
+                shutil.copy(driven_audio, input_dir)
+
+        if not still_mode:
+            source_image = self.img_pre.img_pre(source_image)
+            pic_name = os.path.splitext(os.path.split(source_image)[-1])[0] 
+
+            output_path = 'test/' + pic_name + '_nobg.png'
+
+            with open(source_image, 'rb') as i:
+                with open(output_path, 'wb') as o:
+                    input = i.read()
+                    output = remove(input)
+                    o.write(output)
+                
+            print("output_path", output_path)
+            print("source_image", source_image)            
+            
+            
+            pic_path = os.path.join(input_dir, os.path.basename(output_path))
+            shutil.copy(output_path, input_dir)
 
 
-# ...
-contour_img = adaptive_threshold_image.copy()
-contours, _ = cv2.findContours(contour_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-largest_contour = max(contours, key=cv2.contourArea)
 
-# Tạo bản sao 3 kênh của adaptive_threshold_image
-mask = np.zeros((h+2, w+2), dtype=np.uint8)
-cv2.drawContours(test4, [largest_contour], 0, (255, 0, 0), thickness=1)
-cv2.imwrite('test/test4_draw.png', test4)
+        # first_frame_dir 
+        first_frame_dir = os.path.join(save_dir, "first_frame_dir")
+        os.makedirs(first_frame_dir, exist_ok=True)
+        # results/time_tag/first_frame_dir ( art_0.mat, art_0.png, art_0_landmarks.txt )
 
-#.....
-array_y = []
-for x in range(w):
-    for y in range(h):
-        if np.array_equal(test4[y, x], [255, 0, 0]):
-            array_y.append((y, x))
-            break
+        # first_coeff_path (b0, p0)
+        first_coeff_path, crop_pic_path, crop_info = self.preprocess_model.generate(
+            pic_path, first_frame_dir, preprocess, True, size
+        )
+        #
+        batch = get_data(
+            first_coeff_path,
+            audio_path,
+            self.device,
+            ref_eyeblink_coeff_path=None,
+            still=still_mode,
+            idlemode=use_idle_mode,
+            length_of_audio=length_of_audio,
+            use_blink=use_blink,
+        )  # longer audio?
+        coeff_path = self.audio_to_coeff.generate(
+            batch, save_dir, pose_style, ref_pose_coeff_path=None
+        )
+        #
+        data = get_facerender_data(
+            coeff_path,
+            crop_pic_path,
+            first_coeff_path,
+            audio_path,
+            batch_size,
+            still_mode=still_mode,
+            preprocess=preprocess,
+            size=size,
+            expression_scale=exp_scale,
+        )
 
-array_x = []
-for y in range(h):
-    for x in range(w):
-        if np.array_equal(test4[y, x], [255, 0, 0]):
-            array_x.append((y, x))
-            break
-    for x in range(w - 1, -1, -1):
-        if np.array_equal(test4[y, x], [255, 0, 0]):
-            array_x.append((y, x))
-            break
-
-# Gộp hai danh sách
-unique_points = set(array_x + array_y)
-
-for y, x in unique_points:
-    test4[y, x] = [100, 100, 255]
-
-cv2.imwrite('test/test4_draw_array.png', test4)
-
-
-
-
-
-
-loDiff = (0, 0, 0)
-upDiff = (80, 80, 80)
-cv2.floodFill(test4, mask, (0, 0), (255, 255, 255), loDiff, upDiff)
-cv2.floodFill(test4, mask, (w-1, 0), (255, 255, 255), loDiff, upDiff)
-cv2.imwrite('test/test4_fill.png', test4)
-
-
-test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))] = np.copy(test4_temp[np.where(np.all(test4 == [255, 0, 0], axis = 2))])
-test4_temp[np.where(np.all(test4 == [255, 255, 255], axis = 2))] = np.copy(test3_[np.where(np.all(test4 == [255, 255, 255], axis = 2))])
-test4_temp[np.where(np.all(test4 == [0, 0, 255], axis = 2))] = np.copy(test3_[np.where(np.all(test4 == [0, 0, 255], axis = 2))])
-
-# test4 = np.where(test4[:,:,:] == [255,255,255], test3, test4)
-
-
-#   test4 = np.where(test4[:,:,:] == [255,0,0], test3, test4)
-
-cv2.imwrite('test/contour.png', test3)
-cv2.imwrite('test/test4_.png', test4_temp)
-
-
+        return_path = self.animate_from_coeff.generate(data, save_dir,  pic_path, crop_info, enhancer='gfpgan' if use_enhancer else None, preprocess=preprocess, img_size=size, pic_path_source = pic_path_source, still_mode = still_mode)
+        
+        return preprocess, return_path
