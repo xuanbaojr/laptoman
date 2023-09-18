@@ -1,6 +1,6 @@
 import os, cv2
 from src.inference import SadTalker
-def sadtalker_demo(source_image, driven_audio, preprocess, still_mode, use_enhancer, checkpoint_path='checkpoints', config_path='src/config', warpfn=None):
+def sadtalker_demo(source_image, driven_audio, preprocess, still_mode, checkpoint_path='checkpoints', config_path='src/config', warpfn=None):
     
    
     sad_talker = SadTalker(checkpoint_path, config_path, lazy_load=True)
