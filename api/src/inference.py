@@ -64,7 +64,7 @@ class SadTalker:
         self.audio_to_coeff = Audio2Coeff(self.sadtalker_paths, self.device)
         self.preprocess_model = CropAndExtract(self.sadtalker_paths, self.device)
         self.animate_from_coeff = AnimateFromCoeff(self.sadtalker_paths, self.device)
-        self.img_pre = Image_Preprocess()
+        self.img_pre = Image_Preprocess(self.device)
 
         # pic_path - ok
         # time_tag ?
