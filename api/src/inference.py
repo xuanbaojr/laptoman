@@ -46,7 +46,7 @@ class SadTalker:
         use_enhancer=False,
         batch_size=1,
         size=256,
-        pose_style=0,
+        pose_style=10,
         exp_scale=1.0,
         use_ref_video=False,
         ref_video=None,
