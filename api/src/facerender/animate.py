@@ -165,12 +165,14 @@ class AnimateFromCoeff():
         source_semantics=source_semantics.to(self.device)
         target_semantics=target_semantics.to(self.device)
 
-        source_image_full=x['source_image_full'].type(torch.FloatTensor)
-        source_semantics_full=x['source_semantics_full'].type(torch.FloatTensor)
-        target_semantics_full=x['target_semantics_list_full'].type(torch.FloatTensor) 
-        source_image_full=source_image_full.to(self.device)
-        source_semantics_full=source_semantics_full.to(self.device)
-        target_semantics_full=target_semantics_full.to(self.device)
+        if not still_mode:
+
+            source_image_full=x['source_image_full'].type(torch.FloatTensor)
+            source_semantics_full=x['source_semantics_full'].type(torch.FloatTensor)
+            target_semantics_full=x['target_semantics_list_full'].type(torch.FloatTensor) 
+            source_image_full=source_image_full.to(self.device)
+            source_semantics_full=source_semantics_full.to(self.device)
+            target_semantics_full=target_semantics_full.to(self.device)
         if 'yaw_c_seq' in x:
             yaw_c_seq = x['yaw_c_seq'].type(torch.FloatTensor)
             yaw_c_seq = x['yaw_c_seq'].to(self.device)
