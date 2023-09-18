@@ -210,7 +210,6 @@ class AnimateFromCoeff():
 
         result = img_as_ubyte(video)
 
-        ### the generated video is 256x256, so we keep the aspect ratio, 
         original_size = crop_info[0]
         if original_size:
             result = [ cv2.resize(result_i,(img_size, int(img_size * original_size[1]/original_size[0]) )) for result_i in result ]
@@ -220,8 +219,6 @@ class AnimateFromCoeff():
 
             print("body_w", body_w)
             print("body_h", body_h)
-
-        # Generated head_video
 
         video_name = x["video_name"] + ".mp4"
         path = os.path.join(video_save_dir, "temp_" + video_name)
@@ -250,7 +247,7 @@ class AnimateFromCoeff():
         
         video_name_full = x["video_name"] + "_full.mp4"
         full_video_path = os.path.join(video_save_dir, video_name_full)
-        
+
         return_path = full_video_path
         paste_pic_full(
             path,
@@ -307,8 +304,6 @@ class AnimateFromCoeff():
             enhanced_path = os.path.join(video_save_dir, "temp_" + video_name_enhancer)
             av_path_enhancer = os.path.join(video_save_dir, video_name_enhancer)
             return_path = av_path_enhancer
-            print("full_video_path:", full_video_path)
-
             try:
                 enhanced_images_gen_with_len = enhancer_generator_with_len(
                     full_video_path, method=enhancer, bg_upsampler=background_enhancer
@@ -327,12 +322,11 @@ class AnimateFromCoeff():
             save_video_with_watermark(
                 enhanced_path, new_audio_path, av_path_enhancer, watermark=False
             )
-            print(
-                f"The generated video is named {video_save_dir}/{video_name_enhancer}"
-            )
+
             os.remove(enhanced_path)
 
         os.remove(path)
         os.remove(new_audio_path)
+        print(f"The generated video is named {return_path}")
 
         return return_path

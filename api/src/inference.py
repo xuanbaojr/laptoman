@@ -63,14 +63,11 @@ class SadTalker:
         self.animate_from_coeff = AnimateFromCoeff(self.sadtalker_paths, self.device)
         self.img_pre = Image_Preprocess(self.device)
 
-        # pic_path - ok
-        # time_tag ?
         time_tag = str(uuid.uuid4())
         save_dir = os.path.join(result_dir, time_tag)
         os.makedirs(save_dir, exist_ok=True)
         input_dir = os.path.join(save_dir, "input")
         os.makedirs(input_dir, exist_ok=True)
-        # chuyen anh folder goc qua result/timetag/input/source_image.png
         pic_path = os.path.join(input_dir, os.path.basename(source_image))
         pic_path_source = os.path.join(input_dir, os.path.basename(source_image))
         print("old", pic_path_source)
@@ -93,7 +90,6 @@ class SadTalker:
         if not still_mode and preprocess == 'crop':
             source_image = self.img_pre.img_pre(source_image)
             pic_path_source = source_image
-            print("new", pic_path_source)
             pic_name = os.path.splitext(os.path.split(source_image)[-1])[0] 
 
             output_path = 'test/' + pic_name + '_nobg.png'
@@ -103,28 +99,18 @@ class SadTalker:
                     input = i.read()
                     output = remove(input)
                     o.write(output)
-                
-            print("output_path", output_path)
-            print("source_image", source_image)            
-            
             
             pic_path = os.path.join(input_dir, os.path.basename(output_path))
             
             shutil.copy(output_path, input_dir)
 
-
-
-
-        # first_frame_dir 
         first_frame_dir = os.path.join(save_dir, "first_frame_dir")
         os.makedirs(first_frame_dir, exist_ok=True)
-        # results/time_tag/first_frame_dir ( art_0.mat, art_0.png, art_0_landmarks.txt )
 
-        # first_coeff_path (b0, p0)
         first_coeff_path, crop_pic_path, crop_info, pic_path_full = self.preprocess_model.generate(
             pic_path, first_frame_dir, preprocess, True, size, still_mode = still_mode
         )
-        #
+        
         batch = get_data(
             first_coeff_path,
             audio_path,
@@ -134,11 +120,11 @@ class SadTalker:
             idlemode=use_idle_mode,
             length_of_audio=length_of_audio,
             use_blink=use_blink,
-        )  # longer audio?
+        )  
         coeff_path = self.audio_to_coeff.generate(
             batch, save_dir, pose_style, ref_pose_coeff_path=None
         )
-        #
+        
         data = get_facerender_data(
             coeff_path,
             crop_pic_path,
