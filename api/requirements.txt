@@ -29,3 +29,4 @@ diffusers
 packaging
 huggingface_hub
 starlette
+anyio
