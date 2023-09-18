@@ -248,7 +248,7 @@ class AnimateFromCoeff():
         ################################################
 
 
-        if still_mode:
+        if preprocess == "full":
         
             video_name_full = x["video_name"] + "_full.mp4"
             full_video_path = os.path.join(video_save_dir, video_name_full)
@@ -267,11 +267,13 @@ class AnimateFromCoeff():
                     extended_crop=True if "ext" in preprocess.lower() else False,
                 )
                 print(f"The generated video is named {video_save_dir}/{video_name_full}")
-            
-                crop_full(full_video_path, crop_info, new_audio_path, av_path)
-                full_video_path = av_path
+            else:
 
-        else:
+                crop_full(full_video_path, crop_info, new_audio_path, av_path)
+
+            full_video_path = av_path
+
+        if preprocess == "crop" and not still_mode:
 
             predictions_video_full = make_animation(source_image_full, source_semantics_full, target_semantics_full,
                                 self.generator, self.kp_extractor, self.he_estimator, self.mapping, 
