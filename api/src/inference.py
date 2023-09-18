@@ -95,7 +95,7 @@ class SadTalker:
 
         if not still_mode and preprocess == 'crop':
             source_image = self.img_pre.img_pre(source_image)
-            pic_path_source = os.path.join(input_dir, os.path.basename(source_image))
+            pic_path_source = source_image
             print("new", pic_path_source)
             pic_name = os.path.splitext(os.path.split(source_image)[-1])[0] 
 
