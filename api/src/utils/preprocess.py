@@ -97,8 +97,9 @@ class CropAndExtract():
         if 'crop' in crop_or_resize.lower(): # default crop
             x_full_frames, crop, quad = self.propress.crop(x_full_frames, still=True if 'ext' in crop_or_resize.lower() else False, xsize=512)
             x_full_frames_full, crop, quad = self.propress.crop_(x_full_frames, still=True if 'ext' in crop_or_resize.lower() else False, xsize=512)
-            print("gjjjjjjjjjj")
+            
             clx, cly, crx, cry = crop
+            print("gjjjjjjjjjj", crop)
             lx, ly, rx, ry = quad
             lx, ly, rx, ry = int(lx), int(ly), int(rx), int(ry)
             oy1, oy2, ox1, ox2 = cly+ly, cly+ry, clx+lx, clx+rx
