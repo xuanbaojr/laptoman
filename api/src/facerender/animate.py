@@ -252,7 +252,7 @@ class AnimateFromCoeff():
         
             video_name_full = x["video_name"] + "_full.mp4"
             full_video_path = os.path.join(video_save_dir, video_name_full)
-            preprocess = "full"
+          #  preprocess = "full"
             if "full" in preprocess.lower():
                 # only add watermark to the full image.
                 
