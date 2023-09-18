@@ -162,12 +162,12 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
 
 
         cv2.imwrite('test/threshold_img.png', adaptive_threshold_image)
-        kernel = np.ones((2,1), np.uint8)
-        adaptive_threshold_image = cv2.erode(adaptive_threshold_image, kernel, iterations = 3)
-        cv2.imwrite('test/threshold_img_kernel_erode.png', adaptive_threshold_image)
+        # kernel = np.ones((2,1), np.uint8)
+        # adaptive_threshold_image = cv2.erode(adaptive_threshold_image, kernel, iterations = 3)
+        # cv2.imwrite('test/threshold_img_kernel_erode.png', adaptive_threshold_image)
             
         kernel = np.ones((2,1), np.uint8)
-        adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 12)
+        adaptive_threshold_image = cv2.dilate(adaptive_threshold_image, kernel, iterations = 11)
         # cv2.imshow('haha', adaptive_threshold_image)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
