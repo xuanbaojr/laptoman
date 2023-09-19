@@ -1,5 +1,5 @@
-import torch.nn as nn
 import torch
+import torch.nn as nn
 
 
 class ResidualConv(nn.Module):
@@ -17,13 +17,11 @@ class ResidualConv(nn.Module):
             nn.Conv2d(output_dim, output_dim, kernel_size=3, padding=1),
         )
         self.conv_skip = nn.Sequential(
-            nn.Conv2d(input_dim, output_dim, kernel_size=3,
-                      stride=stride, padding=1),
+            nn.Conv2d(input_dim, output_dim, kernel_size=3, stride=stride, padding=1),
             nn.BatchNorm2d(output_dim),
         )
 
     def forward(self, x):
-
         return self.conv_block(x) + self.conv_skip(x)
 
 

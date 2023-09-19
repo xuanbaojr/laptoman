@@ -4,10 +4,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /app
 
-RUN set -x 
-RUN apt-get update 
-RUN  apt-get install -y --no-install-recommends ffmpeg 
-RUN  apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN set -x \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg \ 
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY ./requirements.txt /tmp/requirements.txt
 
