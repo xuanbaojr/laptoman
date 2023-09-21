@@ -28,7 +28,7 @@ models = {}
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    model_id = "stable-diffusion-v1-4"
+    model_id = "runwayml/stable-diffusion-v1-5"
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
     pipe = StableDiffusionPipeline.from_pretrained(model_id)
