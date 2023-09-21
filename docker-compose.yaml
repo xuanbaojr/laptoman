@@ -1,18 +1,7 @@
-version: '3.7'
-
 networks:
   app:
 
-
 services:
-  model_api:
-    build: ./api
-    networks:
-      - app
-    ports:
-      - 8000:8000
-
-
   client:
     build: ./client
     networks:
@@ -20,6 +9,13 @@ services:
     ports:
       - 7860:7860
     depends_on:
-      - model_api
+      - api
+    command: ["python", "/client", "app_gradio.py"]
 
+  api:
+    build: ./api
+    networks:
+      - app
+    ports:
+      - 8000:8000
 
