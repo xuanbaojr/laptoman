@@ -1,6 +1,6 @@
 networks:
   app:
-​
+
 services:
   client:
     build: ./client
@@ -12,7 +12,7 @@ services:
       - model_api
     volumes:
       - ./client:/app
-​
+      
   model_api:
     build: ./api
     networks:
