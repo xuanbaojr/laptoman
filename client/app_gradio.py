@@ -1,4 +1,5 @@
 import io
+import json
 
 import gradio as gr
 import requests
@@ -8,6 +9,7 @@ import os
 
 def clear():
     return None
+
 
 def upload_file(files):
     file_paths = [file.name for file in files]
@@ -19,12 +21,14 @@ def validate_prompt(prompt):
         return None
     raise gr.Error("You must input text to generate image")
 
+
 def validate_video_input(audio, image):
     if audio is None:
         raise gr.Error("Please upload your audio")
     elif image is None:
         raise gr.Error("Please upload or generate image")
     return None
+
 
 def enable_state_video():
     return {
@@ -35,6 +39,7 @@ def enable_state_video():
         video_button: gr.update(interactive=True)
     }
 
+
 def disable_state_video():
     return {
         file_output: gr.update(interactive=False),
@@ -44,6 +49,7 @@ def disable_state_video():
         video_button: gr.update(interactive=False)
     }
 
+
 def enable_state_image():
     return {
         file_output: gr.update(interactive=True),
@@ -52,6 +58,7 @@ def enable_state_image():
         video_button: gr.update(interactive=True)
     }
 
+
 def disable_state_image():
     return {
         file_output: gr.update(interactive=False),
@@ -59,22 +66,23 @@ def disable_state_image():
         prompt: gr.update(interactive=False),
         video_button: gr.update(interactive=False)
     }
-    
+
 
 def generate_image(prompt):
-    res = requests.post("http://model_api:8000/prediction", json={"text": prompt})
+    res = requests.post("http://model_api:8000/prediction", data={"prompt": prompt})
 
     byte = res.content
 
     img = Image.open(io.BytesIO(byte))
     return img
 
-def generate_video(audio, image):
+def generate_video(audio, image, still_mode):
     files = [('files', open(audio, 'rb')), ('files', open(image, 'rb'))]
     res = requests.post(
         "http://model_api:8000/video",
         files=files,
-    )
+        data={"still_mode": still_mode}
+    ) # still_mode is boolean
     if res.status_code == 200 or res.status_code == 307:
         byte = res.content
         with open("result.mp4", 'wb') as f:
@@ -91,14 +99,17 @@ with gr.Blocks() as demo:
     )
     with gr.Row():
         with gr.Column() as input_col:
-            gr.Markdown("<div align='center'><h2>Input Image and Audio</h2></div>")
+            gr.Markdown(
+                "<div align='center'><h2>Input Image and Audio</h2></div>")
             file_output = gr.Audio(source="upload", type="filepath")
 
-            gr.Markdown("### Choose 1 of 2 options: Upload image or Generate image by Stable Diffusion")
+            gr.Markdown(
+                "### Choose 1 of 2 options: Upload image or Generate image by Stable Diffusion")
 
             prompt = gr.Textbox(label="Prompt", placeholder="")
             run_button = gr.Button("Generate Image")
-            result_image = gr.Image(label="Result", show_label=False, type="filepath", width=742, height=450)
+            result_image = gr.Image(
+                label="Result", show_label=False, type="filepath", width=742, height=450)
 
             gr.Markdown("### Text Examples")
             gr1 = gr.Examples(
@@ -109,13 +120,16 @@ with gr.Blocks() as demo:
 
             gr.Markdown("### Image Examples")
             gr2 = gr.Examples(
-                examples=[os.path.join(os.path.dirname(__file__), "example/example_img.png")],
+                examples=[os.path.join(os.path.dirname(__file__), "example/example_img.png"), 
+                            os.path.join(os.path.dirname(__file__), "example/example_img2.png"),
+                            os.path.join(os.path.dirname(__file__), "example/example_img3.png")],
                 inputs=result_image,
                 outputs=result_image,
             )
 
-        with gr.Column():
+        with gr.Column():          
             gr.Markdown("<div align='center'><h2>Video Synthesis Result</h2></div>")
+            still_mode = gr.Checkbox(label="still mode", min_width=80)
             video_button = gr.Button("Generate Video")
             result_video = gr.Video(label="Generated Video")
 
@@ -147,7 +161,7 @@ with gr.Blocks() as demo:
         outputs=[file_output, result_image, run_button, prompt, video_button]
     ).success(
         generate_video,
-        inputs=[file_output, result_image],
+        inputs=[file_output, result_image, still_mode],
         outputs=[result_video],
     ).then(
         enable_state_video,

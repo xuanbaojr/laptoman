@@ -34,11 +34,13 @@ You also need to install **ffmpeg** on your machine: `sudo apt install ffmpeg` (
 
 ```pip install -r client/requirements.txt```
 
-- Download SadTalker and Stable Diffusion models:
+- Download SadTalker and Portrait models:
 
-```bash api/src/download_model.sh```
+```cd api```
 
-```python api/utils/save_sd.py```
+```bash src/download_model.sh```
+
+```git clone https://huggingface.co/segmind/portrait-finetuned```
 
 **If you want to run directly on your machine environment:**
 - Run the model api endpoint written in FastAPI:

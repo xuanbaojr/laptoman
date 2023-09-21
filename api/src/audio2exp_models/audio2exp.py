@@ -1,6 +1,6 @@
+from tqdm import tqdm
 import torch
 from torch import nn
-from tqdm import tqdm
 
 
 class Audio2Exp(nn.Module):
@@ -11,25 +11,37 @@ class Audio2Exp(nn.Module):
         self.netG = netG.to(device)
 
     def test(self, batch):
-        mel_input = batch["indiv_mels"]  # bs T 1 80 16
+
+        mel_input = batch['indiv_mels']                         # bs T 1 80 16
         bs = mel_input.shape[0]
         T = mel_input.shape[1]
 
-        exp_coeff_pred = []
+        exp_coeff_pred, exp_coeff_pred_full = [], []
 
-        for i in tqdm(range(0, T, 10), "audio2exp:"):  # every 10 frames
-            current_mel_input = mel_input[:, i : i + 10]
 
-            # ref = batch['ref'][:, :, :64].repeat((1,current_mel_input.shape[1],1))           #bs T 64
-            ref = batch["ref"][:, :, :64][:, i : i + 10]
-            ratio = batch["ratio_gt"][:, i : i + 10]  # bs T
+        for i in tqdm(range(0, T, 10),'audio2exp:'): # every 10 frames
+            
+            current_mel_input = mel_input[:,i:i+10]
 
-            audiox = current_mel_input.view(-1, 1, 80, 16)  # bs*T 1 80 16
+            #ref = batch['ref'][:, :, :64].repeat((1,current_mel_input.shape[1],1))           #bs T 64
+            ref = batch['ref'][:, :, :64][:, i:i+10]
+            ref_full = batch['ref_full'][:, :, :64][:, i:i+10]
 
-            curr_exp_coeff_pred = self.netG(audiox, ref, ratio)  # bs T 64
+            ratio = batch['ratio_gt'][:, i:i+10]                               #bs T
+
+            audiox = current_mel_input.view(-1, 1, 80, 16)                  # bs*T 1 80 16
+
+            curr_exp_coeff_pred  = self.netG(audiox, ref, ratio)         # bs T 64 
+            curr_exp_coeff_pred_full  = self.netG(audiox, ref_full, ratio)
 
             exp_coeff_pred += [curr_exp_coeff_pred]
+            exp_coeff_pred_full += [curr_exp_coeff_pred_full]
 
         # BS x T x 64
-        results_dict = {"exp_coeff_pred": torch.cat(exp_coeff_pred, axis=1)}
+        results_dict = {
+            'exp_coeff_pred': torch.cat(exp_coeff_pred, axis=1),
+            'exp_coeff_pred_full': torch.cat(exp_coeff_pred_full, axis=1)
+            }
         return results_dict
+
+

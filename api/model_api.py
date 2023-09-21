@@ -2,38 +2,35 @@ import io
 import os
 import time
 from contextlib import asynccontextmanager
-from typing import Annotated, List
+from typing import List
 
 import torch
-from diffusers import StableDiffusionPipeline
-from fastapi import FastAPI, File, UploadFile
+from diffusers import DiffusionPipeline
+from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import Response
-from PIL import Image
-from pydantic import BaseModel
 
 from src.inference import SadTalker
 
 
-class Prompt(BaseModel):
-    text: str
-
-
-class FaceAudio(BaseModel):
-    audio_path: str
-    image_path: str
-
-
 models = {}
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    model_id = "runwayml/stable-diffusion-v1-5"
-    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    negative_prompt = "(deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime:1.4), text, close up, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck" 
+    models["negative_prompt"] = negative_prompt
 
-    pipe = StableDiffusionPipeline.from_pretrained(model_id)
+    if torch.cuda.is_available():
+        device = 'cuda:0'
+        dtype = torch.float16
+    else:
+        device = 'cpu'
+        dtype = torch.float32
+    model_id = "portrait-finetuned"
+
+    pipe = DiffusionPipeline.from_pretrained(model_id)
     pipe.enable_attention_slicing()
     pipe.to(device)
+    pipe.unet.to(device=device, dtype=dtype, memory_format=torch.channels_last)
 
     models["pipe"] = pipe
 
@@ -56,9 +53,11 @@ def read_root():
 
 
 @app.post("/prediction/")
-def predict(prompt: Prompt):
+@torch.inference_mode()
+def predict(prompt: str = Form(...)):
     image = models["pipe"](
-        prompt.text, guidance_scale=7.5, num_inference_steps=25, height=512, width=512
+        prompt=prompt, negative_prompt=models["negative_prompt"], 
+        width=512, height=512, num_inference_steps=25, guidance_scale = 7.5, num_images_per_prompt=1
     ).images[0]
     img = io.BytesIO()
     image.save(img, format="PNG")
@@ -67,7 +66,7 @@ def predict(prompt: Prompt):
 
 
 @app.post("/video/")
-def create_item(files: List[UploadFile] = File(...)):
+def create_item(still_mode: bool = Form(...), files: List[UploadFile] = File(...)):
     audio_path, image_path = files[0].filename, files[1].filename
 
     for file in files:
@@ -76,7 +75,7 @@ def create_item(files: List[UploadFile] = File(...)):
             f.write(contents)
         file.file.close()
 
-    result_path = models["sad_talker"].test(image_path, audio_path)
+    result_path = models["sad_talker"].test(image_path, audio_path, still_mode=still_mode)
 
     with open(result_path, 'rb') as fd:
         contents = fd.read()
