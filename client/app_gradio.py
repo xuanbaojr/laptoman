@@ -155,4 +155,4 @@ with gr.Blocks() as demo:
         outputs=[file_output, result_image, run_button, prompt, video_button]
     )
 
-demo.launch()
+demo.launch(server_name="0.0.0.0")
