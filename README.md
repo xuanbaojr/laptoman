@@ -1,16 +1,16 @@
 # Video Synthesis from Portrait Image and Audio
 
-How to run Gradio App:
-- git clone https://github.com/ductt-1167/ai-video-synthesis.git
+How to run Gradio App - without Docker
+- git clone https://github.com/xuanbaojr/laptoman.git
 - cd ai-video-synthesis
-- bash api/src/download_model.sh
+- bash api/scripts/download_model.sh
 - pip install -r api/requirements.txt
 - pip install -r client/requirements.txt
 - python api/utils/save_sd.py
 - uvicorn api.model_api:app --reload
 - gradio client/app_gradio.py
 ## Introduction
-A demo Gradio application helps user generate video from audio and face image using SadTalker and Stable Diffusion
+A demo Gradio application helps user generate video from audio and face image using SadTalker and Portrait-Finetuned
 
 ## Environments Prequisition
 To run the application, you need to install Python version>=3.8 in your machine. We recommend using Anaconda or Miniconda to install Python libraries and configure environment.
@@ -38,7 +38,7 @@ You also need to install **ffmpeg** on your machine: `sudo apt install ffmpeg` (
 
 ```cd api```
 
-```bash src/download_model.sh```
+```bash scripts/download_model.sh```
 
 ```git clone https://huggingface.co/segmind/portrait-finetuned```
 
@@ -52,7 +52,14 @@ You also need to install **ffmpeg** on your machine: `sudo apt install ffmpeg` (
 
 **If you want to run in Docker mode:**
 - Build and run the Docker application:
+```cd api```
+```bash scripts/download_models.sh```
+```git clone https://huggingface.co/segmind/portrait-finetuned```
+
+
 ```docker compose up --build```
 
+    If you want to modified code after build Image, you can build Image by ```docker compose build``` and run ```docker compose up``` without rebuild
+    The gradion interface running on : http://0.0.0.0:7860
 ## Issues
 - If your issues related to **ffmpeg** or **ffprobe**, you can re-install **ffmpeg** in Conda environment: `conda install -c conda-forge ffmpeg`
